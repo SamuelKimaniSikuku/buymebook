@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Me a Book - Gift Books, Share Stories</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=Libre+Baskerville:wght@400;700&family=Spectral:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --parchment: #f4f1e8;
+            --ink: #2c2416;
+            --sepia: #8b7355;
+            --leather: #5d4e37;
+            --gold: #d4af37;
+            --forest: #3a5a40;
+            --cream: #fffef7;
+            --shadow: rgba(44, 36, 22, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Spectral', serif;
+            background: linear-gradient(135deg, var(--parchment) 0%, var(--cream) 100%);
+            color: var(--ink);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Background decorative elements */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(58, 90, 64, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 3rem 0 4rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 3.5rem;
+            color: var(--leather);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .tagline {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.3rem;
+            color: var(--sepia);
+            font-style: italic;
+            font-weight: 300;
+        }
+
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0 3rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            font-family: 'Crimson Pro', serif;
+            padding: 0.8rem 2rem;
+            background: var(--cream);
+            border: 2px solid var(--leather);
+            color: var(--leather);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .tab-btn:hover {
+            background: var(--leather);
+            color: var(--cream);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .tab-btn.active {
+            background: var(--leather);
+            color: var(--gold);
+            border-color: var(--gold);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--cream);
+            border: 1px solid rgba(93, 78, 55, 0.2);
+            border-radius: 4px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(44, 36, 22, 0.15);
+        }
+
+        h2 {
+            font-family: 'Libre Baskerville', serif;
+            color: var(--leather);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            border-left: 4px solid var(--gold);
+            padding-left: 1rem;
+        }
+
+        h3 {
+            font-family: 'Crimson Pro', serif;
+            color: var(--forest);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--leather);
+            font-weight: 600;
+            font-family: 'Crimson Pro', serif;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid rgba(93, 78, 55, 0.3);
+            background: white;
+            font-family: 'Spectral', serif;
+            font-size: 1rem;
+            border-radius: 2px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Buttons */
+        .btn {
+            font-family: 'Crimson Pro', serif;
+            padding: 1rem 2.5rem;
+            background: var(--leather);
+            color: var(--cream);
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .btn:hover {
+            background: var(--forest);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(44, 36, 22, 0.2);
+        }
+
+        .btn-secondary {
+            background: var(--gold);
+            color: var(--ink);
+        }
+
+        .btn-secondary:hover {
+            background: #c99c2e;
+        }
+
+        /* Book List */
+        .book-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .book-item {
+            background: white;
+            border: 1px solid rgba(93, 78, 55, 0.2);
+            border-radius: 4px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .book-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(44, 36, 22, 0.15);
+        }
+
+        .book-title {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.2rem;
+            color: var(--leather);
+            margin-bottom: 0.5rem;
+        }
+
+        .book-author {
+            color: var(--sepia);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-requester {
+            color: var(--forest);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .book-price {
+            font-size: 1.3rem;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Statistics */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--leather) 0%, var(--forest) 100%);
+            color: var(--cream);
+            padding: 2rem;
+            border-radius: 4px;
+            text-align: center;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .stat-number {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--gold);
+        }
+
+        .stat-label {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* How it Works */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background: var(--gold);
+            color: var(--ink);
+            border-radius: 50%;
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 60px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .step h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            margin-top: 4rem;
+            border-top: 2px solid rgba(93, 78, 55, 0.2);
+            color: var(--sepia);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1.1rem;
+            }
+
+            .book-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Amazon Button Styling */
+        .amazon-btn {
+            background: #ff9900;
+            color: #232f3e;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 3px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .amazon-btn:hover {
+            background: #ffad33;
+            transform: translateY(-2px);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--forest);
+            color: var(--cream);
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: none;
+            animation: slideIn 0.5s ease-out;
+            z-index: 1000;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notification"></div>
+    
+    <div class="container">
+        <header>
+            <h1>📚 Buy Me a Book</h1>
+            <p class="tagline">Share the gift of reading, one page at a time</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('browse')">Browse Requests</button>
+            <button class="tab-btn" onclick="switchTab('request')">Request a Book</button>
+            <button class="tab-btn" onclick="switchTab('how')">How It Works</button>
+        </div>
+
+        <!-- Browse Requests Tab -->
+        <div id="browse" class="tab-content active">
+            <div class="card">
+                <h2>Book Requests Awaiting Your Kindness</h2>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalRequests">0</span>
+                        <span class="stat-label">Books Requested</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalFulfilled">0</span>
+                        <span class="stat-label">Books Gifted</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalReaders">0</span>
+                        <span class="stat-label">Happy Readers</span>
+                    </div>
+                </div>
+
+                <div class="book-list" id="bookList">
+                    <!-- Books will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Request a Book Tab -->
+        <div id="request" class="tab-content">
+            <div class="card">
+                <h2>Request a Book</h2>
+                <p style="margin-bottom: 2rem; color: var(--sepia);">Share a book you need and can't afford. Generous donors will see your request and can purchase it for you through Amazon!</p>
+                
+                <form id="requestForm" onsubmit="submitRequest(event)">
+                    <div class="form-group">
+                        <label for="reqName">Your Name</label>
+                        <input type="text" id="reqName" required placeholder="Jane Doe">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reqEmail">Your Email</label>
+                        <input type="email" id="reqEmail" required placeholder="jane@example.com">
+                        <small style="color: var(--sepia);">We'll notify you when someone gifts you a book</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bookTitle">Book Title</label>
+                        <input type="text" id="bookTitle" required placeholder="To Kill a Mockingbird">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bookAuthor">Author</label>
+                        <input type="text" id="bookAuthor" required placeholder="Harper Lee">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="amazonLink">Amazon Link *</label>
+                        <input type="url" id="amazonLink" required placeholder="https://www.amazon.com/...">
+                        <small style="color: var(--sepia);">
+                            <strong>Required:</strong> Go to Amazon, find the exact book you want, and paste the link here. 
+                            This ensures donors buy the right edition and it gets shipped to you.
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="shippingAddress">Your Shipping Address</label>
+                        <textarea id="shippingAddress" required placeholder="123 Main St, City, State, ZIP"></textarea>
+                        <small style="color: var(--sepia);">This will be securely shared with donors so they can send the book to you</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="whyBook">Why do you want this book?</label>
+                        <textarea id="whyBook" required placeholder="Share your story... Why is this book important to you?"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn">Submit Book Request</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- How It Works Tab -->
+        <div id="how" class="tab-content">
+            <div class="card">
+                <h2>How It Works</h2>
+                
+                <h3 style="margin-top: 2rem; text-align: center; color: var(--leather);">For People Who Need Books</h3>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Find Your Book</h3>
+                        <p>Go to Amazon and find the exact book you want. Copy the link.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Post Request</h3>
+                        <p>Fill out the form with book details, your shipping address, and why you need it.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Receive Your Book</h3>
+                        <p>When a donor purchases it, Amazon ships it directly to your address!</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 3rem; text-align: center; color: var(--leather);">For Generous Donors</h3>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Browse Requests</h3>
+                        <p>See books people need and read their stories about why each book matters.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Purchase on Amazon</h3>
+                        <p>Click the button to buy the book on Amazon. Use the provided shipping address.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Change a Life</h3>
+                        <p>Amazon ships directly to the recipient. You've just opened a new world through reading!</p>
+                    </div>
+                </div>
+
+                <div style="background: var(--parchment); padding: 2rem; border-radius: 4px; margin-top: 2rem; border-left: 4px solid var(--gold);">
+                    <h3>How the Platform Works</h3>
+                    <p><strong>Simple & Transparent:</strong> People in need post book requests with their Amazon link and shipping address. Donors browse requests, purchase books on Amazon, and ship directly to the requester.</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Your Privacy:</strong> Addresses are only visible to donors who want to help. We never store payment information - all purchases happen securely through Amazon.</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Platform Support:</strong> This platform uses Amazon Affiliate links (tag: samuelkimanis-20). A small percentage of purchases helps cover hosting costs at no extra cost to you.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Built with ❤️ for book lovers everywhere</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Connect readers • Share stories • Change lives</p>
+        </footer>
+    </div>
+
+    <script>
+        // Sample data - In production, this would come from a database
+        let bookRequests = [
+            {
+                id: 1,
+                title: "Atomic Habits",
+                author: "James Clear",
+                requester: "Mike Chen",
+                email: "mike@example.com",
+                address: "123 Oak St, Portland, OR 97201",
+                reason: "I'm trying to build better habits to improve my life. This book has been recommended by so many people.",
+                amazonLink: "https://www.amazon.com/dp/0735211299",
+                price: "$27.99",
+                fulfilled: false
+            },
+            {
+                id: 2,
+                title: "The Midnight Library",
+                author: "Matt Haig",
+                requester: "Sarah Johnson",
+                email: "sarah@example.com",
+                address: "456 Elm Ave, Austin, TX 78701",
+                reason: "Going through a tough time and I've heard this book offers a beautiful perspective on life's possibilities.",
+                amazonLink: "https://www.amazon.com/dp/0525559477",
+                price: "$16.99",
+                fulfilled: false
+            },
+            {
+                id: 3,
+                title: "Educated",
+                author: "Tara Westover",
+                requester: "Alex Rodriguez",
+                email: "alex@example.com",
+                address: "789 Pine Blvd, Seattle, WA 98101",
+                reason: "As a first-generation college student, this memoir resonates deeply with my journey.",
+                amazonLink: "https://www.amazon.com/dp/0399590501",
+                price: "$18.99",
+                fulfilled: false
+            }
+        ];
+
+        let stats = {
+            totalRequests: 47,
+            totalFulfilled: 23,
+            totalReaders: 23
+        };
+
+        // Initialize the page
+        function init() {
+            updateStats();
+            renderBookList();
+        }
+
+        // Switch between tabs
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('totalRequests').textContent = stats.totalRequests;
+            document.getElementById('totalFulfilled').textContent = stats.totalFulfilled;
+            document.getElementById('totalReaders').textContent = stats.totalReaders;
+        }
+
+        // Render book list
+        function renderBookList() {
+            const bookList = document.getElementById('bookList');
+            bookList.innerHTML = '';
+            
+            bookRequests.filter(book => !book.fulfilled).forEach(book => {
+                const bookItem = document.createElement('div');
+                bookItem.className = 'book-item';
+                bookItem.innerHTML = `
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-author">by ${book.author}</div>
+                    <div class="book-requester">Requested by ${book.requester}</div>
+                    <p style="color: var(--sepia); font-size: 0.95rem; margin-bottom: 1rem; font-style: italic;">"${book.reason}"</p>
+                    <div style="background: var(--parchment); padding: 0.8rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem;">
+                        <strong>Ship to:</strong> ${book.address}
+                    </div>
+                    <div class="book-price">${book.price}</div>
+                    <button class="amazon-btn" onclick="giftBook(${book.id})">
+                        🎁 Buy & Gift This Book on Amazon
+                    </button>
+                    <p style="font-size: 0.85rem; color: var(--sepia); margin-top: 0.5rem; text-align: center;">
+                        Click to purchase on Amazon and ship directly to ${book.requester.split(' ')[0]}
+                    </p>
+                `;
+                bookList.appendChild(bookItem);
+            });
+
+            if (bookRequests.filter(book => !book.fulfilled).length === 0) {
+                bookList.innerHTML = '<p style="text-align: center; color: var(--sepia); padding: 2rem;">No active book requests at the moment. Check back soon!</p>';
+            }
+        }
+
+        // Gift a book
+        function giftBook(bookId) {
+            const book = bookRequests.find(b => b.id === bookId);
+            if (book && book.amazonLink) {
+                // Adding Amazon Affiliate ID
+                const affiliateLink = book.amazonLink + (book.amazonLink.includes('?') ? '&' : '?') + 'tag=samuelkimanis-20';
+                
+                // Show instructions to donor
+                const confirmed = confirm(
+                    `You're about to purchase "${book.title}" for ${book.requester}!\n\n` +
+                    `IMPORTANT: When you checkout on Amazon:\n` +
+                    `1. Click "Add to Cart"\n` +
+                    `2. During checkout, select "Gift options" or "This is a gift"\n` +
+                    `3. Enter this shipping address:\n   ${book.address}\n\n` +
+                    `The book will be shipped directly to ${book.requester}.\n\n` +
+                    `Click OK to continue to Amazon.`
+                );
+                
+                if (confirmed) {
+                    showNotification(`Opening Amazon... Please use the shipping address: ${book.address}`);
+                    
+                    // Open Amazon link
+                    window.open(affiliateLink, '_blank');
+                    
+                    // In production, you'd mark this as fulfilled after confirmation from donor
+                    // For now, we'll add a manual confirmation option
+                    setTimeout(() => {
+                        const purchased = confirm('Have you completed the purchase on Amazon?');
+                        if (purchased) {
+                            book.fulfilled = true;
+                            stats.totalFulfilled++;
+                            updateStats();
+                            renderBookList();
+                            showNotification(`Thank you for gifting "${book.title}" to ${book.requester}! 📚❤️`);
+                        }
+                    }, 5000);
+                }
+            }
+        }
+
+        // Submit book request
+        function submitRequest(event) {
+            event.preventDefault();
+            
+            const newRequest = {
+                id: bookRequests.length + 1,
+                title: document.getElementById('bookTitle').value,
+                author: document.getElementById('bookAuthor').value,
+                requester: document.getElementById('reqName').value,
+                email: document.getElementById('reqEmail').value,
+                address: document.getElementById('shippingAddress').value,
+                reason: document.getElementById('whyBook').value,
+                amazonLink: document.getElementById('amazonLink').value,
+                price: 'Check Amazon',
+                fulfilled: false
+            };
+            
+            bookRequests.push(newRequest);
+            stats.totalRequests++;
+            
+            showNotification('Your book request has been posted! Donors can now see it. 📖');
+            
+            // Reset form
+            document.getElementById('requestForm').reset();
+            
+            // Update display
+            updateStats();
+            renderBookList();
+            
+            // Switch to browse tab
+            setTimeout(() => {
+                document.querySelector('[onclick="switchTab(\'browse\')"]').click();
+            }, 1500);
+        }
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Initialize on page load
+        init();
+    </script>
+</body>
+</html>
