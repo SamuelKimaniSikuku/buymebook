@@ -32,7 +32,6 @@
             overflow-x: hidden;
         }
 
-        /* Background decorative elements */
         body::before {
             content: '';
             position: fixed;
@@ -55,7 +54,6 @@
             z-index: 1;
         }
 
-        /* Header */
         header {
             text-align: center;
             padding: 3rem 0 4rem;
@@ -79,7 +77,6 @@
             font-weight: 300;
         }
 
-        /* Tab Navigation */
         .tabs {
             display: flex;
             justify-content: center;
@@ -115,7 +112,6 @@
             border-color: var(--gold);
         }
 
-        /* Tab Content */
         .tab-content {
             display: none;
             animation: fadeIn 0.5s ease-out;
@@ -125,7 +121,6 @@
             display: block;
         }
 
-        /* Cards */
         .card {
             background: var(--cream);
             border: 1px solid rgba(93, 78, 55, 0.2);
@@ -158,7 +153,6 @@
             font-weight: 600;
         }
 
-        /* Form Elements */
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -192,7 +186,6 @@
             min-height: 100px;
         }
 
-        /* Buttons */
         .btn {
             font-family: 'Crimson Pro', serif;
             padding: 1rem 2.5rem;
@@ -222,7 +215,6 @@
             background: #c99c2e;
         }
 
-        /* Book List */
         .book-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -230,13 +222,50 @@
             margin-top: 2rem;
         }
 
+        .book-item {
+            background: white;
+            border: 1px solid rgba(93, 78, 55, 0.2);
+            border-radius: 4px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
         .book-item:hover {
             transform: translateY(-4px);
             box-shadow: 0 6px 20px rgba(44, 36, 22, 0.15);
         }
 
+        .book-item.fulfilled {
+            opacity: 0.7;
+            background: #f8f9fa;
+        }
+
         .book-item.fulfilled:hover {
             transform: none;
+        }
+
+        .fulfilled-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+            transform: rotate(5deg);
+            font-family: 'Crimson Pro', serif;
+            letter-spacing: 0.5px;
+            z-index: 10;
+        }
+
+        .fulfilled-badge::before {
+            content: '✓ ';
+            font-size: 1.1rem;
         }
 
         .book-title {
@@ -265,54 +294,6 @@
             margin-bottom: 1rem;
         }
 
-        /* Fulfilled Badge/Sticker */
-        .fulfilled-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
-            transform: rotate(5deg);
-            font-family: 'Crimson Pro', serif;
-            letter-spacing: 0.5px;
-            z-index: 10;
-        }
-
-        .fulfilled-badge::before {
-            content: '✓ ';
-            font-size: 1.1rem;
-        }
-
-        .book-item {
-            background: white;
-            border: 1px solid rgba(93, 78, 55, 0.2);
-            border-radius: 4px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 10px var(--shadow);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .book-item.fulfilled {
-            opacity: 0.7;
-            background: #f8f9fa;
-        }
-
-        .book-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 20px rgba(44, 36, 22, 0.15);
-        }
-
-        .book-item.fulfilled:hover {
-            transform: none;
-        }
-
-        /* Statistics */
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -344,7 +325,6 @@
             opacity: 0.9;
         }
 
-        /* How it Works */
         .steps {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -376,7 +356,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Footer */
         footer {
             text-align: center;
             padding: 3rem 0 2rem;
@@ -385,7 +364,6 @@
             color: var(--sepia);
         }
 
-        /* Animations */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -408,22 +386,29 @@
             }
         }
 
-        /* Responsive */
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.5rem;
             }
-
             .tagline {
                 font-size: 1.1rem;
             }
-
             .book-list {
                 grid-template-columns: 1fr;
             }
         }
 
-        /* Amazon Button Styling */
         .amazon-btn {
             background: #ff9900;
             color: #232f3e;
@@ -454,17 +439,6 @@
             display: none;
             animation: slideIn 0.5s ease-out;
             z-index: 1000;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
         }
     </style>
 </head>
@@ -509,9 +483,7 @@
                     </p>
                 </div>
 
-                <div class="book-list" id="bookList">
-                    <!-- Books will be populated here -->
-                </div>
+                <div class="book-list" id="bookList"></div>
             </div>
         </div>
 
@@ -539,9 +511,7 @@
                     <p style="color: var(--sepia); margin-bottom: 1rem;">Click on any book to purchase the Kindle edition and gift it instantly.</p>
                 </div>
 
-                <div class="book-list" id="donateBookList">
-                    <!-- Books for donors will be populated here -->
-                </div>
+                <div class="book-list" id="donateBookList"></div>
             </div>
         </div>
 
@@ -586,7 +556,7 @@
                         <input type="email" id="kindleEmail" required placeholder="yourname@kindle.com">
                         <small style="color: var(--sepia);">
                             <strong>Find your Kindle email:</strong> Amazon account → Content & Devices → Preferences → Personal Document Settings. 
-                            It looks like "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fb82948e89959a969ebb9092959f979ed5989496">[email&#160;protected]</a>" or "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f48d9b81869a959991abc5c6c7b49f9d9a909891da979b99">[email&#160;protected]</a>"
+                            It looks like "yourname@kindle.com" or "yourname_123@kindle.com"
                         </small>
                     </div>
                     
@@ -610,7 +580,7 @@
                     <div class="step">
                         <div class="step-number">1</div>
                         <h3>Find Your Book</h3>
-                        <p>Go to Amazon and find the exact book you want. Copy the link.</p>
+                        <p>Go to Amazon and find the exact Kindle book you want. Copy the link.</p>
                     </div>
                     <div class="step">
                         <div class="step-number">2</div>
@@ -662,8 +632,7 @@
         </footer>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        // Sample data - In production, this would come from a database
+    <script>
         let bookRequests = [
             {
                 id: 1,
@@ -720,48 +689,23 @@
             totalFulfilled: 24
         };
 
-        // Initialize the page
         function init() {
             updateStats();
             renderBookList();
             renderDonateBookList();
         }
 
-        // Switch between tabs
         function switchTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Remove active class from all buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Show selected tab
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabName).classList.add('active');
-            
-            // Add active class to clicked button
             event.target.classList.add('active');
         }
 
-        // Helper function to go to request tab from button
         function goToRequestTab() {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Remove active class from all buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Show request tab
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('request').classList.add('active');
-            
-            // Add active class to request button
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 if (btn.textContent.includes('Request a Book')) {
                     btn.classList.add('active');
@@ -769,13 +713,11 @@
             });
         }
 
-        // Update statistics
         function updateStats() {
             document.getElementById('totalRequests').textContent = stats.totalRequests;
             document.getElementById('totalFulfilled').textContent = stats.totalFulfilled;
         }
 
-        // Render book list
         function renderBookList() {
             const bookList = document.getElementById('bookList');
             bookList.innerHTML = '';
@@ -814,7 +756,6 @@
             }
         }
 
-        // Render donate tab book list (donor-focused view)
         function renderDonateBookList() {
             const donateBookList = document.getElementById('donateBookList');
             donateBookList.innerHTML = '';
@@ -875,14 +816,11 @@
             }
         }
 
-        // Gift a book
         function giftBook(bookId) {
             const book = bookRequests.find(b => b.id === bookId);
             if (book && book.amazonLink) {
-                // Adding Amazon Affiliate ID
                 const affiliateLink = book.amazonLink + (book.amazonLink.includes('?') ? '&' : '?') + 'tag=samuelkimanis-20';
                 
-                // Show instructions to donor
                 const confirmed = confirm(
                     `You're about to gift "${book.title}" (Kindle) to ${book.requester}!\n\n` +
                     `IMPORTANT: When purchasing on Amazon:\n` +
@@ -895,12 +833,8 @@
                 
                 if (confirmed) {
                     showNotification(`Opening Amazon... Use Kindle email: ${book.kindleEmail}`);
-                    
-                    // Open Amazon link
                     window.open(affiliateLink, '_blank');
                     
-                    // In production, you'd mark this as fulfilled after confirmation from donor
-                    // For now, we'll add a manual confirmation option
                     setTimeout(() => {
                         const purchased = confirm('Have you completed the Kindle book purchase on Amazon?');
                         if (purchased) {
@@ -916,7 +850,6 @@
             }
         }
 
-        // Submit book request
         function submitRequest(event) {
             event.preventDefault();
             
@@ -938,20 +871,27 @@
             
             showNotification('Your Kindle book request has been posted! Donors can now see it. 📖');
             
-            // Reset form
             document.getElementById('requestForm').reset();
-            
-            // Update display
             updateStats();
             renderBookList();
             renderDonateBookList();
             
-            // Switch to browse tab
             setTimeout(() => {
                 document.querySelector('[onclick="switchTab(\'browse\')"]').click();
             }, 1500);
         }
 
-        // Show notification
         function showNotification(message) {
-            const notificat
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        init();
+    </script>
+</body>
+</html>
