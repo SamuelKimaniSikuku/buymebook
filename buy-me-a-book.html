@@ -268,6 +268,28 @@
             font-size: 1.1rem;
         }
 
+        .received-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+            transform: rotate(5deg);
+            font-family: 'Crimson Pro', serif;
+            letter-spacing: 0.5px;
+            z-index: 10;
+        }
+
+        .received-badge::before {
+            content: '📬 ';
+            font-size: 1.1rem;
+        }
+
         .active-badge {
             position: absolute;
             top: 10px;
@@ -497,6 +519,7 @@
             <button class="tab-btn" onclick="switchTab('donate', this)">Buy Books for Others</button>
             <button class="tab-btn" onclick="switchTab('gifted', this)">Gifted Books</button>
             <button class="tab-btn" onclick="switchTab('all-requests', this)">All Requests</button>
+            <button class="tab-btn" onclick="switchTab('confirm', this)">Confirm Receipt</button>
             <button class="tab-btn" onclick="switchTab('request', this)">Request a Book</button>
             <button class="tab-btn" onclick="switchTab('how', this)">How It Works</button>
         </div>
@@ -514,6 +537,10 @@
                     <div class="stat-card">
                         <span class="stat-number" id="totalFulfilled">0</span>
                         <span class="stat-label">Books Gifted</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalReceived">0</span>
+                        <span class="stat-label">Books Received</span>
                     </div>
                 </div>
 
@@ -608,6 +635,42 @@
             </div>
         </div>
 
+        <!-- Confirm Receipt Tab -->
+        <div id="confirm" class="tab-content">
+            <div class="card">
+                <h2>✅ Confirm Book Receipt</h2>
+                <p style="margin-bottom: 2rem; color: var(--sepia); font-size: 1.1rem;">
+                    Did you receive your gifted book? Confirm receipt here to thank your donor and update our records!
+                </p>
+
+                <div style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); padding: 2rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 4px 20px rgba(52, 152, 219, 0.3);">
+                    <h3 style="color: white; margin-bottom: 1rem;">📬 How to Confirm Receipt</h3>
+                    <ol style="color: white; font-size: 1rem; line-height: 1.8; padding-left: 1.5rem;">
+                        <li>Enter your confirmation code (sent to your email when book was gifted)</li>
+                        <li>Or search for your book by title or your name</li>
+                        <li>Click "Confirm Receipt" to mark the book as received</li>
+                        <li>Your donor will be notified of the confirmation!</li>
+                    </ol>
+                </div>
+
+                <div style="max-width: 600px; margin: 0 auto 2rem;">
+                    <h3>Enter Confirmation Code</h3>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                        <input type="text" id="confirmCodeInput" placeholder="e.g., BOOK4-THINKING" style="flex: 1; padding: 1rem; font-size: 1.1rem; text-transform: uppercase;">
+                        <button class="btn" onclick="confirmReceiptByCode()" style="padding: 1rem 2rem;">Confirm</button>
+                    </div>
+
+                    <h3>Or Search for Your Book</h3>
+                    <input type="text" id="searchBookInput" placeholder="Search by book title or your name..." style="width: 100%; padding: 1rem; font-size: 1.1rem; margin-bottom: 1rem;" oninput="searchGiftedBooks()">
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3 style="text-align: center; margin-bottom: 1.5rem;">Books Awaiting Confirmation</h3>
+                    <div class="book-list" id="confirmBookList"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- Request a Book Tab -->
         <div id="request" class="tab-content">
             <div class="card">
@@ -649,7 +712,7 @@
                         <input type="email" id="kindleEmail" required placeholder="yourname@kindle.com">
                         <small style="color: var(--sepia);">
                             <strong>Find your Kindle email:</strong> Amazon account → Content & Devices → Preferences → Personal Document Settings. 
-                            It looks like "yourname@kindle.com" or "yourname_123@kindle.com"<br>
+                            It looks like "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e39a8c96918d828e86a3888a8d878f86cd808c8e">[email&#160;protected]</a>" or "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="61180e14130f000c043e505352210a080f050d044f020e0c">[email&#160;protected]</a>"<br>
                             <strong>🔒 Privacy Protected:</strong> Your Kindle email is hidden and only shown to donors when they click to purchase.
                         </small>
                     </div>
@@ -726,7 +789,7 @@
         </footer>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         let bookRequests = [
             {
                 id: 1,
@@ -738,7 +801,9 @@
                 reason: "I'm trying to build better habits to improve my life. This book has been recommended by so many people.",
                 amazonLink: "https://www.amazon.com/dp/B07D23CFGR",
                 price: "$13.99",
-                fulfilled: false
+                fulfilled: false,
+                received: false,
+                confirmCode: "BOOK1-ATOMIC"
             },
             {
                 id: 2,
@@ -750,7 +815,9 @@
                 reason: "Going through a tough time and I've heard this book offers a beautiful perspective on life's possibilities.",
                 amazonLink: "https://www.amazon.com/dp/B08FF8J8XP",
                 price: "$11.99",
-                fulfilled: false
+                fulfilled: false,
+                received: false,
+                confirmCode: "BOOK2-MIDNIGHT"
             },
             {
                 id: 3,
@@ -762,7 +829,9 @@
                 reason: "As a first-generation college student, this memoir resonates deeply with my journey.",
                 amazonLink: "https://www.amazon.com/dp/B072BLVM83",
                 price: "$14.99",
-                fulfilled: false
+                fulfilled: false,
+                received: false,
+                confirmCode: "BOOK3-EDUCATED"
             },
             {
                 id: 4,
@@ -774,13 +843,16 @@
                 reason: "I want to understand how the mind works and make better decisions in my life and career.",
                 amazonLink: "https://www.amazon.com/dp/B00555X8OA",
                 price: "$15.99",
-                fulfilled: true
+                fulfilled: true,
+                received: false,
+                confirmCode: "BOOK4-THINKING"
             }
         ];
 
         let stats = {
             totalRequests: 48,
-            totalFulfilled: 24
+            totalFulfilled: 24,
+            totalReceived: 20
         };
 
         let currentFilter = 'all';
@@ -791,6 +863,7 @@
             renderDonateBookList();
             renderGiftedBookList();
             renderAllRequestsList();
+            renderConfirmBookList();
             updateFilterCounts();
         }
 
@@ -815,6 +888,7 @@
         function updateStats() {
             document.getElementById('totalRequests').textContent = stats.totalRequests;
             document.getElementById('totalFulfilled').textContent = stats.totalFulfilled;
+            document.getElementById('totalReceived').textContent = stats.totalReceived;
         }
 
         function renderBookList() {
@@ -935,15 +1009,15 @@
                 const bookItem = document.createElement('div');
                 bookItem.className = 'book-item fulfilled';
                 bookItem.innerHTML = `
-                    <div class="fulfilled-badge">GIFTED</div>
+                    ${book.received ? '<div class="received-badge">RECEIVED</div>' : '<div class="fulfilled-badge">GIFTED</div>'}
                     <div class="book-title">${book.title}</div>
                     <div class="book-author">by ${book.author}</div>
                     <div class="book-requester">Gifted to ${book.requester}</div>
                     <p style="color: var(--sepia); font-size: 0.95rem; margin-bottom: 1rem; font-style: italic;">"${book.reason}"</p>
                     <div class="book-price">${book.price}</div>
-                    <div style="text-align: center; padding: 1.5rem; color: var(--forest); background: rgba(46, 204, 113, 0.1); border-radius: 4px;">
-                        <strong style="font-size: 1.1rem;">✨ Successfully Gifted!</strong>
-                        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Thank you to the generous donor who made this possible!</p>
+                    <div style="text-align: center; padding: 1.5rem; color: ${book.received ? '#3498db' : 'var(--forest)'}; background: ${book.received ? 'rgba(52, 152, 219, 0.1)' : 'rgba(46, 204, 113, 0.1)'}; border-radius: 4px;">
+                        <strong style="font-size: 1.1rem;">${book.received ? '📬 Confirmed Received!' : '✨ Successfully Gifted!'}</strong>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem;">${book.received ? 'Recipient has confirmed receipt of this book!' : 'Thank you to the generous donor who made this possible!'}</p>
                     </div>
                 `;
                 giftedBookList.appendChild(bookItem);
@@ -1042,6 +1116,7 @@
                             renderDonateBookList();
                             renderGiftedBookList();
                             renderAllRequestsList(currentFilter);
+                            renderConfirmBookList();
                             updateFilterCounts();
                             showNotification(`Thank you for gifting "${book.title}" to ${book.requester}! 📚❤️`);
                         }
@@ -1063,7 +1138,9 @@
                 reason: document.getElementById('whyBook').value,
                 amazonLink: document.getElementById('amazonLink').value,
                 price: 'Check Amazon',
-                fulfilled: false
+                fulfilled: false,
+                received: false,
+                confirmCode: 'BOOK' + (bookRequests.length + 1) + '-' + document.getElementById('bookTitle').value.toUpperCase().replace(/[^A-Z]/g, '').substring(0, 8)
             };
             
             bookRequests.push(newRequest);
@@ -1077,6 +1154,7 @@
             renderDonateBookList();
             renderGiftedBookList();
             renderAllRequestsList(currentFilter);
+            renderConfirmBookList();
             updateFilterCounts();
             
             setTimeout(() => {
@@ -1092,6 +1170,111 @@
             setTimeout(() => {
                 notification.style.display = 'none';
             }, 3000);
+        }
+
+        function renderConfirmBookList(searchTerm = '') {
+            const confirmBookList = document.getElementById('confirmBookList');
+            const awaitingConfirmation = bookRequests.filter(book => book.fulfilled && !book.received);
+            
+            let booksToShow = awaitingConfirmation;
+            if (searchTerm) {
+                booksToShow = awaitingConfirmation.filter(book => 
+                    book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    book.requester.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    book.confirmCode.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
+            
+            confirmBookList.innerHTML = '';
+            
+            if (booksToShow.length === 0) {
+                confirmBookList.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: var(--sepia);">
+                        <h3 style="color: var(--gold); margin-bottom: 1rem;">📚 ${searchTerm ? 'No books found matching your search' : 'No books awaiting confirmation'}</h3>
+                        <p>${searchTerm ? 'Try a different search term' : 'All gifted books have been confirmed as received!'}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            booksToShow.forEach(book => {
+                const bookItem = document.createElement('div');
+                bookItem.className = 'book-item';
+                bookItem.innerHTML = `
+                    <div class="fulfilled-badge">GIFTED</div>
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-author">by ${book.author}</div>
+                    <div class="book-requester">Requested by ${book.requester}</div>
+                    <p style="color: var(--sepia); font-size: 0.95rem; margin-bottom: 1rem; font-style: italic;">"${book.reason}"</p>
+                    <div class="book-price">${book.price}</div>
+                    <div style="background: var(--parchment); padding: 1rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem; text-align: center;">
+                        <strong>🔑 Confirmation Code:</strong><br>
+                        <span style="font-size: 1.2rem; font-family: 'Courier New', monospace; color: var(--leather); font-weight: 700;">${book.confirmCode}</span>
+                    </div>
+                    <button class="btn" onclick="confirmReceipt(${book.id})" style="width: 100%; background: #3498db;">
+                        ✅ I Received This Book
+                    </button>
+                `;
+                confirmBookList.appendChild(bookItem);
+            });
+        }
+
+        function searchGiftedBooks() {
+            const searchTerm = document.getElementById('searchBookInput').value;
+            renderConfirmBookList(searchTerm);
+        }
+
+        function confirmReceiptByCode() {
+            const code = document.getElementById('confirmCodeInput').value.trim().toUpperCase();
+            if (!code) {
+                alert('Please enter a confirmation code');
+                return;
+            }
+            
+            const book = bookRequests.find(b => b.confirmCode.toUpperCase() === code);
+            if (!book) {
+                alert('Invalid confirmation code. Please check and try again.');
+                return;
+            }
+            
+            if (!book.fulfilled) {
+                alert('This book has not been gifted yet.');
+                return;
+            }
+            
+            if (book.received) {
+                alert('This book has already been confirmed as received.');
+                return;
+            }
+            
+            confirmReceipt(book.id);
+        }
+
+        function confirmReceipt(bookId) {
+            const book = bookRequests.find(b => b.id === bookId);
+            if (!book) return;
+            
+            const confirmed = confirm(
+                `Confirm that you received:\n\n` +
+                `"${book.title}" by ${book.author}\n\n` +
+                `This will notify the donor and update our records.\n` +
+                `Click OK to confirm receipt.`
+            );
+            
+            if (confirmed) {
+                book.received = true;
+                stats.totalReceived++;
+                updateStats();
+                renderBookList();
+                renderDonateBookList();
+                renderGiftedBookList();
+                renderAllRequestsList(currentFilter);
+                renderConfirmBookList();
+                updateFilterCounts();
+                document.getElementById('confirmCodeInput').value = '';
+                document.getElementById('searchBookInput').value = '';
+                showNotification(`✅ Thank you for confirming receipt of "${book.title}"! Your donor has been notified.`);
+            }
         }
 
         init();
