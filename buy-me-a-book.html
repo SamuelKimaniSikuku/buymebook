@@ -230,18 +230,13 @@
             margin-top: 2rem;
         }
 
-        .book-item {
-            background: white;
-            border: 1px solid rgba(93, 78, 55, 0.2);
-            border-radius: 4px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 10px var(--shadow);
-            transition: all 0.3s ease;
-        }
-
         .book-item:hover {
             transform: translateY(-4px);
             box-shadow: 0 6px 20px rgba(44, 36, 22, 0.15);
+        }
+
+        .book-item.fulfilled:hover {
+            transform: none;
         }
 
         .book-title {
@@ -268,6 +263,53 @@
             color: var(--gold);
             font-weight: 600;
             margin-bottom: 1rem;
+        }
+
+        /* Fulfilled Badge/Sticker */
+        .fulfilled-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+            transform: rotate(5deg);
+            font-family: 'Crimson Pro', serif;
+            letter-spacing: 0.5px;
+            z-index: 10;
+        }
+
+        .fulfilled-badge::before {
+            content: '✓ ';
+            font-size: 1.1rem;
+        }
+
+        .book-item {
+            background: white;
+            border: 1px solid rgba(93, 78, 55, 0.2);
+            border-radius: 4px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .book-item.fulfilled {
+            opacity: 0.7;
+            background: #f8f9fa;
+        }
+
+        .book-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(44, 36, 22, 0.15);
+        }
+
+        .book-item.fulfilled:hover {
+            transform: none;
         }
 
         /* Statistics */
@@ -456,10 +498,15 @@
                         <span class="stat-number" id="totalFulfilled">0</span>
                         <span class="stat-label">Books Gifted</span>
                     </div>
-                    <div class="stat-card">
-                        <span class="stat-number" id="totalReaders">0</span>
-                        <span class="stat-label">Happy Readers</span>
-                    </div>
+                </div>
+
+                <div style="text-align: center; margin: 2rem 0;">
+                    <button class="btn btn-secondary" onclick="goToRequestTab()" style="font-size: 1.2rem; padding: 1.2rem 3rem;">
+                        📖 Request a Kindle Book
+                    </button>
+                    <p style="color: var(--sepia); margin-top: 1rem; font-size: 0.95rem;">
+                        Need a book but can't afford it? Request it and generous donors will help!
+                    </p>
                 </div>
 
                 <div class="book-list" id="bookList">
@@ -539,7 +586,7 @@
                         <input type="email" id="kindleEmail" required placeholder="yourname@kindle.com">
                         <small style="color: var(--sepia);">
                             <strong>Find your Kindle email:</strong> Amazon account → Content & Devices → Preferences → Personal Document Settings. 
-                            It looks like "yourname@kindle.com" or "yourname_123@kindle.com"
+                            It looks like "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fb82948e89959a969ebb9092959f979ed5989496">[email&#160;protected]</a>" or "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f48d9b81869a959991abc5c6c7b49f9d9a909891da979b99">[email&#160;protected]</a>"
                         </small>
                     </div>
                     
@@ -615,7 +662,7 @@
         </footer>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Sample data - In production, this would come from a database
         let bookRequests = [
             {
@@ -653,13 +700,24 @@
                 amazonLink: "https://www.amazon.com/dp/B072BLVM83",
                 price: "$14.99",
                 fulfilled: false
+            },
+            {
+                id: 4,
+                title: "Thinking, Fast and Slow",
+                author: "Daniel Kahneman",
+                requester: "Emma Williams",
+                email: "emma@example.com",
+                kindleEmail: "emma.w@kindle.com",
+                reason: "I want to understand how the mind works and make better decisions in my life and career.",
+                amazonLink: "https://www.amazon.com/dp/B00555X8OA",
+                price: "$15.99",
+                fulfilled: true
             }
         ];
 
         let stats = {
-            totalRequests: 47,
-            totalFulfilled: 23,
-            totalReaders: 23
+            totalRequests: 48,
+            totalFulfilled: 24
         };
 
         // Initialize the page
@@ -688,11 +746,33 @@
             event.target.classList.add('active');
         }
 
+        // Helper function to go to request tab from button
+        function goToRequestTab() {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show request tab
+            document.getElementById('request').classList.add('active');
+            
+            // Add active class to request button
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                if (btn.textContent.includes('Request a Book')) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
         // Update statistics
         function updateStats() {
             document.getElementById('totalRequests').textContent = stats.totalRequests;
             document.getElementById('totalFulfilled').textContent = stats.totalFulfilled;
-            document.getElementById('totalReaders').textContent = stats.totalReaders;
         }
 
         // Render book list
@@ -700,30 +780,37 @@
             const bookList = document.getElementById('bookList');
             bookList.innerHTML = '';
             
-            bookRequests.filter(book => !book.fulfilled).forEach(book => {
+            bookRequests.forEach(book => {
                 const bookItem = document.createElement('div');
-                bookItem.className = 'book-item';
+                bookItem.className = book.fulfilled ? 'book-item fulfilled' : 'book-item';
                 bookItem.innerHTML = `
+                    ${book.fulfilled ? '<div class="fulfilled-badge">GIFTED</div>' : ''}
                     <div class="book-title">${book.title}</div>
                     <div class="book-author">by ${book.author}</div>
                     <div class="book-requester">Requested by ${book.requester}</div>
                     <p style="color: var(--sepia); font-size: 0.95rem; margin-bottom: 1rem; font-style: italic;">"${book.reason}"</p>
-                    <div style="background: var(--parchment); padding: 0.8rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem;">
-                        <strong>📧 Kindle Email:</strong> ${book.kindleEmail}
-                    </div>
-                    <div class="book-price">${book.price}</div>
-                    <button class="amazon-btn" onclick="giftBook(${book.id})">
-                        🎁 Buy Kindle Book & Gift to ${book.requester.split(' ')[0]}
-                    </button>
-                    <p style="font-size: 0.85rem; color: var(--sepia); margin-top: 0.5rem; text-align: center;">
-                        Click to purchase Kindle edition and gift to ${book.requester.split(' ')[0]}'s Kindle
-                    </p>
+                    ${!book.fulfilled ? `
+                        <div style="background: var(--parchment); padding: 0.8rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem;">
+                            <strong>📧 Kindle Email:</strong> ${book.kindleEmail}
+                        </div>
+                        <div class="book-price">${book.price}</div>
+                        <button class="amazon-btn" onclick="giftBook(${book.id})">
+                            🎁 Buy Kindle Book & Gift to ${book.requester.split(' ')[0]}
+                        </button>
+                        <p style="font-size: 0.85rem; color: var(--sepia); margin-top: 0.5rem; text-align: center;">
+                            Click to purchase Kindle edition and gift to ${book.requester.split(' ')[0]}'s Kindle
+                        </p>
+                    ` : `
+                        <div style="text-align: center; padding: 1rem; color: var(--forest); background: rgba(46, 204, 113, 0.1); border-radius: 4px; margin-top: 1rem;">
+                            <strong>✨ This book has been gifted! Thank you, kind donor!</strong>
+                        </div>
+                    `}
                 `;
                 bookList.appendChild(bookItem);
             });
 
-            if (bookRequests.filter(book => !book.fulfilled).length === 0) {
-                bookList.innerHTML = '<p style="text-align: center; color: var(--sepia); padding: 2rem;">No active book requests at the moment. Check back soon!</p>';
+            if (bookRequests.length === 0) {
+                bookList.innerHTML = '<p style="text-align: center; color: var(--sepia); padding: 2rem;">No book requests yet. Be the first to request a book!</p>';
             }
         }
 
@@ -732,10 +819,11 @@
             const donateBookList = document.getElementById('donateBookList');
             donateBookList.innerHTML = '';
             
-            bookRequests.filter(book => !book.fulfilled).forEach(book => {
+            bookRequests.forEach(book => {
                 const bookItem = document.createElement('div');
-                bookItem.className = 'book-item';
+                bookItem.className = book.fulfilled ? 'book-item fulfilled' : 'book-item';
                 bookItem.innerHTML = `
+                    ${book.fulfilled ? '<div class="fulfilled-badge">GIFTED</div>' : ''}
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
                         <div style="flex: 1;">
                             <div class="book-title">${book.title}</div>
@@ -751,28 +839,37 @@
                         <div style="font-size: 0.9rem; color: var(--sepia); font-style: italic; margin-bottom: 0.8rem;">
                             "${book.reason}"
                         </div>
-                        <div style="font-size: 0.85rem; color: var(--leather);">
-                            <strong>📧 Kindle Email:</strong> ${book.kindleEmail}
-                        </div>
+                        ${!book.fulfilled ? `
+                            <div style="font-size: 0.85rem; color: var(--leather);">
+                                <strong>📧 Kindle Email:</strong> ${book.kindleEmail}
+                            </div>
+                        ` : ''}
                     </div>
                     
-                    <button class="amazon-btn" onclick="giftBook(${book.id})" style="background: #ff9900; font-size: 1.05rem; padding: 1rem;">
-                        🛒 Buy Kindle Edition & Gift to ${book.requester.split(' ')[0]}
-                    </button>
-                    
-                    <p style="font-size: 0.8rem; color: var(--sepia); margin-top: 0.8rem; text-align: center; line-height: 1.4;">
-                        💝 Digital book delivered instantly to ${book.requester.split(' ')[0]}'s Kindle<br>
-                        ⭐ Commission supports platform maintenance
-                    </p>
+                    ${!book.fulfilled ? `
+                        <button class="amazon-btn" onclick="giftBook(${book.id})" style="background: #ff9900; font-size: 1.05rem; padding: 1rem;">
+                            🛒 Buy Kindle Edition & Gift to ${book.requester.split(' ')[0]}
+                        </button>
+                        
+                        <p style="font-size: 0.8rem; color: var(--sepia); margin-top: 0.8rem; text-align: center; line-height: 1.4;">
+                            💝 Digital book delivered instantly to ${book.requester.split(' ')[0]}'s Kindle<br>
+                            ⭐ Commission supports platform maintenance
+                        </p>
+                    ` : `
+                        <div style="text-align: center; padding: 1.5rem; color: var(--forest); background: rgba(46, 204, 113, 0.1); border-radius: 4px;">
+                            <strong style="font-size: 1.1rem;">✨ Already Gifted!</strong>
+                            <p style="margin-top: 0.5rem; font-size: 0.9rem;">A generous donor has already purchased this book for ${book.requester.split(' ')[0]}</p>
+                        </div>
+                    `}
                 `;
                 donateBookList.appendChild(bookItem);
             });
 
-            if (bookRequests.filter(book => !book.fulfilled).length === 0) {
+            if (bookRequests.length === 0) {
                 donateBookList.innerHTML = `
                     <div style="text-align: center; padding: 3rem; color: var(--sepia);">
-                        <h3 style="color: var(--gold); margin-bottom: 1rem;">🎉 All Requests Fulfilled!</h3>
-                        <p>There are no active book requests at the moment. Check back soon!</p>
+                        <h3 style="color: var(--gold); margin-bottom: 1rem;">📚 No Book Requests Yet</h3>
+                        <p>Check back soon for new book requests!</p>
                     </div>
                 `;
             }
@@ -857,17 +954,4 @@
 
         // Show notification
         function showNotification(message) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.style.display = 'block';
-            
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
-        }
-
-        // Initialize on page load
-        init();
-    </script>
-</body>
-</html>
+            const notificat
