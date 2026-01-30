@@ -268,6 +268,22 @@
             font-size: 1.1rem;
         }
 
+        .active-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, var(--gold) 0%, #c99c2e 100%);
+            color: var(--ink);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+            font-family: 'Crimson Pro', serif;
+            letter-spacing: 0.5px;
+            z-index: 10;
+        }
+
         .book-title {
             font-family: 'Libre Baskerville', serif;
             font-size: 1.2rem;
@@ -440,6 +456,31 @@
             animation: slideIn 0.5s ease-out;
             z-index: 1000;
         }
+
+        .filter-btn {
+            font-family: 'Crimson Pro', serif;
+            padding: 0.8rem 1.5rem;
+            background: var(--cream);
+            border: 2px solid var(--leather);
+            color: var(--leather);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .filter-btn:hover {
+            background: var(--leather);
+            color: var(--cream);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: var(--leather);
+            color: var(--gold);
+        }
     </style>
 </head>
 <body>
@@ -454,6 +495,8 @@
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('browse')">Browse Requests</button>
             <button class="tab-btn" onclick="switchTab('donate')">Buy Books for Others</button>
+            <button class="tab-btn" onclick="switchTab('gifted')">Gifted Books</button>
+            <button class="tab-btn" onclick="switchTab('all-requests')">All Requests</button>
             <button class="tab-btn" onclick="switchTab('request')">Request a Book</button>
             <button class="tab-btn" onclick="switchTab('how')">How It Works</button>
         </div>
@@ -512,6 +555,56 @@
                 </div>
 
                 <div class="book-list" id="donateBookList"></div>
+            </div>
+        </div>
+
+        <!-- Gifted Books Tab -->
+        <div id="gifted" class="tab-content">
+            <div class="card">
+                <h2>🎉 Gifted Books - Thank You, Donors!</h2>
+                <p style="margin-bottom: 2rem; color: var(--sepia); font-size: 1.1rem;">
+                    These wonderful books have been gifted by generous donors. Thank you for changing lives through reading!
+                </p>
+
+                <div style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); padding: 2rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 4px 20px rgba(46, 204, 113, 0.3);">
+                    <h3 style="color: white; margin-bottom: 1rem;">✨ Community Impact</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: white;" id="giftedCount">0</div>
+                            <div style="color: rgba(255,255,255,0.9);">Books Gifted</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: white;" id="giftedValue">$0</div>
+                            <div style="color: rgba(255,255,255,0.9);">Total Value</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="book-list" id="giftedBookList"></div>
+            </div>
+        </div>
+
+        <!-- All Requests Tab -->
+        <div id="all-requests" class="tab-content">
+            <div class="card">
+                <h2>📋 All Book Requests</h2>
+                <p style="margin-bottom: 2rem; color: var(--sepia); font-size: 1.1rem;">
+                    Complete list of all book requests - both active and fulfilled.
+                </p>
+
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                    <button class="filter-btn active" onclick="filterRequests('all')" id="filterAll">
+                        All Books (<span id="countAll">0</span>)
+                    </button>
+                    <button class="filter-btn" onclick="filterRequests('active')" id="filterActive">
+                        Active (<span id="countActive">0</span>)
+                    </button>
+                    <button class="filter-btn" onclick="filterRequests('fulfilled')" id="filterFulfilled">
+                        Gifted (<span id="countFulfilled">0</span>)
+                    </button>
+                </div>
+
+                <div class="book-list" id="allRequestsList"></div>
             </div>
         </div>
 
@@ -689,10 +782,15 @@
             totalFulfilled: 24
         };
 
+        let currentFilter = 'all';
+
         function init() {
             updateStats();
             renderBookList();
             renderDonateBookList();
+            renderGiftedBookList();
+            renderAllRequestsList();
+            updateFilterCounts();
         }
 
         function switchTab(tabName) {
@@ -816,6 +914,115 @@
             }
         }
 
+        function renderGiftedBookList() {
+            const giftedBookList = document.getElementById('giftedBookList');
+            const giftedBooks = bookRequests.filter(book => book.fulfilled);
+            
+            // Update stats
+            document.getElementById('giftedCount').textContent = giftedBooks.length;
+            const totalValue = giftedBooks.reduce((sum, book) => {
+                const price = parseFloat(book.price.replace('$', '').replace(',', ''));
+                return sum + (isNaN(price) ? 0 : price);
+            }, 0);
+            document.getElementById('giftedValue').textContent = '$' + totalValue.toFixed(2);
+            
+            giftedBookList.innerHTML = '';
+            
+            if (giftedBooks.length === 0) {
+                giftedBookList.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: var(--sepia);">
+                        <h3 style="color: var(--gold); margin-bottom: 1rem;">🎁 No Books Gifted Yet</h3>
+                        <p>Be the first generous donor! Check out the Browse Requests tab.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            giftedBooks.forEach(book => {
+                const bookItem = document.createElement('div');
+                bookItem.className = 'book-item fulfilled';
+                bookItem.innerHTML = `
+                    <div class="fulfilled-badge">GIFTED</div>
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-author">by ${book.author}</div>
+                    <div class="book-requester">Gifted to ${book.requester}</div>
+                    <p style="color: var(--sepia); font-size: 0.95rem; margin-bottom: 1rem; font-style: italic;">"${book.reason}"</p>
+                    <div class="book-price">${book.price}</div>
+                    <div style="text-align: center; padding: 1.5rem; color: var(--forest); background: rgba(46, 204, 113, 0.1); border-radius: 4px;">
+                        <strong style="font-size: 1.1rem;">✨ Successfully Gifted!</strong>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Thank you to the generous donor who made this possible!</p>
+                    </div>
+                `;
+                giftedBookList.appendChild(bookItem);
+            });
+        }
+
+        function renderAllRequestsList(filter = 'all') {
+            const allRequestsList = document.getElementById('allRequestsList');
+            let booksToShow = bookRequests;
+            
+            if (filter === 'active') {
+                booksToShow = bookRequests.filter(book => !book.fulfilled);
+            } else if (filter === 'fulfilled') {
+                booksToShow = bookRequests.filter(book => book.fulfilled);
+            }
+            
+            allRequestsList.innerHTML = '';
+            
+            if (booksToShow.length === 0) {
+                allRequestsList.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: var(--sepia);">
+                        <h3 style="color: var(--gold); margin-bottom: 1rem;">📚 No Books Found</h3>
+                        <p>No books match this filter.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            booksToShow.forEach(book => {
+                const bookItem = document.createElement('div');
+                bookItem.className = book.fulfilled ? 'book-item fulfilled' : 'book-item';
+                bookItem.innerHTML = `
+                    ${book.fulfilled ? '<div class="fulfilled-badge">GIFTED</div>' : '<div class="active-badge">ACTIVE</div>'}
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-author">by ${book.author}</div>
+                    <div class="book-requester">Requested by ${book.requester}</div>
+                    <p style="color: var(--sepia); font-size: 0.95rem; margin-bottom: 1rem; font-style: italic;">"${book.reason}"</p>
+                    ${!book.fulfilled ? `
+                        <div style="background: var(--parchment); padding: 0.8rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem;">
+                            <strong>📧 Kindle Email:</strong> ${book.kindleEmail}
+                        </div>
+                    ` : ''}
+                    <div class="book-price">${book.price}</div>
+                    ${!book.fulfilled ? `
+                        <button class="amazon-btn" onclick="giftBook(${book.id})">
+                            🎁 Buy Kindle Book & Gift to ${book.requester.split(' ')[0]}
+                        </button>
+                    ` : `
+                        <div style="text-align: center; padding: 1rem; color: var(--forest); background: rgba(46, 204, 113, 0.1); border-radius: 4px; margin-top: 1rem;">
+                            <strong>✨ This book has been gifted! Thank you, kind donor!</strong>
+                        </div>
+                    `}
+                `;
+                allRequestsList.appendChild(bookItem);
+            });
+        }
+
+        function updateFilterCounts() {
+            document.getElementById('countAll').textContent = bookRequests.length;
+            document.getElementById('countActive').textContent = bookRequests.filter(b => !b.fulfilled).length;
+            document.getElementById('countFulfilled').textContent = bookRequests.filter(b => b.fulfilled).length;
+        }
+
+        function filterRequests(filter) {
+            currentFilter = filter;
+            renderAllRequestsList(filter);
+            
+            // Update button styles
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('filter' + filter.charAt(0).toUpperCase() + filter.slice(1)).classList.add('active');
+        }
+
         function giftBook(bookId) {
             const book = bookRequests.find(b => b.id === bookId);
             if (book && book.amazonLink) {
@@ -843,6 +1050,9 @@
                             updateStats();
                             renderBookList();
                             renderDonateBookList();
+                            renderGiftedBookList();
+                            renderAllRequestsList(currentFilter);
+                            updateFilterCounts();
                             showNotification(`Thank you for gifting "${book.title}" to ${book.requester}! 📚❤️`);
                         }
                     }, 5000);
@@ -875,6 +1085,9 @@
             updateStats();
             renderBookList();
             renderDonateBookList();
+            renderGiftedBookList();
+            renderAllRequestsList(currentFilter);
+            updateFilterCounts();
             
             setTimeout(() => {
                 document.querySelector('[onclick="switchTab(\'browse\')"]').click();
