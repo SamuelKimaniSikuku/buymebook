@@ -649,7 +649,8 @@
                         <input type="email" id="kindleEmail" required placeholder="yourname@kindle.com">
                         <small style="color: var(--sepia);">
                             <strong>Find your Kindle email:</strong> Amazon account → Content & Devices → Preferences → Personal Document Settings. 
-                            It looks like "yourname@kindle.com" or "yourname_123@kindle.com"
+                            It looks like "yourname@kindle.com" or "yourname_123@kindle.com"<br>
+                            <strong>🔒 Privacy Protected:</strong> Your Kindle email is hidden and only shown to donors when they click to purchase.
                         </small>
                     </div>
                     
@@ -712,7 +713,7 @@
                     
                     <p style="margin-top: 1rem;"><strong>Instant Digital Delivery:</strong> Kindle books are delivered instantly via email. No physical shipping needed - just the recipient's Kindle email address!</p>
                     
-                    <p style="margin-top: 1rem;"><strong>Your Privacy:</strong> Kindle emails are only visible to donors who want to help. We never store payment information - all purchases happen securely through Amazon.</p>
+                    <p style="margin-top: 1rem;"><strong>Your Privacy:</strong> Kindle emails are protected and only revealed to verified donors at the time of purchase. We never store payment information - all purchases happen securely through Amazon.</p>
                     
                     <p style="margin-top: 1rem;"><strong>Platform Support:</strong> This platform uses Amazon Affiliate links (tag: samuelkimanis-20). A small percentage of purchases helps cover hosting costs at no extra cost to you.</p>
                 </div>
@@ -725,15 +726,15 @@
         </footer>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         let bookRequests = [
             {
                 id: 1,
                 title: "Atomic Habits",
                 author: "James Clear",
                 requester: "Mike Chen",
-                email: "mike@example.com",
-                kindleEmail: "mikechen_books@kindle.com",
+                email: "samuel.kimani.sikuku@gmail.com",
+                kindleEmail: "samuel.kimani.sikuku@gmail.com",
                 reason: "I'm trying to build better habits to improve my life. This book has been recommended by so many people.",
                 amazonLink: "https://www.amazon.com/dp/B07D23CFGR",
                 price: "$13.99",
@@ -744,8 +745,8 @@
                 title: "The Midnight Library",
                 author: "Matt Haig",
                 requester: "Sarah Johnson",
-                email: "sarah@example.com",
-                kindleEmail: "sarahjohnson_1990@kindle.com",
+                email: "samuel.kimani.sikuku@gmail.com",
+                kindleEmail: "samuel.kimani.sikuku@gmail.com",
                 reason: "Going through a tough time and I've heard this book offers a beautiful perspective on life's possibilities.",
                 amazonLink: "https://www.amazon.com/dp/B08FF8J8XP",
                 price: "$11.99",
@@ -756,8 +757,8 @@
                 title: "Educated",
                 author: "Tara Westover",
                 requester: "Alex Rodriguez",
-                email: "alex@example.com",
-                kindleEmail: "alex.rodriguez@kindle.com",
+                email: "samuel.kimani.sikuku@gmail.com",
+                kindleEmail: "samuel.kimani.sikuku@gmail.com",
                 reason: "As a first-generation college student, this memoir resonates deeply with my journey.",
                 amazonLink: "https://www.amazon.com/dp/B072BLVM83",
                 price: "$14.99",
@@ -830,15 +831,12 @@
                     <div class="book-requester">Requested by ${book.requester}</div>
                     <p style="color: var(--sepia); font-size: 0.95rem; margin-bottom: 1rem; font-style: italic;">"${book.reason}"</p>
                     ${!book.fulfilled ? `
-                        <div style="background: var(--parchment); padding: 0.8rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem;">
-                            <strong>📧 Kindle Email:</strong> ${book.kindleEmail}
-                        </div>
                         <div class="book-price">${book.price}</div>
                         <button class="amazon-btn" onclick="giftBook(${book.id})">
                             🎁 Buy Kindle Book & Gift to ${book.requester.split(' ')[0]}
                         </button>
                         <p style="font-size: 0.85rem; color: var(--sepia); margin-top: 0.5rem; text-align: center;">
-                            Click to purchase Kindle edition and gift to ${book.requester.split(' ')[0]}'s Kindle
+                            Kindle email will be provided after clicking
                         </p>
                     ` : `
                         <div style="text-align: center; padding: 1rem; color: var(--forest); background: rgba(46, 204, 113, 0.1); border-radius: 4px; margin-top: 1rem;">
@@ -875,14 +873,9 @@
                         <div style="font-size: 0.9rem; color: var(--forest); margin-bottom: 0.5rem;">
                             <strong>📖 Requested by:</strong> ${book.requester}
                         </div>
-                        <div style="font-size: 0.9rem; color: var(--sepia); font-style: italic; margin-bottom: 0.8rem;">
+                        <div style="font-size: 0.9rem; color: var(--sepia); font-style: italic;">
                             "${book.reason}"
                         </div>
-                        ${!book.fulfilled ? `
-                            <div style="font-size: 0.85rem; color: var(--leather);">
-                                <strong>📧 Kindle Email:</strong> ${book.kindleEmail}
-                            </div>
-                        ` : ''}
                     </div>
                     
                     ${!book.fulfilled ? `
@@ -892,6 +885,7 @@
                         
                         <p style="font-size: 0.8rem; color: var(--sepia); margin-top: 0.8rem; text-align: center; line-height: 1.4;">
                             💝 Digital book delivered instantly to ${book.requester.split(' ')[0]}'s Kindle<br>
+                            🔒 Kindle email provided securely after clicking<br>
                             ⭐ Commission supports platform maintenance
                         </p>
                     ` : `
@@ -988,16 +982,14 @@
                     <div class="book-author">by ${book.author}</div>
                     <div class="book-requester">Requested by ${book.requester}</div>
                     <p style="color: var(--sepia); font-size: 0.95rem; margin-bottom: 1rem; font-style: italic;">"${book.reason}"</p>
-                    ${!book.fulfilled ? `
-                        <div style="background: var(--parchment); padding: 0.8rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem;">
-                            <strong>📧 Kindle Email:</strong> ${book.kindleEmail}
-                        </div>
-                    ` : ''}
                     <div class="book-price">${book.price}</div>
                     ${!book.fulfilled ? `
                         <button class="amazon-btn" onclick="giftBook(${book.id})">
                             🎁 Buy Kindle Book & Gift to ${book.requester.split(' ')[0]}
                         </button>
+                        <p style="font-size: 0.85rem; color: var(--sepia); margin-top: 0.5rem; text-align: center;">
+                            🔒 Kindle email provided securely when purchasing
+                        </p>
                     ` : `
                         <div style="text-align: center; padding: 1rem; color: var(--forest); background: rgba(46, 204, 113, 0.1); border-radius: 4px; margin-top: 1rem;">
                             <strong>✨ This book has been gifted! Thank you, kind donor!</strong>
@@ -1094,17 +1086,4 @@
             }, 1500);
         }
 
-        function showNotification(message) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.style.display = 'block';
-            
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
-        }
-
-        init();
-    </script>
-</body>
-</html>
+        function showNotification(mes
