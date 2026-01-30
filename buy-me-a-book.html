@@ -437,6 +437,7 @@
 
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('browse')">Browse Requests</button>
+            <button class="tab-btn" onclick="switchTab('donate')">Buy Books for Others</button>
             <button class="tab-btn" onclick="switchTab('request')">Request a Book</button>
             <button class="tab-btn" onclick="switchTab('how')">How It Works</button>
         </div>
@@ -467,11 +468,41 @@
             </div>
         </div>
 
+        <!-- Donate/Buy Books Tab -->
+        <div id="donate" class="tab-content">
+            <div class="card">
+                <h2>🎁 Buy Kindle Books for Others</h2>
+                <p style="margin-bottom: 2rem; color: var(--sepia); font-size: 1.1rem;">
+                    Welcome, generous soul! Browse Kindle book requests and purchase digital books to gift directly to readers in need.
+                </p>
+
+                <div style="background: linear-gradient(135deg, var(--gold) 0%, #e0c050 100%); padding: 2rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);">
+                    <h3 style="color: var(--ink); margin-bottom: 1rem;">🌟 How to Gift a Kindle Book</h3>
+                    <ol style="color: var(--ink); font-size: 1rem; line-height: 1.8; padding-left: 1.5rem;">
+                        <li>Browse the Kindle book requests below</li>
+                        <li>Click "Buy Kindle Edition" for any book you'd like to gift</li>
+                        <li>On Amazon, select "Buy for someone else" or "Give as a Gift"</li>
+                        <li>Enter the recipient's Kindle email address provided</li>
+                        <li>Complete purchase - the book is delivered instantly to their Kindle!</li>
+                    </ol>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <h3>📚 Available Kindle Book Requests</h3>
+                    <p style="color: var(--sepia); margin-bottom: 1rem;">Click on any book to purchase the Kindle edition and gift it instantly.</p>
+                </div>
+
+                <div class="book-list" id="donateBookList">
+                    <!-- Books for donors will be populated here -->
+                </div>
+            </div>
+        </div>
+
         <!-- Request a Book Tab -->
         <div id="request" class="tab-content">
             <div class="card">
-                <h2>Request a Book</h2>
-                <p style="margin-bottom: 2rem; color: var(--sepia);">Share a book you need and can't afford. Generous donors will see your request and can purchase it for you through Amazon!</p>
+                <h2>Request a Kindle Book</h2>
+                <p style="margin-bottom: 2rem; color: var(--sepia);">Request a Kindle book you need but can't afford. Generous donors will purchase it and gift it directly to your Kindle email address!</p>
                 
                 <form id="requestForm" onsubmit="submitRequest(event)">
                     <div class="form-group">
@@ -496,18 +527,20 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="amazonLink">Amazon Link *</label>
+                        <label for="amazonLink">Amazon Kindle Book Link *</label>
                         <input type="url" id="amazonLink" required placeholder="https://www.amazon.com/...">
                         <small style="color: var(--sepia);">
-                            <strong>Required:</strong> Go to Amazon, find the exact book you want, and paste the link here. 
-                            This ensures donors buy the right edition and it gets shipped to you.
+                            <strong>Required:</strong> Go to Amazon, find the exact Kindle edition you want, and paste the link here.
                         </small>
                     </div>
                     
                     <div class="form-group">
-                        <label for="shippingAddress">Your Shipping Address</label>
-                        <textarea id="shippingAddress" required placeholder="123 Main St, City, State, ZIP"></textarea>
-                        <small style="color: var(--sepia);">This will be securely shared with donors so they can send the book to you</small>
+                        <label for="kindleEmail">Your Kindle Email Address *</label>
+                        <input type="email" id="kindleEmail" required placeholder="yourname@kindle.com">
+                        <small style="color: var(--sepia);">
+                            <strong>Find your Kindle email:</strong> Amazon account → Content & Devices → Preferences → Personal Document Settings. 
+                            It looks like "yourname@kindle.com" or "yourname_123@kindle.com"
+                        </small>
                     </div>
                     
                     <div class="form-group">
@@ -535,12 +568,12 @@
                     <div class="step">
                         <div class="step-number">2</div>
                         <h3>Post Request</h3>
-                        <p>Fill out the form with book details, your shipping address, and why you need it.</p>
+                        <p>Fill out the form with book details, your Kindle email, and why you need it.</p>
                     </div>
                     <div class="step">
                         <div class="step-number">3</div>
                         <h3>Receive Your Book</h3>
-                        <p>When a donor purchases it, then assigned to your Kindle!</p>
+                        <p>When a donor purchases it, the Kindle book is delivered instantly to your Kindle!</p>
                     </div>
                 </div>
 
@@ -554,20 +587,22 @@
                     <div class="step">
                         <div class="step-number">2</div>
                         <h3>Purchase on Amazon</h3>
-                        <p>Click the button to buy the book on Amazon. Use the provided shipping address.</p>
+                        <p>Click to buy the Kindle edition. Select "Give as a Gift" and use the recipient's Kindle email.</p>
                     </div>
                     <div class="step">
                         <div class="step-number">3</div>
                         <h3>Change a Life</h3>
-                        <p>Amazon ships directly to the recipient. You've just opened a new world through reading!</p>
+                        <p>The book delivers instantly to their Kindle! You've opened a new world through reading!</p>
                     </div>
                 </div>
 
                 <div style="background: var(--parchment); padding: 2rem; border-radius: 4px; margin-top: 2rem; border-left: 4px solid var(--gold);">
                     <h3>How the Platform Works</h3>
-                    <p><strong>Simple & Transparent:</strong> People in need post book requests with their Amazon link and shipping address. Donors browse requests, purchase books on Amazon, and ship directly to the requester.</p>
+                    <p><strong>Simple & Transparent:</strong> People in need post Kindle book requests with their Amazon link and Kindle email address. Donors browse requests, purchase Kindle books on Amazon, and gift them directly to the recipient's Kindle.</p>
                     
-                    <p style="margin-top: 1rem;"><strong>Your Privacy:</strong> Addresses are only visible to donors who want to help. We never store payment information - all purchases happen securely through Amazon.</p>
+                    <p style="margin-top: 1rem;"><strong>Instant Digital Delivery:</strong> Kindle books are delivered instantly via email. No physical shipping needed - just the recipient's Kindle email address!</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Your Privacy:</strong> Kindle emails are only visible to donors who want to help. We never store payment information - all purchases happen securely through Amazon.</p>
                     
                     <p style="margin-top: 1rem;"><strong>Platform Support:</strong> This platform uses Amazon Affiliate links (tag: samuelkimanis-20). A small percentage of purchases helps cover hosting costs at no extra cost to you.</p>
                 </div>
@@ -589,10 +624,10 @@
                 author: "James Clear",
                 requester: "Mike Chen",
                 email: "mike@example.com",
-                address: "123 Oak St, Portland, OR 97201",
+                kindleEmail: "mikechen_books@kindle.com",
                 reason: "I'm trying to build better habits to improve my life. This book has been recommended by so many people.",
-                amazonLink: "https://www.amazon.com/dp/0735211299",
-                price: "$27.99",
+                amazonLink: "https://www.amazon.com/dp/B07D23CFGR",
+                price: "$13.99",
                 fulfilled: false
             },
             {
@@ -601,10 +636,10 @@
                 author: "Matt Haig",
                 requester: "Sarah Johnson",
                 email: "sarah@example.com",
-                address: "456 Elm Ave, Austin, TX 78701",
+                kindleEmail: "sarahjohnson_1990@kindle.com",
                 reason: "Going through a tough time and I've heard this book offers a beautiful perspective on life's possibilities.",
-                amazonLink: "https://www.amazon.com/dp/0525559477",
-                price: "$16.99",
+                amazonLink: "https://www.amazon.com/dp/B08FF8J8XP",
+                price: "$11.99",
                 fulfilled: false
             },
             {
@@ -613,10 +648,10 @@
                 author: "Tara Westover",
                 requester: "Alex Rodriguez",
                 email: "alex@example.com",
-                address: "789 Pine Blvd, Seattle, WA 98101",
+                kindleEmail: "alex.rodriguez@kindle.com",
                 reason: "As a first-generation college student, this memoir resonates deeply with my journey.",
-                amazonLink: "https://www.amazon.com/dp/0399590501",
-                price: "$18.99",
+                amazonLink: "https://www.amazon.com/dp/B072BLVM83",
+                price: "$14.99",
                 fulfilled: false
             }
         ];
@@ -631,6 +666,7 @@
         function init() {
             updateStats();
             renderBookList();
+            renderDonateBookList();
         }
 
         // Switch between tabs
@@ -673,14 +709,14 @@
                     <div class="book-requester">Requested by ${book.requester}</div>
                     <p style="color: var(--sepia); font-size: 0.95rem; margin-bottom: 1rem; font-style: italic;">"${book.reason}"</p>
                     <div style="background: var(--parchment); padding: 0.8rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem;">
-                        <strong>Ship to:</strong> ${book.address}
+                        <strong>📧 Kindle Email:</strong> ${book.kindleEmail}
                     </div>
                     <div class="book-price">${book.price}</div>
                     <button class="amazon-btn" onclick="giftBook(${book.id})">
-                        🎁 Buy & Gift This Book on Amazon
+                        🎁 Buy Kindle Book & Gift to ${book.requester.split(' ')[0]}
                     </button>
                     <p style="font-size: 0.85rem; color: var(--sepia); margin-top: 0.5rem; text-align: center;">
-                        Click to purchase on Amazon and ship directly to ${book.requester.split(' ')[0]}
+                        Click to purchase Kindle edition and gift to ${book.requester.split(' ')[0]}'s Kindle
                     </p>
                 `;
                 bookList.appendChild(bookItem);
@@ -688,6 +724,57 @@
 
             if (bookRequests.filter(book => !book.fulfilled).length === 0) {
                 bookList.innerHTML = '<p style="text-align: center; color: var(--sepia); padding: 2rem;">No active book requests at the moment. Check back soon!</p>';
+            }
+        }
+
+        // Render donate tab book list (donor-focused view)
+        function renderDonateBookList() {
+            const donateBookList = document.getElementById('donateBookList');
+            donateBookList.innerHTML = '';
+            
+            bookRequests.filter(book => !book.fulfilled).forEach(book => {
+                const bookItem = document.createElement('div');
+                bookItem.className = 'book-item';
+                bookItem.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <div style="flex: 1;">
+                            <div class="book-title">${book.title}</div>
+                            <div class="book-author">by ${book.author}</div>
+                        </div>
+                        <div class="book-price" style="margin: 0;">${book.price}</div>
+                    </div>
+                    
+                    <div style="background: rgba(93, 78, 55, 0.05); padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                        <div style="font-size: 0.9rem; color: var(--forest); margin-bottom: 0.5rem;">
+                            <strong>📖 Requested by:</strong> ${book.requester}
+                        </div>
+                        <div style="font-size: 0.9rem; color: var(--sepia); font-style: italic; margin-bottom: 0.8rem;">
+                            "${book.reason}"
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--leather);">
+                            <strong>📧 Kindle Email:</strong> ${book.kindleEmail}
+                        </div>
+                    </div>
+                    
+                    <button class="amazon-btn" onclick="giftBook(${book.id})" style="background: #ff9900; font-size: 1.05rem; padding: 1rem;">
+                        🛒 Buy Kindle Edition & Gift to ${book.requester.split(' ')[0]}
+                    </button>
+                    
+                    <p style="font-size: 0.8rem; color: var(--sepia); margin-top: 0.8rem; text-align: center; line-height: 1.4;">
+                        💝 Digital book delivered instantly to ${book.requester.split(' ')[0]}'s Kindle<br>
+                        ⭐ Commission supports platform maintenance
+                    </p>
+                `;
+                donateBookList.appendChild(bookItem);
+            });
+
+            if (bookRequests.filter(book => !book.fulfilled).length === 0) {
+                donateBookList.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: var(--sepia);">
+                        <h3 style="color: var(--gold); margin-bottom: 1rem;">🎉 All Requests Fulfilled!</h3>
+                        <p>There are no active book requests at the moment. Check back soon!</p>
+                    </div>
+                `;
             }
         }
 
@@ -700,17 +787,17 @@
                 
                 // Show instructions to donor
                 const confirmed = confirm(
-                    `You're about to purchase "${book.title}" for ${book.requester}!\n\n` +
-                    `IMPORTANT: When you checkout on Amazon:\n` +
-                    `1. Click "Add to Cart"\n` +
-                    `2. During checkout, select "Gift options" or "This is a gift"\n` +
-                    `3. Enter this shipping address:\n   ${book.address}\n\n` +
-                    `The book will be shipped directly to ${book.requester}.\n\n` +
+                    `You're about to gift "${book.title}" (Kindle) to ${book.requester}!\n\n` +
+                    `IMPORTANT: When purchasing on Amazon:\n` +
+                    `1. Click "Buy for someone else" or "Give as a Gift"\n` +
+                    `2. Enter this Kindle email address:\n   ${book.kindleEmail}\n` +
+                    `3. Complete the purchase\n\n` +
+                    `The Kindle book will be delivered instantly to ${book.requester}'s Kindle!\n\n` +
                     `Click OK to continue to Amazon.`
                 );
                 
                 if (confirmed) {
-                    showNotification(`Opening Amazon... Please use the shipping address: ${book.address}`);
+                    showNotification(`Opening Amazon... Use Kindle email: ${book.kindleEmail}`);
                     
                     // Open Amazon link
                     window.open(affiliateLink, '_blank');
@@ -718,12 +805,13 @@
                     // In production, you'd mark this as fulfilled after confirmation from donor
                     // For now, we'll add a manual confirmation option
                     setTimeout(() => {
-                        const purchased = confirm('Have you completed the purchase on Amazon?');
+                        const purchased = confirm('Have you completed the Kindle book purchase on Amazon?');
                         if (purchased) {
                             book.fulfilled = true;
                             stats.totalFulfilled++;
                             updateStats();
                             renderBookList();
+                            renderDonateBookList();
                             showNotification(`Thank you for gifting "${book.title}" to ${book.requester}! 📚❤️`);
                         }
                     }, 5000);
@@ -741,7 +829,7 @@
                 author: document.getElementById('bookAuthor').value,
                 requester: document.getElementById('reqName').value,
                 email: document.getElementById('reqEmail').value,
-                address: document.getElementById('shippingAddress').value,
+                kindleEmail: document.getElementById('kindleEmail').value,
                 reason: document.getElementById('whyBook').value,
                 amazonLink: document.getElementById('amazonLink').value,
                 price: 'Check Amazon',
@@ -751,7 +839,7 @@
             bookRequests.push(newRequest);
             stats.totalRequests++;
             
-            showNotification('Your book request has been posted! Donors can now see it. 📖');
+            showNotification('Your Kindle book request has been posted! Donors can now see it. 📖');
             
             // Reset form
             document.getElementById('requestForm').reset();
@@ -759,6 +847,7 @@
             // Update display
             updateStats();
             renderBookList();
+            renderDonateBookList();
             
             // Switch to browse tab
             setTimeout(() => {
