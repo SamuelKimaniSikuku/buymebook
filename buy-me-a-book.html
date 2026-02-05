@@ -780,6 +780,21 @@
                     
                     <p style="margin-top: 1rem;"><strong>Platform Support:</strong> This platform uses Amazon Affiliate links (tag: samuelkimanis-20). A small percentage of purchases helps cover hosting costs at no extra cost to you.</p>
                 </div>
+
+                <div style="background: #fff3cd; padding: 2rem; border-radius: 4px; margin-top: 2rem; border-left: 4px solid #ffc107;">
+                    <h3 style="color: #856404;">⚙️ Admin Tools</h3>
+                    <p style="color: #856404; margin-bottom: 1rem;">Data is automatically saved to your browser. Use these tools carefully:</p>
+                    <button class="btn" onclick="resetAllData()" style="background: #dc3545; margin-right: 1rem;">
+                        🔄 Reset All Data
+                    </button>
+                    <button class="btn" onclick="exportData()" style="background: #28a745;">
+                        💾 Export Data
+                    </button>
+                    <p style="color: #856404; margin-top: 1rem; font-size: 0.9rem;">
+                        <strong>Reset:</strong> Clears all book requests and stats (cannot be undone)<br>
+                        <strong>Export:</strong> Downloads current data as JSON file for backup
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -790,74 +805,100 @@
     </div>
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        let bookRequests = [
-            {
-                id: 1,
-                title: "Atomic Habits",
-                author: "James Clear",
-                requester: "Mike Chen",
-                email: "samuel.kimani.sikuku@gmail.com",
-                kindleEmail: "samuel.kimani.sikuku@gmail.com",
-                reason: "I'm trying to build better habits to improve my life. This book has been recommended by so many people.",
-                amazonLink: "https://www.amazon.com/dp/B07D23CFGR",
-                price: "$13.99",
-                fulfilled: false,
-                received: false,
-                confirmCode: "BOOK1-ATOMIC"
-            },
-            {
-                id: 2,
-                title: "The Midnight Library",
-                author: "Matt Haig",
-                requester: "Sarah Johnson",
-                email: "samuel.kimani.sikuku@gmail.com",
-                kindleEmail: "samuel.kimani.sikuku@gmail.com",
-                reason: "Going through a tough time and I've heard this book offers a beautiful perspective on life's possibilities.",
-                amazonLink: "https://www.amazon.com/dp/B08FF8J8XP",
-                price: "$11.99",
-                fulfilled: false,
-                received: false,
-                confirmCode: "BOOK2-MIDNIGHT"
-            },
-            {
-                id: 3,
-                title: "Educated",
-                author: "Tara Westover",
-                requester: "Alex Rodriguez",
-                email: "samuel.kimani.sikuku@gmail.com",
-                kindleEmail: "samuel.kimani.sikuku@gmail.com",
-                reason: "As a first-generation college student, this memoir resonates deeply with my journey.",
-                amazonLink: "https://www.amazon.com/dp/B072BLVM83",
-                price: "$14.99",
-                fulfilled: false,
-                received: false,
-                confirmCode: "BOOK3-EDUCATED"
-            },
-            {
-                id: 4,
-                title: "Thinking, Fast and Slow",
-                author: "Daniel Kahneman",
-                requester: "Emma Williams",
-                email: "emma@example.com",
-                kindleEmail: "emma.w@kindle.com",
-                reason: "I want to understand how the mind works and make better decisions in my life and career.",
-                amazonLink: "https://www.amazon.com/dp/B00555X8OA",
-                price: "$15.99",
-                fulfilled: true,
-                received: false,
-                confirmCode: "BOOK4-THINKING"
-            }
-        ];
-
+        let bookRequests = [];
         let stats = {
             totalRequests: 48,
             totalFulfilled: 24,
             totalReceived: 20
         };
 
+        // Load data from localStorage on page load
+        function loadData() {
+            const savedBooks = localStorage.getItem('bookRequests');
+            const savedStats = localStorage.getItem('stats');
+            
+            if (savedBooks) {
+                bookRequests = JSON.parse(savedBooks);
+            } else {
+                // Default data if nothing saved
+                bookRequests = [
+                    {
+                        id: 1,
+                        title: "Atomic Habits",
+                        author: "James Clear",
+                        requester: "Mike Chen",
+                        email: "samuel.kimani.sikuku@gmail.com",
+                        kindleEmail: "samuel.kimani.sikuku@gmail.com",
+                        reason: "I'm trying to build better habits to improve my life. This book has been recommended by so many people.",
+                        amazonLink: "https://www.amazon.com/dp/B07D23CFGR",
+                        price: "$13.99",
+                        fulfilled: false,
+                        received: false,
+                        confirmCode: "BOOK1-ATOMIC"
+                    },
+                    {
+                        id: 2,
+                        title: "The Midnight Library",
+                        author: "Matt Haig",
+                        requester: "Sarah Johnson",
+                        email: "samuel.kimani.sikuku@gmail.com",
+                        kindleEmail: "samuel.kimani.sikuku@gmail.com",
+                        reason: "Going through a tough time and I've heard this book offers a beautiful perspective on life's possibilities.",
+                        amazonLink: "https://www.amazon.com/dp/B08FF8J8XP",
+                        price: "$11.99",
+                        fulfilled: false,
+                        received: false,
+                        confirmCode: "BOOK2-MIDNIGHT"
+                    },
+                    {
+                        id: 3,
+                        title: "Educated",
+                        author: "Tara Westover",
+                        requester: "Alex Rodriguez",
+                        email: "samuel.kimani.sikuku@gmail.com",
+                        kindleEmail: "samuel.kimani.sikuku@gmail.com",
+                        reason: "As a first-generation college student, this memoir resonates deeply with my journey.",
+                        amazonLink: "https://www.amazon.com/dp/B072BLVM83",
+                        price: "$14.99",
+                        fulfilled: false,
+                        received: false,
+                        confirmCode: "BOOK3-EDUCATED"
+                    },
+                    {
+                        id: 4,
+                        title: "Thinking, Fast and Slow",
+                        author: "Daniel Kahneman",
+                        requester: "Emma Williams",
+                        email: "emma@example.com",
+                        kindleEmail: "emma.w@kindle.com",
+                        reason: "I want to understand how the mind works and make better decisions in my life and career.",
+                        amazonLink: "https://www.amazon.com/dp/B00555X8OA",
+                        price: "$15.99",
+                        fulfilled: true,
+                        received: false,
+                        confirmCode: "BOOK4-THINKING"
+                    }
+                ];
+                saveData();
+            }
+            
+            if (savedStats) {
+                stats = JSON.parse(savedStats);
+            } else {
+                saveData();
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('bookRequests', JSON.stringify(bookRequests));
+            localStorage.setItem('stats', JSON.stringify(stats));
+        }
+
         let currentFilter = 'all';
 
         function init() {
+            loadData(); // Load saved data first
             updateStats();
             renderBookList();
             renderDonateBookList();
@@ -1106,19 +1147,49 @@
                     showNotification(`Opening Amazon... Use Kindle email: ${book.kindleEmail}`);
                     window.open(affiliateLink, '_blank');
                     
+                    // Enhanced verification after purchase
                     setTimeout(() => {
-                        const purchased = confirm('Have you completed the Kindle book purchase on Amazon?');
+                        const verifyMessage = 
+                            `🎁 PURCHASE VERIFICATION\n\n` +
+                            `Did you complete the purchase for "${book.title}"?\n\n` +
+                            `⚠️ IMPORTANT: Only click YES if you:\n` +
+                            `✓ Successfully completed the payment\n` +
+                            `✓ Saw the purchase confirmation on Amazon\n` +
+                            `✓ Used the Kindle email: ${book.kindleEmail}\n\n` +
+                            `This action will mark the book as GIFTED permanently.\n\n` +
+                            `Click OK to confirm, or CANCEL if you didn't complete the purchase.`;
+                        
+                        const purchased = confirm(verifyMessage);
+                        
                         if (purchased) {
-                            book.fulfilled = true;
-                            stats.totalFulfilled++;
-                            updateStats();
-                            renderBookList();
-                            renderDonateBookList();
-                            renderGiftedBookList();
-                            renderAllRequestsList(currentFilter);
-                            renderConfirmBookList();
-                            updateFilterCounts();
-                            showNotification(`Thank you for gifting "${book.title}" to ${book.requester}! 📚❤️`);
+                            // Double confirmation for safety
+                            const doubleCheck = confirm(
+                                `FINAL CONFIRMATION:\n\n` +
+                                `You are about to mark "${book.title}" as GIFTED.\n` +
+                                `This will:\n` +
+                                `• Remove the book from active requests\n` +
+                                `• Update the statistics\n` +
+                                `• Save this change permanently\n\n` +
+                                `Confirm this action?`
+                            );
+                            
+                            if (doubleCheck) {
+                                book.fulfilled = true;
+                                stats.totalFulfilled++;
+                                saveData(); // Save to localStorage
+                                updateStats();
+                                renderBookList();
+                                renderDonateBookList();
+                                renderGiftedBookList();
+                                renderAllRequestsList(currentFilter);
+                                renderConfirmBookList();
+                                updateFilterCounts();
+                                showNotification(`✅ "${book.title}" marked as GIFTED! Thank you for your generosity! 📚❤️`);
+                            } else {
+                                showNotification(`❌ Action cancelled. Book status not changed.`);
+                            }
+                        } else {
+                            showNotification(`⏸️ No problem! Try again when you complete the purchase.`);
                         }
                     }, 5000);
                 }
@@ -1145,6 +1216,7 @@
             
             bookRequests.push(newRequest);
             stats.totalRequests++;
+            saveData(); // Save to localStorage
             
             showNotification('Your Kindle book request has been posted! Donors can now see it. 📖');
             
@@ -1264,6 +1336,7 @@
             if (confirmed) {
                 book.received = true;
                 stats.totalReceived++;
+                saveData(); // Save to localStorage
                 updateStats();
                 renderBookList();
                 renderDonateBookList();
@@ -1275,6 +1348,57 @@
                 document.getElementById('searchBookInput').value = '';
                 showNotification(`✅ Thank you for confirming receipt of "${book.title}"! Your donor has been notified.`);
             }
+        }
+
+        // Admin functions
+        function resetAllData() {
+            const confirmed = confirm(
+                '⚠️ WARNING: This will delete ALL data!\n\n' +
+                'This includes:\n' +
+                '• All book requests\n' +
+                '• All statistics\n' +
+                '• All gifted/received records\n\n' +
+                'This action CANNOT be undone!\n\n' +
+                'Are you sure you want to reset everything?'
+            );
+            
+            if (confirmed) {
+                const doubleCheck = confirm(
+                    '🚨 FINAL WARNING!\n\n' +
+                    'This is your last chance to cancel.\n' +
+                    'Click OK to permanently delete all data.'
+                );
+                
+                if (doubleCheck) {
+                    localStorage.removeItem('bookRequests');
+                    localStorage.removeItem('stats');
+                    showNotification('✅ All data has been reset! Reloading page...');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                }
+            }
+        }
+
+        function exportData() {
+            const data = {
+                bookRequests: bookRequests,
+                stats: stats,
+                exportDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `buymeabook-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            showNotification('💾 Data exported successfully!');
         }
 
         init();
