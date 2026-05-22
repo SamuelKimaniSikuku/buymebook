@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buy Me a Book - Gift Books, Share Stories</title>
+    <meta name="description" content="Buy Me a Book connects readers who need Kindle books with generous donors. Request a book you can't afford, or gift one directly to someone's Kindle.">
+    <meta name="theme-color" content="#5d4e37">
+    <link rel="canonical" href="https://www.buymebook.com/buy-me-a-book.html">
+    <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;📚&lt;/text&gt;&lt;/svg&gt;">
+
+    <!-- Open Graph / social sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Buy Me a Book - Gift Books, Share Stories">
+    <meta property="og:description" content="Connect readers who need Kindle books with generous donors. Request a book, or gift one directly to someone's Kindle.">
+    <meta property="og:url" content="https://www.buymebook.com/buy-me-a-book.html">
+    <meta property="og:site_name" content="Buy Me a Book">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Buy Me a Book - Gift Books, Share Stories">
+    <meta name="twitter:description" content="Connect readers who need Kindle books with generous donors. Request a book, or gift one directly to someone's Kindle.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=Libre+Baskerville:wght@400;700&family=Spectral:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -445,6 +462,9 @@
             .book-list {
                 grid-template-columns: 1fr;
             }
+            .form-embed iframe {
+                min-height: 1750px;
+            }
         }
 
         .amazon-btn {
@@ -502,6 +522,14 @@
         .filter-btn.active {
             background: var(--leather);
             color: var(--gold);
+        }
+
+        .form-embed iframe {
+            width: 100%;
+            min-height: 1500px;
+            border: 1px solid rgba(93, 78, 55, 0.2);
+            border-radius: 4px;
+            background: var(--cream);
         }
     </style>
 </head>
@@ -675,55 +703,29 @@
         <div id="request" class="tab-content">
             <div class="card">
                 <h2>Request a Kindle Book</h2>
-                <p style="margin-bottom: 2rem; color: var(--sepia);">Request a Kindle book you need but can't afford. Generous donors will purchase it and gift it directly to your Kindle email address!</p>
-                
-                <form id="requestForm" onsubmit="submitRequest(event)">
-                    <div class="form-group">
-                        <label for="reqName">Your Name</label>
-                        <input type="text" id="reqName" required placeholder="Jane Doe">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="reqEmail">Your Email</label>
-                        <input type="email" id="reqEmail" required placeholder="jane@example.com">
-                        <small style="color: var(--sepia);">We'll notify you when someone gifts you a book</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="bookTitle">Book Title</label>
-                        <input type="text" id="bookTitle" required placeholder="To Kill a Mockingbird">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="bookAuthor">Author</label>
-                        <input type="text" id="bookAuthor" required placeholder="Harper Lee">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="amazonLink">Amazon Kindle Book Link *</label>
-                        <input type="url" id="amazonLink" required placeholder="https://www.amazon.com/...">
-                        <small style="color: var(--sepia);">
-                            <strong>Required:</strong> Go to Amazon, find the exact Kindle edition you want, and paste the link here.
-                        </small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="kindleEmail">Your Kindle Email Address *</label>
-                        <input type="email" id="kindleEmail" required placeholder="yourname@kindle.com">
-                        <small style="color: var(--sepia);">
-                            <strong>Find your Kindle email:</strong> Amazon account → Content & Devices → Preferences → Personal Document Settings. 
-                            It looks like "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e39a8c96918d828e86a3888a8d878f86cd808c8e">[email&#160;protected]</a>" or "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="61180e14130f000c043e505352210a080f050d044f020e0c">[email&#160;protected]</a>"<br>
-                            <strong>🔒 Privacy Protected:</strong> Your Kindle email is hidden and only shown to donors when they click to purchase.
-                        </small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="whyBook">Why do you want this book?</label>
-                        <textarea id="whyBook" required placeholder="Share your story... Why is this book important to you?"></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn">Submit Book Request</button>
-                </form>
+                <p style="margin-bottom: 1.5rem; color: var(--sepia);">Request a Kindle book you need but can't afford. Generous donors will purchase it and gift it directly to your Kindle email address!</p>
+
+                <div style="background: var(--parchment); padding: 1.25rem 1.5rem; border-radius: 4px; margin-bottom: 1.5rem; border-left: 4px solid var(--gold);">
+                    <strong>Before you start, have these ready:</strong>
+                    <ul style="margin: 0.5rem 0 0 1.25rem; color: var(--ink); line-height: 1.8;">
+                        <li>The <strong>Amazon Kindle book link</strong> — find the exact Kindle edition on Amazon and copy its link.</li>
+                        <li>Your <strong>Kindle email address</strong> — Amazon account → Content &amp; Devices → Preferences → Personal Document Settings. It looks like "yourname@kindle.com".</li>
+                    </ul>
+                </div>
+
+                <div class="form-embed">
+                    <iframe
+                        src="https://docs.google.com/forms/d/e/1FAIpQLScCLqN96YN2-al_gvsg25Bw9E38Pe46oNEVx6TiJ-zj5oUptw/viewform?embedded=true"
+                        title="Buy Me a Book — Kindle book request form"
+                        loading="lazy">
+                        Loading the request form…
+                    </iframe>
+                </div>
+
+                <p style="text-align: center; margin-top: 1rem; color: var(--sepia); font-size: 0.95rem;">
+                    Form not loading?
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScCLqN96YN2-al_gvsg25Bw9E38Pe46oNEVx6TiJ-zj5oUptw/viewform" target="_blank" rel="noopener" style="color: var(--leather); font-weight: 600;">Open the request form in a new tab</a>.
+                </p>
             </div>
         </div>
 
@@ -804,19 +806,13 @@
         </footer>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         let bookRequests = [];
-        let stats = {
-            totalRequests: 48,
-            totalFulfilled: 24,
-            totalReceived: 20
-        };
 
         // Load data from localStorage on page load
         function loadData() {
             const savedBooks = localStorage.getItem('bookRequests');
-            const savedStats = localStorage.getItem('stats');
-            
+
             if (savedBooks) {
                 bookRequests = JSON.parse(savedBooks);
             } else {
@@ -827,8 +823,8 @@
                         title: "Atomic Habits",
                         author: "James Clear",
                         requester: "Mike Chen",
-                        email: "samuel.kimani.sikuku@gmail.com",
-                        kindleEmail: "samuel.kimani.sikuku@gmail.com",
+                        email: "mike.chen@example.com",
+                        kindleEmail: "mike.chen@kindle.com",
                         reason: "I'm trying to build better habits to improve my life. This book has been recommended by so many people.",
                         amazonLink: "https://www.amazon.com/dp/B07D23CFGR",
                         price: "$13.99",
@@ -841,8 +837,8 @@
                         title: "The Midnight Library",
                         author: "Matt Haig",
                         requester: "Sarah Johnson",
-                        email: "samuel.kimani.sikuku@gmail.com",
-                        kindleEmail: "samuel.kimani.sikuku@gmail.com",
+                        email: "sarah.johnson@example.com",
+                        kindleEmail: "sarah.johnson@kindle.com",
                         reason: "Going through a tough time and I've heard this book offers a beautiful perspective on life's possibilities.",
                         amazonLink: "https://www.amazon.com/dp/B08FF8J8XP",
                         price: "$11.99",
@@ -855,8 +851,8 @@
                         title: "Educated",
                         author: "Tara Westover",
                         requester: "Alex Rodriguez",
-                        email: "samuel.kimani.sikuku@gmail.com",
-                        kindleEmail: "samuel.kimani.sikuku@gmail.com",
+                        email: "alex.rodriguez@example.com",
+                        kindleEmail: "alex.rodriguez@kindle.com",
                         reason: "As a first-generation college student, this memoir resonates deeply with my journey.",
                         amazonLink: "https://www.amazon.com/dp/B072BLVM83",
                         price: "$14.99",
@@ -881,18 +877,11 @@
                 ];
                 saveData();
             }
-            
-            if (savedStats) {
-                stats = JSON.parse(savedStats);
-            } else {
-                saveData();
-            }
         }
 
         // Save data to localStorage
         function saveData() {
             localStorage.setItem('bookRequests', JSON.stringify(bookRequests));
-            localStorage.setItem('stats', JSON.stringify(stats));
         }
 
         let currentFilter = 'all';
@@ -913,6 +902,7 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabName).classList.add('active');
             button.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function goToRequestTab() {
@@ -924,9 +914,19 @@
                     btn.classList.add('active');
                 }
             });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function getStats() {
+            return {
+                totalRequests: bookRequests.length,
+                totalFulfilled: bookRequests.filter(b => b.fulfilled).length,
+                totalReceived: bookRequests.filter(b => b.received).length
+            };
         }
 
         function updateStats() {
+            const stats = getStats();
             document.getElementById('totalRequests').textContent = stats.totalRequests;
             document.getElementById('totalFulfilled').textContent = stats.totalFulfilled;
             document.getElementById('totalReceived').textContent = stats.totalReceived;
@@ -1175,7 +1175,6 @@
                             
                             if (doubleCheck) {
                                 book.fulfilled = true;
-                                stats.totalFulfilled++;
                                 saveData(); // Save to localStorage
                                 updateStats();
                                 renderBookList();
@@ -1194,44 +1193,6 @@
                     }, 5000);
                 }
             }
-        }
-
-        function submitRequest(event) {
-            event.preventDefault();
-            
-            const newRequest = {
-                id: bookRequests.length + 1,
-                title: document.getElementById('bookTitle').value,
-                author: document.getElementById('bookAuthor').value,
-                requester: document.getElementById('reqName').value,
-                email: document.getElementById('reqEmail').value,
-                kindleEmail: document.getElementById('kindleEmail').value,
-                reason: document.getElementById('whyBook').value,
-                amazonLink: document.getElementById('amazonLink').value,
-                price: 'Check Amazon',
-                fulfilled: false,
-                received: false,
-                confirmCode: 'BOOK' + (bookRequests.length + 1) + '-' + document.getElementById('bookTitle').value.toUpperCase().replace(/[^A-Z]/g, '').substring(0, 8)
-            };
-            
-            bookRequests.push(newRequest);
-            stats.totalRequests++;
-            saveData(); // Save to localStorage
-            
-            showNotification('Your Kindle book request has been posted! Donors can now see it. 📖');
-            
-            document.getElementById('requestForm').reset();
-            updateStats();
-            renderBookList();
-            renderDonateBookList();
-            renderGiftedBookList();
-            renderAllRequestsList(currentFilter);
-            renderConfirmBookList();
-            updateFilterCounts();
-            
-            setTimeout(() => {
-                switchTab('browse', document.querySelector('[onclick*="browse"]'));
-            }, 1500);
         }
 
         function showNotification(message) {
@@ -1335,7 +1296,6 @@
             
             if (confirmed) {
                 book.received = true;
-                stats.totalReceived++;
                 saveData(); // Save to localStorage
                 updateStats();
                 renderBookList();
@@ -1372,6 +1332,7 @@
                 if (doubleCheck) {
                     localStorage.removeItem('bookRequests');
                     localStorage.removeItem('stats');
+                    bookRequests = [];
                     showNotification('✅ All data has been reset! Reloading page...');
                     setTimeout(() => {
                         location.reload();
@@ -1383,7 +1344,7 @@
         function exportData() {
             const data = {
                 bookRequests: bookRequests,
-                stats: stats,
+                stats: getStats(),
                 exportDate: new Date().toISOString()
             };
             
