@@ -581,7 +581,9 @@
                     </p>
                 </div>
 
-                <div class="book-list" id="bookList"></div>
+                <div class="book-list" id="bookList">
+                    <p style="text-align: center; color: var(--sepia); padding: 2rem;">Loading book requests…</p>
+                </div>
             </div>
         </div>
 
@@ -784,17 +786,17 @@
                 </div>
 
                 <div style="background: #fff3cd; padding: 2rem; border-radius: 4px; margin-top: 2rem; border-left: 4px solid #ffc107;">
-                    <h3 style="color: #856404;">⚙️ Admin Tools</h3>
-                    <p style="color: #856404; margin-bottom: 1rem;">Data is automatically saved to your browser. Use these tools carefully:</p>
-                    <button class="btn" onclick="resetAllData()" style="background: #dc3545; margin-right: 1rem;">
-                        🔄 Reset All Data
+                    <h3 style="color: #856404;">⚙️ Tools</h3>
+                    <p style="color: #856404; margin-bottom: 1rem;">Book requests load automatically from a curated Google Sheet each time the page opens.</p>
+                    <button class="btn" onclick="refreshFromSheet()" style="background: var(--forest); margin-right: 1rem;">
+                        🔄 Refresh from Sheet
                     </button>
                     <button class="btn" onclick="exportData()" style="background: #28a745;">
                         💾 Export Data
                     </button>
                     <p style="color: #856404; margin-top: 1rem; font-size: 0.9rem;">
-                        <strong>Reset:</strong> Clears all book requests and stats (cannot be undone)<br>
-                        <strong>Export:</strong> Downloads current data as JSON file for backup
+                        <strong>Refresh:</strong> Reloads the latest approved requests from the Google Sheet<br>
+                        <strong>Export:</strong> Downloads the current list as a JSON file for backup
                     </p>
                 </div>
             </div>
@@ -807,94 +809,163 @@
     </div>
 
     <script>
+        /* ============================================================
+           Live data source
+           ------------------------------------------------------------
+           Approved book requests are curated by the site owner in a
+           Google Sheet (the owner copies vetted Google Form submissions
+           into it). Only rows in that sheet appear on the site.
+           Expected columns (header row, any order):
+             title | author | requester | reason | amazonLink |
+             price | kindleEmail | confirmCode | gifted | received
+           ============================================================ */
+        const SHEET_ID = '164jj5UcaF5oUc2t__JsHa00elmflHJlLmqA95bk3Y_I';
+        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:csv&gid=0';
+
         let bookRequests = [];
-
-        // Load data from localStorage on page load
-        function loadData() {
-            const savedBooks = localStorage.getItem('bookRequests');
-
-            if (savedBooks) {
-                bookRequests = JSON.parse(savedBooks);
-            } else {
-                // Default data if nothing saved
-                bookRequests = [
-                    {
-                        id: 1,
-                        title: "Atomic Habits",
-                        author: "James Clear",
-                        requester: "Mike Chen",
-                        email: "mike.chen@example.com",
-                        kindleEmail: "mike.chen@kindle.com",
-                        reason: "I'm trying to build better habits to improve my life. This book has been recommended by so many people.",
-                        amazonLink: "https://www.amazon.com/dp/B07D23CFGR",
-                        price: "$13.99",
-                        fulfilled: false,
-                        received: false,
-                        confirmCode: "BOOK1-ATOMIC"
-                    },
-                    {
-                        id: 2,
-                        title: "The Midnight Library",
-                        author: "Matt Haig",
-                        requester: "Sarah Johnson",
-                        email: "sarah.johnson@example.com",
-                        kindleEmail: "sarah.johnson@kindle.com",
-                        reason: "Going through a tough time and I've heard this book offers a beautiful perspective on life's possibilities.",
-                        amazonLink: "https://www.amazon.com/dp/B08FF8J8XP",
-                        price: "$11.99",
-                        fulfilled: false,
-                        received: false,
-                        confirmCode: "BOOK2-MIDNIGHT"
-                    },
-                    {
-                        id: 3,
-                        title: "Educated",
-                        author: "Tara Westover",
-                        requester: "Alex Rodriguez",
-                        email: "alex.rodriguez@example.com",
-                        kindleEmail: "alex.rodriguez@kindle.com",
-                        reason: "As a first-generation college student, this memoir resonates deeply with my journey.",
-                        amazonLink: "https://www.amazon.com/dp/B072BLVM83",
-                        price: "$14.99",
-                        fulfilled: false,
-                        received: false,
-                        confirmCode: "BOOK3-EDUCATED"
-                    },
-                    {
-                        id: 4,
-                        title: "Thinking, Fast and Slow",
-                        author: "Daniel Kahneman",
-                        requester: "Emma Williams",
-                        email: "emma@example.com",
-                        kindleEmail: "emma.w@kindle.com",
-                        reason: "I want to understand how the mind works and make better decisions in my life and career.",
-                        amazonLink: "https://www.amazon.com/dp/B00555X8OA",
-                        price: "$15.99",
-                        fulfilled: true,
-                        received: false,
-                        confirmCode: "BOOK4-THINKING"
-                    }
-                ];
-                saveData();
-            }
-        }
-
-        // Save data to localStorage
-        function saveData() {
-            localStorage.setItem('bookRequests', JSON.stringify(bookRequests));
-        }
-
         let currentFilter = 'all';
 
-        function init() {
-            loadData(); // Load saved data first
+        // Built-in samples — shown only if the live sheet can't be reached.
+        const DEFAULT_BOOKS = [
+            { id: 1, title: "Atomic Habits", author: "James Clear", requester: "Mike Chen",
+              kindleEmail: "mike.chen@kindle.com",
+              reason: "I'm trying to build better habits to improve my life. This book has been recommended by so many people.",
+              amazonLink: "https://www.amazon.com/dp/B07D23CFGR", price: "$13.99",
+              fulfilled: false, received: false, confirmCode: "BOOK1-ATOMIC" },
+            { id: 2, title: "The Midnight Library", author: "Matt Haig", requester: "Sarah Johnson",
+              kindleEmail: "sarah.johnson@kindle.com",
+              reason: "Going through a tough time and I've heard this book offers a beautiful perspective on life's possibilities.",
+              amazonLink: "https://www.amazon.com/dp/B08FF8J8XP", price: "$11.99",
+              fulfilled: false, received: false, confirmCode: "BOOK2-MIDNIGHT" },
+            { id: 3, title: "Educated", author: "Tara Westover", requester: "Alex Rodriguez",
+              kindleEmail: "alex.rodriguez@kindle.com",
+              reason: "As a first-generation college student, this memoir resonates deeply with my journey.",
+              amazonLink: "https://www.amazon.com/dp/B072BLVM83", price: "$14.99",
+              fulfilled: false, received: false, confirmCode: "BOOK3-EDUCATED" },
+            { id: 4, title: "Thinking, Fast and Slow", author: "Daniel Kahneman", requester: "Emma Williams",
+              kindleEmail: "emma.w@kindle.com",
+              reason: "I want to understand how the mind works and make better decisions in my life and career.",
+              amazonLink: "https://www.amazon.com/dp/B00555X8OA", price: "$15.99",
+              fulfilled: true, received: false, confirmCode: "BOOK4-THINKING" }
+        ];
+
+        // Minimal CSV parser: handles quoted fields, embedded commas,
+        // escaped quotes ("") and newlines inside quotes.
+        function parseCSV(text) {
+            const rows = [];
+            let row = [], field = '', inQuotes = false;
+            text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+            for (let i = 0; i < text.length; i++) {
+                const c = text[i];
+                if (inQuotes) {
+                    if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
+                    else if (c === '"') { inQuotes = false; }
+                    else { field += c; }
+                } else if (c === '"') { inQuotes = true; }
+                else if (c === ',') { row.push(field); field = ''; }
+                else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+                else { field += c; }
+            }
+            if (field !== '' || row.length) { row.push(field); rows.push(row); }
+            return rows;
+        }
+
+        function isYes(v) {
+            return /^(yes|true|y|1|x|done|✓)$/i.test(String(v == null ? '' : v).trim());
+        }
+
+        // Map parsed CSV rows -> book request objects.
+        function rowsToBooks(rows) {
+            if (!rows.length) return [];
+            const headers = rows[0].map(h => h.trim().toLowerCase().replace(/\s+/g, ''));
+            const at = name => headers.indexOf(name);
+            const col = {
+                title: at('title'), author: at('author'), requester: at('requester'),
+                reason: at('reason'), amazonLink: at('amazonlink'), price: at('price'),
+                kindleEmail: at('kindleemail'), confirmCode: at('confirmcode'),
+                gifted: at('gifted'), received: at('received')
+            };
+            const books = [];
+            for (let r = 1; r < rows.length; r++) {
+                const cells = rows[r];
+                const get = i => (i >= 0 && cells[i] != null ? String(cells[i]).trim() : '');
+                const title = get(col.title);
+                if (!title) continue; // skip blank rows
+                const n = books.length + 1;
+                const rawPrice = get(col.price);
+                const price = rawPrice
+                    ? (/^[0-9]+(\.[0-9]+)?$/.test(rawPrice) ? '$' + rawPrice : rawPrice)
+                    : 'Check Amazon';
+                books.push({
+                    id: n,
+                    title: title,
+                    author: get(col.author) || 'Unknown',
+                    requester: get(col.requester) || 'A reader',
+                    reason: get(col.reason),
+                    amazonLink: get(col.amazonLink),
+                    price: price,
+                    kindleEmail: get(col.kindleEmail),
+                    confirmCode: (get(col.confirmCode) || ('BOOK' + n + '-' + title.toUpperCase().replace(/[^A-Z]/g, '').substring(0, 8))).toUpperCase(),
+                    fulfilled: isYes(get(col.gifted)),
+                    received: isYes(get(col.received))
+                });
+            }
+            return books;
+        }
+
+        // Load requests: try the live Google Sheet, then cache, then samples.
+        async function loadData() {
+            if (SHEET_ID && SHEET_ID.indexOf('PASTE_') === -1) {
+                try {
+                    const res = await fetch(SHEET_CSV_URL, { cache: 'no-store' });
+                    if (res.ok) {
+                        const books = rowsToBooks(parseCSV(await res.text()));
+                        if (books.length) {
+                            bookRequests = books;
+                            saveData(); // cache for offline fallback
+                            return;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Live request sheet unavailable — using cached/sample data.', e);
+                }
+            }
+            const cached = localStorage.getItem('bookCache');
+            if (cached) {
+                try {
+                    const parsed = JSON.parse(cached);
+                    if (Array.isArray(parsed) && parsed.length) { bookRequests = parsed; return; }
+                } catch (e) { /* ignore corrupt cache */ }
+            }
+            bookRequests = DEFAULT_BOOKS.map(b => Object.assign({}, b));
+        }
+
+        // Cache the current list so the site still works offline.
+        function saveData() {
+            try { localStorage.setItem('bookCache', JSON.stringify(bookRequests)); } catch (e) {}
+        }
+
+        function renderAll() {
             updateStats();
             renderBookList();
             renderDonateBookList();
             renderGiftedBookList();
-            renderAllRequestsList();
+            renderAllRequestsList(currentFilter);
             renderConfirmBookList();
             updateFilterCounts();
+        }
+
+        async function init() {
+            await loadData();
+            renderAll();
+        }
+
+        // Re-pull the latest approved requests from the live sheet.
+        async function refreshFromSheet() {
+            showNotification('🔄 Refreshing requests from the live sheet…');
+            await loadData();
+            renderAll();
+            showNotification('✅ Requests updated from the sheet.');
         }
 
         function switchTab(tabName, button) {
@@ -1307,37 +1378,6 @@
                 document.getElementById('confirmCodeInput').value = '';
                 document.getElementById('searchBookInput').value = '';
                 showNotification(`✅ Thank you for confirming receipt of "${book.title}"! Your donor has been notified.`);
-            }
-        }
-
-        // Admin functions
-        function resetAllData() {
-            const confirmed = confirm(
-                '⚠️ WARNING: This will delete ALL data!\n\n' +
-                'This includes:\n' +
-                '• All book requests\n' +
-                '• All statistics\n' +
-                '• All gifted/received records\n\n' +
-                'This action CANNOT be undone!\n\n' +
-                'Are you sure you want to reset everything?'
-            );
-            
-            if (confirmed) {
-                const doubleCheck = confirm(
-                    '🚨 FINAL WARNING!\n\n' +
-                    'This is your last chance to cancel.\n' +
-                    'Click OK to permanently delete all data.'
-                );
-                
-                if (doubleCheck) {
-                    localStorage.removeItem('bookRequests');
-                    localStorage.removeItem('stats');
-                    bookRequests = [];
-                    showNotification('✅ All data has been reset! Reloading page...');
-                    setTimeout(() => {
-                        location.reload();
-                    }, 2000);
-                }
             }
         }
 
