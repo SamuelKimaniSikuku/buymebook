@@ -549,6 +549,7 @@
             <button class="tab-btn" onclick="switchTab('all-requests', this)">All Requests</button>
             <button class="tab-btn" onclick="switchTab('confirm', this)">Confirm Receipt</button>
             <button class="tab-btn" onclick="switchTab('request', this)">Request a Book</button>
+            <button class="tab-btn" onclick="switchTab('recommend', this)">Recommendations</button>
             <button class="tab-btn" onclick="switchTab('how', this)">How It Works</button>
         </div>
 
@@ -736,6 +737,20 @@
                     Form not loading?
                     <a href="https://docs.google.com/forms/d/e/1FAIpQLScCLqN96YN2-al_gvsg25Bw9E38Pe46oNEVx6TiJ-zj5oUptw/viewform" target="_blank" rel="noopener" style="color: var(--leather); font-weight: 600;">Open the request form in a new tab</a>.
                 </p>
+            </div>
+        </div>
+
+        <!-- Recommendations Tab -->
+        <div id="recommend" class="tab-content">
+            <div class="card">
+                <h2>📖 Community Recommendations</h2>
+                <p style="margin-bottom: 2rem; color: var(--sepia); font-size: 1.1rem;">
+                    Books our community is reading. Each card shares the story behind why a reader chose this book — discover something new, or follow the link to grab a copy yourself on Amazon.
+                </p>
+
+                <div class="book-list" id="recommendList">
+                    <p style="text-align: center; color: var(--sepia); padding: 2rem;">Loading recommendations…</p>
+                </div>
             </div>
         </div>
 
@@ -955,6 +970,48 @@
             try { localStorage.setItem('bookCache', JSON.stringify(bookRequests)); } catch (e) {}
         }
 
+        // Render the Recommendations tab from the same list of book requests.
+        // Every book on the platform appears here with the story the requester
+        // gave, framed as a community-shared read with a "Find on Amazon" link.
+        function renderRecommendList() {
+            const list = document.getElementById('recommendList');
+            if (!list) return;
+            if (!bookRequests.length) {
+                list.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: var(--sepia);">
+                        <h3 style="color: var(--gold); margin-bottom: 1rem;">📚 No books yet</h3>
+                        <p>Approved book requests will appear here as soon as the first one lands.</p>
+                    </div>
+                `;
+                return;
+            }
+            list.innerHTML = '';
+            // Build affiliate-tagged Amazon links so a click here still supports the platform.
+            const withAffiliate = link => {
+                if (!link) return '';
+                return link + (link.indexOf('?') !== -1 ? '&' : '?') + 'tag=samuelkimanis-20';
+            };
+            bookRequests.forEach(book => {
+                const card = document.createElement('div');
+                card.className = 'book-item';
+                const amazonBtn = book.amazonLink
+                    ? `<a href="${withAffiliate(book.amazonLink)}" target="_blank" rel="noopener" class="amazon-btn" style="display: block; text-align: center; text-decoration: none; margin-top: 0.5rem;">📖 Find on Amazon</a>`
+                    : '';
+                const giftedBadge = book.fulfilled
+                    ? '<div class="fulfilled-badge">GIFTED</div>'
+                    : '';
+                card.innerHTML = `
+                    ${giftedBadge}
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-author">by ${book.author}</div>
+                    <div class="book-requester">Shared by ${book.requester}</div>
+                    <p style="color: var(--sepia); font-size: 0.95rem; margin-bottom: 1rem; font-style: italic;">"${book.reason}"</p>
+                    ${amazonBtn}
+                `;
+                list.appendChild(card);
+            });
+        }
+
         function renderAll() {
             updateStats();
             renderBookList();
@@ -962,6 +1019,7 @@
             renderGiftedBookList();
             renderAllRequestsList(currentFilter);
             renderConfirmBookList();
+            renderRecommendList();
             updateFilterCounts();
         }
 
