@@ -1043,8 +1043,7 @@
                 const titleHtml = book.amazonLink
                     ? `<a class="book-link" href="${escapeHtml(withAffiliate(book.amazonLink))}" target="_blank" rel="noopener">${title}</a>`
                     : `<span class="book-title-plain">${title}</span>`;
-                const giftedMark = book.fulfilled ? '<span class="gifted-mark">✓ gifted</span>' : '';
-                return `<li>${titleHtml}<span class="by-author">by ${author}</span>${giftedMark}</li>`;
+                return `<li>${titleHtml}<span class="by-author">by ${author}</span></li>`;
             }).join('');
 
             container.innerHTML = `<ul class="recommend-list">${items}</ul>`;
