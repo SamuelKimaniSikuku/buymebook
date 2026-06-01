@@ -96,6 +96,14 @@
                 "@type": "Answer",
                 "text": "Only approved book requests are public. Personal data submitted via the request form (other than your name and the email Amazon sends the gift link to) stays private. The platform never stores payment information — all purchases happen directly on Amazon."
               }
+            },
+            {
+              "@type": "Question",
+              "name": "Why don't I just buy the book for myself?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Many readers can't afford every book they want — students, people between jobs, readers in regions where prices are steep relative to local incomes. Buy Me a Book lets people who can spare a few dollars send a single book directly to someone who would value it deeply."
+              }
             }
           ]
         }
@@ -268,6 +276,120 @@
         .hero-microcopy strong {
             color: var(--leather);
             font-weight: 600;
+        }
+
+        .activity-feed {
+            background: linear-gradient(135deg, rgba(58, 90, 64, 0.06) 0%, rgba(212, 175, 55, 0.07) 100%);
+            border: 1px solid rgba(58, 90, 64, 0.2);
+            border-radius: 4px;
+            padding: 1.1rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .activity-feed-title {
+            font-family: 'Crimson Pro', serif;
+            color: var(--forest);
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin: 0 0 0.6rem;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+
+        .activity-feed-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .activity-feed-list li {
+            font-family: 'Spectral', serif;
+            color: var(--ink);
+            padding: 0.55rem 0;
+            border-bottom: 1px solid rgba(93, 78, 55, 0.12);
+            line-height: 1.55;
+            font-size: 0.98rem;
+        }
+
+        .activity-feed-list li:last-child {
+            border-bottom: none;
+        }
+
+        .activity-feed-list .feed-title {
+            font-family: 'Libre Baskerville', serif;
+            font-weight: 700;
+            color: var(--leather);
+        }
+
+        .activity-feed-list em {
+            color: var(--sepia);
+        }
+
+        .faq-section {
+            margin: 2.5rem 0 0;
+        }
+
+        .faq-section > h3 {
+            font-family: 'Libre Baskerville', serif;
+            color: var(--leather);
+            border-left: 4px solid var(--gold);
+            padding-left: 1rem;
+            margin-bottom: 1.25rem;
+            font-size: 1.5rem;
+        }
+
+        .faq-item {
+            background: var(--cream);
+            border: 1px solid rgba(93, 78, 55, 0.18);
+            border-radius: 4px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.75rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .faq-item[open] {
+            border-color: var(--gold);
+            box-shadow: 0 2px 12px rgba(212, 175, 55, 0.18);
+        }
+
+        .faq-item summary {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--leather);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-item summary::after {
+            content: '+';
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.4rem;
+            color: var(--gold);
+            font-weight: 700;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .faq-item[open] summary::after {
+            content: '–';
+        }
+
+        .faq-answer {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(93, 78, 55, 0.15);
+            color: var(--ink);
+            line-height: 1.65;
+            font-family: 'Spectral', serif;
         }
 
         .tabs {
@@ -828,6 +950,8 @@
                     </div>
                 </div>
 
+                <div id="activityFeed" class="activity-feed" style="display:none"></div>
+
                 <div style="text-align: center; margin: 2rem 0;">
                     <button class="btn btn-secondary" onclick="goToRequestTab()" style="font-size: 1.2rem; padding: 1.2rem 3rem;">
                         📖 Request a Kindle Book
@@ -1063,6 +1187,52 @@
                     <p style="margin-top: 1rem;"><strong>Platform Support:</strong> This platform uses Amazon Affiliate links (tag: samuelkimanis-20). A small percentage of purchases helps cover hosting costs at no extra cost to you.</p>
                 </div>
 
+                <div class="faq-section">
+                    <h3>❓ Frequently Asked</h3>
+
+                    <details class="faq-item">
+                        <summary>How does Buy Me a Book work?</summary>
+                        <div class="faq-answer">
+                            Readers post Kindle book requests with an Amazon link and their reason for wanting the book. Donors browse the requests, purchase Kindle books on Amazon using "Give as a Gift," and Amazon emails the recipient a redemption link. The book lands in the recipient's Kindle library within minutes.
+                        </div>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>Is Buy Me a Book free to use?</summary>
+                        <div class="faq-answer">
+                            Yes. The platform is free for readers and donors alike. Donors pay only for the Kindle books they choose to purchase on Amazon. Buy Me a Book uses Amazon Affiliate links to help cover hosting costs at no extra cost to anyone.
+                        </div>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>How do I gift a Kindle book to someone?</summary>
+                        <div class="faq-answer">
+                            Pick a request on the site and click <strong>Buy Kindle Book &amp; Gift</strong>. A confirmation shows you the recipient's email and opens Amazon on the exact Kindle edition. On Amazon, click <strong>Buy for others</strong> or <strong>Give as a Gift</strong>, enter the recipient's email, and complete the purchase. Amazon emails them a redemption link they click to receive the book.
+                        </div>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>How do I request a Kindle book?</summary>
+                        <div class="faq-answer">
+                            Open the <strong>Request a Book</strong> tab and fill out the embedded Google Form with the book's Amazon Kindle link, your email, and a short story of why you'd like to read it. Approved requests appear on the platform for donors to see.
+                        </div>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>Is my data safe?</summary>
+                        <div class="faq-answer">
+                            Only approved book requests are public. Other personal data submitted via the form stays private. The platform never stores payment information — all purchases happen directly on Amazon under your own Amazon account.
+                        </div>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>Why don't I just buy the book for myself?</summary>
+                        <div class="faq-answer">
+                            Many readers can't afford every book they want — students, people between jobs, readers in regions where prices are steep relative to local incomes. Buy Me a Book lets people who <em>can</em> spare a few dollars send a single book directly to someone who would value it deeply. It's a small kindness that lands instantly.
+                        </div>
+                    </details>
+                </div>
+
                 <div style="background: #fff3cd; padding: 2rem; border-radius: 4px; margin-top: 2rem; border-left: 4px solid #ffc107;">
                     <h3 style="color: #856404;">⚙️ Tools</h3>
                     <p style="color: #856404; margin-bottom: 1rem;">Book requests load automatically from a curated Google Sheet each time the page opens.</p>
@@ -1263,6 +1433,7 @@
         function renderAll() {
             updateStats();
             updateHeroStats();
+            renderActivityFeed();
             renderBookList();
             renderDonateBookList();
             renderGiftedBookList();
@@ -1315,6 +1486,38 @@
             document.getElementById('totalRequests').textContent = stats.totalRequests;
             document.getElementById('totalFulfilled').textContent = stats.totalFulfilled;
             document.getElementById('totalReceived').textContent = stats.totalReceived;
+        }
+
+        // Small HTML-safe helper used by several renderers.
+        function escapeHtmlGlobal(s) {
+            return String(s == null ? '' : s)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        // Render the "Recently gifted" feed at the top of Browse Requests.
+        // Newest gifts first (sheet rows are append-only, so we reverse).
+        function renderActivityFeed() {
+            const feed = document.getElementById('activityFeed');
+            if (!feed) return;
+            const gifted = bookRequests.filter(b => b.fulfilled).slice().reverse().slice(0, 5);
+            if (!gifted.length) {
+                feed.style.display = 'none';
+                feed.innerHTML = '';
+                return;
+            }
+            const items = gifted.map(b => {
+                let reason = (b.reason || '').replace(/\s+/g, ' ').trim();
+                if (reason.length > 110) reason = reason.substring(0, 110).trim() + '…';
+                const firstName = (b.requester || 'a reader').split(/\s+/)[0];
+                const reasonHtml = reason ? ' — <em>"' + escapeHtmlGlobal(reason) + '"</em>' : '';
+                return '<li><span class="feed-title">' + escapeHtmlGlobal(b.title) +
+                       '</span> was gifted to ' + escapeHtmlGlobal(firstName) + reasonHtml + '</li>';
+            }).join('');
+            feed.style.display = '';
+            feed.innerHTML =
+                '<h3 class="activity-feed-title">📬 Recently gifted</h3>' +
+                '<ul class="activity-feed-list">' + items + '</ul>';
         }
 
         // Refresh the hero impact line from the live data.
