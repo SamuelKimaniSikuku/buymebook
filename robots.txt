@@ -1,0 +1,5 @@
+# Buy Me a Book — all bots welcome
+User-agent: *
+Allow: /
+
+Sitemap: https://www.buymebook.com/sitemap.xml

@@ -22,6 +22,86 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=Libre+Baskerville:wght@400;700&family=Spectral:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Structured data for search engines and AI tools -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://www.buymebook.com/#organization",
+          "name": "Buy Me a Book",
+          "alternateName": "BuyMeABook",
+          "url": "https://www.buymebook.com/",
+          "description": "A charitable platform that connects readers who need Kindle books with generous donors willing to gift them via Amazon."
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.buymebook.com/#website",
+          "url": "https://www.buymebook.com/",
+          "name": "Buy Me a Book",
+          "description": "Gift Kindle books to readers who need them, or request a book you can't afford.",
+          "publisher": { "@id": "https://www.buymebook.com/#organization" },
+          "inLanguage": "en"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://www.buymebook.com/buy-me-a-book.html",
+          "url": "https://www.buymebook.com/buy-me-a-book.html",
+          "name": "Buy Me a Book - Gift Books, Share Stories",
+          "isPartOf": { "@id": "https://www.buymebook.com/#website" },
+          "about": { "@id": "https://www.buymebook.com/#organization" },
+          "description": "Buy Me a Book connects readers who need Kindle books with generous donors. Browse requests, gift a book through Amazon, or post a request of your own."
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How does Buy Me a Book work?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Readers post Kindle book requests with an Amazon link and their reason for wanting the book. Donors browse the requests, purchase Kindle books on Amazon using 'Give as a Gift,' and Amazon emails the recipient a redemption link. The book lands in the recipient's Kindle library."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is Buy Me a Book free to use?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The platform is free for readers and donors alike. Donors pay only for the Kindle books they choose to purchase on Amazon. The platform uses Amazon Affiliate links to help cover hosting costs at no extra cost to anyone."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I gift a Kindle book to someone on Buy Me a Book?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Pick a request on the site, click 'Buy Kindle Book & Gift,' and follow the link to Amazon. Use Amazon's 'Buy for others' or 'Give as a Gift' option, enter the recipient's email, and complete the purchase. Amazon emails the recipient a redemption link they click to receive the book."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I request a Kindle book on Buy Me a Book?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Go to the 'Request a Book' tab and fill out the Google Form with the Amazon Kindle link, your email, and the story of why you'd like to read it. Approved requests appear on the platform for donors to see."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is my data safe on Buy Me a Book?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Only approved book requests are public. Personal data submitted via the request form (other than your name and the email Amazon sends the gift link to) stays private. The platform never stores payment information — all purchases happen directly on Amazon."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
     <style>
         :root {
             --parchment: #f4f1e8;
