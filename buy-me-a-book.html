@@ -195,25 +195,49 @@
         .hero-stats {
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: stretch;
             flex-wrap: wrap;
-            gap: 0.5rem 1.5rem;
-            margin: 2rem 0 1.75rem;
-            font-family: 'Crimson Pro', serif;
-            color: var(--leather);
-            font-size: 1rem;
+            gap: 0;
+            margin: 2.25rem auto 1.75rem;
+            max-width: 720px;
+            border-top: 1px solid rgba(93, 78, 55, 0.18);
+            border-bottom: 1px solid rgba(93, 78, 55, 0.18);
+            padding: 1.1rem 0;
         }
 
-        .hero-stats strong {
+        .hero-stat {
+            flex: 1;
+            min-width: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.1rem 1.25rem;
+            border-right: 1px solid rgba(93, 78, 55, 0.18);
+            text-align: center;
+        }
+
+        .hero-stat:last-child {
+            border-right: none;
+        }
+
+        .hero-stat-num {
             font-family: 'Libre Baskerville', serif;
-            color: var(--gold);
-            font-size: 1.35rem;
+            font-size: 2rem;
             font-weight: 700;
-            margin-right: 0.3rem;
+            color: var(--gold);
+            line-height: 1.1;
+            letter-spacing: -0.5px;
         }
 
-        .hero-stat-sep {
-            color: rgba(93, 78, 55, 0.35);
+        .hero-stat-label {
+            font-family: 'Crimson Pro', serif;
+            font-size: 0.78rem;
+            color: var(--sepia);
+            font-weight: 600;
+            margin-top: 0.45rem;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
         }
 
         .hero-ctas {
@@ -771,11 +795,20 @@
                 max-width: 320px;
             }
             .hero-stats {
-                gap: 0.4rem 1rem;
-                font-size: 0.95rem;
+                padding: 0.9rem 0;
+                margin: 1.75rem auto 1.5rem;
             }
-            .hero-stats strong {
-                font-size: 1.15rem;
+            .hero-stat {
+                padding: 0.1rem 0.6rem;
+                min-width: 110px;
+            }
+            .hero-stat-num {
+                font-size: 1.55rem;
+            }
+            .hero-stat-label {
+                font-size: 0.7rem;
+                letter-spacing: 1.1px;
+                margin-top: 0.3rem;
             }
             .book-list {
                 grid-template-columns: 1fr;
@@ -904,11 +937,18 @@
             <p class="tagline">Need a book you can't afford? Post a request. Want to brighten someone's day? Gift one.</p>
 
             <div class="hero-stats" aria-label="Community impact">
-                <span><strong id="heroGifted">0</strong>books gifted</span>
-                <span class="hero-stat-sep" aria-hidden="true">•</span>
-                <span><strong id="heroValue">$0</strong>shared with readers</span>
-                <span class="hero-stat-sep" aria-hidden="true">•</span>
-                <span><strong id="heroRequests">0</strong>requests posted</span>
+                <div class="hero-stat">
+                    <span class="hero-stat-num" id="heroGifted">0</span>
+                    <span class="hero-stat-label">books gifted</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-num" id="heroValue">$0</span>
+                    <span class="hero-stat-label">shared with readers</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-num" id="heroRequests">0</span>
+                    <span class="hero-stat-label">requests posted</span>
+                </div>
             </div>
 
             <div class="hero-ctas">
