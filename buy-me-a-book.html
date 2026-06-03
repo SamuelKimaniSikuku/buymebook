@@ -427,36 +427,34 @@
         .tabs {
             display: flex;
             justify-content: center;
-            gap: 1rem;
-            margin: 2rem 0 3rem;
+            gap: 0.5rem;
+            margin: 2.25rem 0 3rem;
             flex-wrap: wrap;
         }
 
         .tab-btn {
             font-family: 'Crimson Pro', serif;
-            padding: 0.8rem 2rem;
-            background: var(--cream);
-            border: 2px solid var(--leather);
+            padding: 0.65rem 1.5rem;
+            background: transparent;
+            border: 1px solid rgba(93, 78, 55, 0.22);
             color: var(--leather);
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 2px;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+            border-radius: 3px;
             font-weight: 600;
-            box-shadow: 0 2px 8px var(--shadow);
+            letter-spacing: 0.1px;
         }
 
         .tab-btn:hover {
-            background: var(--leather);
-            color: var(--cream);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px var(--shadow);
+            background: rgba(93, 78, 55, 0.07);
+            border-color: var(--leather);
         }
 
         .tab-btn.active {
             background: var(--leather);
-            color: var(--gold);
-            border-color: var(--gold);
+            color: var(--cream);
+            border-color: var(--leather);
         }
 
         .tab-content {
@@ -571,112 +569,103 @@
 
         .book-item {
             background: white;
-            border: 1px solid rgba(93, 78, 55, 0.2);
+            border: 1px solid rgba(93, 78, 55, 0.16);
             border-radius: 4px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 10px var(--shadow);
-            transition: all 0.3s ease;
+            padding: 1.6rem 1.5rem 1.4rem;
+            box-shadow: 0 1px 3px rgba(44, 36, 22, 0.04);
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
             position: relative;
+            overflow: hidden;
+        }
+
+        .book-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+            opacity: 0.55;
         }
 
         .book-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 20px rgba(44, 36, 22, 0.15);
+            border-color: rgba(93, 78, 55, 0.32);
+            box-shadow: 0 4px 14px rgba(44, 36, 22, 0.08);
         }
 
         .book-item.fulfilled {
-            opacity: 0.7;
-            background: #f8f9fa;
+            background: #fafaf6;
         }
 
-        .book-item.fulfilled:hover {
-            transform: none;
+        .book-item.fulfilled::before {
+            background: linear-gradient(90deg, transparent 0%, var(--forest) 50%, transparent 100%);
+            opacity: 0.45;
+        }
+
+        .fulfilled-badge,
+        .received-badge,
+        .active-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 0.25rem 0.65rem;
+            border-radius: 3px;
+            font-weight: 700;
+            font-size: 0.65rem;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            font-family: 'Crimson Pro', serif;
+            z-index: 10;
         }
 
         .fulfilled-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
-            transform: rotate(5deg);
-            font-family: 'Crimson Pro', serif;
-            letter-spacing: 0.5px;
-            z-index: 10;
-        }
-
-        .fulfilled-badge::before {
-            content: '✓ ';
-            font-size: 1.1rem;
+            background: var(--forest);
+            color: var(--cream);
         }
 
         .received-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
-            transform: rotate(5deg);
-            font-family: 'Crimson Pro', serif;
-            letter-spacing: 0.5px;
-            z-index: 10;
-        }
-
-        .received-badge::before {
-            content: '📬 ';
-            font-size: 1.1rem;
+            background: var(--leather);
+            color: var(--cream);
         }
 
         .active-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: linear-gradient(135deg, var(--gold) 0%, #c99c2e 100%);
+            background: var(--gold);
             color: var(--ink);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
-            font-family: 'Crimson Pro', serif;
-            letter-spacing: 0.5px;
-            z-index: 10;
         }
 
         .book-title {
             font-family: 'Libre Baskerville', serif;
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             color: var(--leather);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
+            line-height: 1.3;
+            padding-right: 4rem;
         }
 
         .book-author {
+            font-family: 'Crimson Pro', serif;
             color: var(--sepia);
             font-style: italic;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.65rem;
+            font-size: 0.98rem;
         }
 
         .book-requester {
             color: var(--forest);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-bottom: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.2px;
         }
 
         .book-price {
-            font-size: 1.3rem;
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.15rem;
             color: var(--gold);
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 1rem;
+            letter-spacing: -0.3px;
         }
 
         .stats {
@@ -687,27 +676,45 @@
         }
 
         .stat-card {
-            background: linear-gradient(135deg, var(--leather) 0%, var(--forest) 100%);
-            color: var(--cream);
-            padding: 2rem;
+            background: var(--cream);
+            color: var(--leather);
+            padding: 1.75rem 1.5rem;
             border-radius: 4px;
             text-align: center;
-            box-shadow: 0 4px 15px var(--shadow);
+            border: 1px solid rgba(93, 78, 55, 0.18);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gold);
+            opacity: 0.7;
         }
 
         .stat-number {
             font-family: 'Libre Baskerville', serif;
-            font-size: 2.5rem;
+            font-size: 2.4rem;
             font-weight: 700;
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
             color: var(--gold);
+            line-height: 1;
+            letter-spacing: -1px;
         }
 
         .stat-label {
             font-family: 'Crimson Pro', serif;
-            font-size: 1rem;
-            opacity: 0.9;
+            font-size: 0.78rem;
+            color: var(--sepia);
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            font-weight: 600;
         }
 
         .steps {
@@ -742,11 +749,87 @@
         }
 
         footer {
-            text-align: center;
             padding: 3rem 0 2rem;
             margin-top: 4rem;
-            border-top: 2px solid rgba(93, 78, 55, 0.2);
+            border-top: 1px solid rgba(93, 78, 55, 0.2);
             color: var(--sepia);
+            font-family: 'Crimson Pro', serif;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr;
+            gap: 2.5rem;
+            margin-bottom: 2.25rem;
+        }
+
+        .footer-col h4 {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.85rem;
+            color: var(--leather);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.9rem;
+            font-weight: 700;
+        }
+
+        .footer-col p,
+        .footer-col li {
+            font-size: 0.95rem;
+            line-height: 1.65;
+            color: var(--sepia);
+        }
+
+        .footer-col .footer-brand {
+            font-family: 'Libre Baskerville', serif;
+            color: var(--leather);
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.4rem;
+        }
+
+        .footer-col a {
+            color: var(--leather);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .footer-col a:hover {
+            color: var(--gold);
+            border-bottom-color: var(--gold);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(93, 78, 55, 0.15);
+            padding-top: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--sepia);
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 1.75rem;
+            }
+            .footer-bottom {
+                justify-content: center;
+                text-align: center;
+            }
         }
 
         @keyframes fadeIn {
@@ -819,21 +902,22 @@
         }
 
         .amazon-btn {
-            background: #ff9900;
-            color: #232f3e;
-            padding: 0.8rem 1.5rem;
+            background: var(--leather);
+            color: var(--cream);
+            padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 3px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background 0.2s ease;
             width: 100%;
-            font-size: 1rem;
+            font-size: 0.95rem;
+            font-family: 'Crimson Pro', serif;
+            letter-spacing: 0.2px;
         }
 
         .amazon-btn:hover {
-            background: #ffad33;
-            transform: translateY(-2px);
+            background: var(--forest);
         }
 
         .notification {
@@ -926,6 +1010,84 @@
             font-size: 0.9rem;
             font-style: italic;
         }
+
+        /* Unified accent callout used by donor/confirm/impact/admin sections. */
+        .callout {
+            background: var(--parchment);
+            border-left: 4px solid var(--gold);
+            border-radius: 0 4px 4px 0;
+            padding: 1.5rem 1.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .callout > h3 {
+            font-family: 'Libre Baskerville', serif;
+            color: var(--leather);
+            margin-bottom: 0.9rem;
+            font-size: 1.15rem;
+            border-left: none;
+            padding-left: 0;
+        }
+
+        .callout ol,
+        .callout ul {
+            color: var(--ink);
+            font-family: 'Spectral', serif;
+            font-size: 1rem;
+            line-height: 1.7;
+            padding-left: 1.4rem;
+            margin: 0;
+        }
+
+        .callout ol li + li,
+        .callout ul li + li {
+            margin-top: 0.35rem;
+        }
+
+        .callout-note {
+            color: var(--sepia);
+            font-size: 0.93rem;
+            line-height: 1.55;
+            margin-top: 1rem;
+        }
+
+        .callout-note strong {
+            color: var(--leather);
+        }
+
+        .callout-forest { border-left-color: var(--forest); }
+        .callout-leather { border-left-color: var(--leather); }
+
+        /* Impact-numbers block reused inside callouts. */
+        .impact-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.25rem;
+            margin-top: 0.75rem;
+        }
+
+        .impact-row .impact-num {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold);
+            display: block;
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+        }
+
+        .impact-row .impact-label {
+            font-family: 'Crimson Pro', serif;
+            font-size: 0.78rem;
+            color: var(--sepia);
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            margin-top: 0.35rem;
+            display: block;
+            font-weight: 600;
+        }
+
+        .impact-cell { text-align: center; }
     </style>
 </head>
 <body>
@@ -1023,10 +1185,10 @@
                     Welcome, generous soul! Browse Kindle book requests and purchase digital books to gift directly to readers in need.
                 </p>
 
-                <div style="background: linear-gradient(135deg, var(--gold) 0%, #e0c050 100%); padding: 2rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);">
-                    <h3 style="color: var(--ink); margin-bottom: 1rem;">🌟 How to gift a Kindle book on Amazon</h3>
-                    <ol style="color: var(--ink); font-size: 1rem; line-height: 1.8; padding-left: 1.5rem;">
-                        <li>Pick a request below and click the orange <strong>"Buy Kindle Book &amp; Gift"</strong> button.</li>
+                <div class="callout">
+                    <h3>How to gift a Kindle book on Amazon</h3>
+                    <ol>
+                        <li>Pick a request below and click the <strong>"Buy Kindle Book &amp; Gift"</strong> button.</li>
                         <li>A small confirmation shows the <strong>recipient's name and email</strong>. Keep this tab open — you'll paste the email into Amazon in a moment.</li>
                         <li>Click <strong>OK</strong>. A new Amazon tab opens on the exact Kindle edition the requester chose.</li>
                         <li>On the Amazon page, in the right-hand Buy panel, click <strong>"Buy for others"</strong> or <strong>"Give as a Gift"</strong>. (The wording varies by region; either option leads to the gift flow.)</li>
@@ -1034,11 +1196,11 @@
                         <li>Click <strong>Place your order</strong> and pay as you would for any Amazon purchase.</li>
                         <li>Return to this tab. When prompted "Did you complete the purchase?", click <strong>OK</strong> — the book is marked as gifted on the platform.</li>
                     </ol>
-                    <p style="color: var(--ink); margin-top: 1rem; font-size: 0.95rem; line-height: 1.5;">
+                    <p class="callout-note">
                         <strong>What the recipient experiences:</strong> Amazon emails them a redemption link. They click it, sign into their Amazon account, and the book lands in their Kindle library — readable on every Kindle device or app they use.
                     </p>
-                    <p style="color: var(--ink); margin-top: 0.75rem; font-size: 0.9rem; line-height: 1.5;">
-                        💛 Thank you for your kindness — every gifted book opens a new world for someone.
+                    <p class="callout-note">
+                        Thank you for your kindness — every gifted book opens a new world for someone.
                     </p>
                 </div>
 
@@ -1059,16 +1221,16 @@
                     These wonderful books have been gifted by generous donors. Thank you for changing lives through reading!
                 </p>
 
-                <div style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); padding: 2rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 4px 20px rgba(46, 204, 113, 0.3);">
-                    <h3 style="color: white; margin-bottom: 1rem;">✨ Community Impact</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 2.5rem; font-weight: 700; color: white;" id="giftedCount">0</div>
-                            <div style="color: rgba(255,255,255,0.9);">Books Gifted</div>
+                <div class="callout callout-forest">
+                    <h3>Community Impact</h3>
+                    <div class="impact-row">
+                        <div class="impact-cell">
+                            <span class="impact-num" id="giftedCount">0</span>
+                            <span class="impact-label">Books Gifted</span>
                         </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 2.5rem; font-weight: 700; color: white;" id="giftedValue">$0</div>
-                            <div style="color: rgba(255,255,255,0.9);">Total Value</div>
+                        <div class="impact-cell">
+                            <span class="impact-num" id="giftedValue">$0</span>
+                            <span class="impact-label">Total Value</span>
                         </div>
                     </div>
                 </div>
@@ -1109,13 +1271,13 @@
                     Did you receive your gifted book? Confirm receipt here to thank your donor and update our records!
                 </p>
 
-                <div style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); padding: 2rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 4px 20px rgba(52, 152, 219, 0.3);">
-                    <h3 style="color: white; margin-bottom: 1rem;">📬 How to Confirm Receipt</h3>
-                    <ol style="color: white; font-size: 1rem; line-height: 1.8; padding-left: 1.5rem;">
-                        <li>Enter your confirmation code (sent to your email when book was gifted)</li>
-                        <li>Or search for your book by title or your name</li>
-                        <li>Click "Confirm Receipt" to mark the book as received</li>
-                        <li>Your donor will be notified of the confirmation!</li>
+                <div class="callout callout-leather">
+                    <h3>How to confirm receipt</h3>
+                    <ol>
+                        <li>Enter your confirmation code (sent to your email when the book was gifted).</li>
+                        <li>Or search for your book by title or by your name.</li>
+                        <li>Click <strong>Confirm Receipt</strong> to mark the book as received.</li>
+                        <li>Your donor will be notified that it arrived.</li>
                     </ol>
                 </div>
 
@@ -1281,26 +1443,54 @@
                     </details>
                 </div>
 
-                <div style="background: #fff3cd; padding: 2rem; border-radius: 4px; margin-top: 2rem; border-left: 4px solid #ffc107;">
-                    <h3 style="color: #856404;">⚙️ Tools</h3>
-                    <p style="color: #856404; margin-bottom: 1rem;">Book requests load automatically from a curated Google Sheet each time the page opens.</p>
-                    <button class="btn" onclick="refreshFromSheet()" style="background: var(--forest); margin-right: 1rem;">
-                        🔄 Refresh from Sheet
-                    </button>
-                    <button class="btn" onclick="exportData()" style="background: #28a745;">
-                        💾 Export Data
-                    </button>
-                    <p style="color: #856404; margin-top: 1rem; font-size: 0.9rem;">
-                        <strong>Refresh:</strong> Reloads the latest approved requests from the Google Sheet<br>
-                        <strong>Export:</strong> Downloads the current list as a JSON file for backup
+                <div class="callout" style="margin-top: 2.5rem;">
+                    <h3>Tools</h3>
+                    <p class="callout-note" style="margin-top: 0;">Book requests load automatically from a curated Google Sheet each time the page opens.</p>
+                    <div style="margin: 1rem 0 0.5rem;">
+                        <button class="btn" onclick="refreshFromSheet()" style="background: var(--leather); margin-right: 0.75rem;">
+                            Refresh from Sheet
+                        </button>
+                        <button class="btn" onclick="exportData()" style="background: var(--forest);">
+                            Export Data
+                        </button>
+                    </div>
+                    <p class="callout-note" style="font-size: 0.88rem;">
+                        <strong>Refresh:</strong> Reloads the latest approved requests from the Google Sheet.<br>
+                        <strong>Export:</strong> Downloads the current list as a JSON file for backup.
                     </p>
                 </div>
             </div>
         </div>
 
         <footer>
-            <p>Built with ❤️ for book lovers everywhere</p>
-            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Connect readers • Share stories • Change lives</p>
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-brand">📚 Buy Me a Book</div>
+                    <p>A community where readers gift each other Kindle books. Free for everyone, delivered instantly via Amazon.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Discover</h4>
+                    <ul>
+                        <li><a href="#" onclick="goToTab('browse'); return false;">Browse Requests</a></li>
+                        <li><a href="#" onclick="goToTab('gifted'); return false;">Gifted Books</a></li>
+                        <li><a href="#" onclick="goToTab('recommend'); return false;">Recommendations</a></li>
+                        <li><a href="#" onclick="goToTab('how'); return false;">How It Works</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Take Part</h4>
+                    <ul>
+                        <li><a href="#" onclick="goToTab('request'); return false;">Request a Book</a></li>
+                        <li><a href="#" onclick="goToTab('donate'); return false;">Gift a Book</a></li>
+                        <li><a href="#" onclick="goToTab('confirm'); return false;">Confirm Receipt</a></li>
+                        <li><a href="https://github.com/SamuelKimaniSikuku/buymebook" target="_blank" rel="noopener">View on GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© <span id="footerYear">2026</span> Buy Me a Book. All purchases happen on Amazon.</span>
+                <span>Built for book lovers, everywhere.</span>
+            </div>
         </footer>
     </div>
 
@@ -1492,6 +1682,8 @@
         }
 
         async function init() {
+            const yearEl = document.getElementById('footerYear');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
             await loadData();
             renderAll();
         }
