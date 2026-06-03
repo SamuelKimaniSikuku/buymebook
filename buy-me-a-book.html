@@ -173,14 +173,54 @@
             animation: fadeInDown 0.8s ease-out;
         }
 
+        .brand-mark {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .brand-emoji {
+            font-size: 3rem;
+            line-height: 1;
+            margin-bottom: 0.6rem;
+            opacity: 0.95;
+        }
+
         h1 {
             font-family: 'Libre Baskerville', serif;
-            font-size: 3rem;
+            font-size: 2.85rem;
             color: var(--leather);
-            margin-bottom: 0.5rem;
+            margin: 0;
             font-weight: 700;
-            letter-spacing: -1px;
+            letter-spacing: -1.5px;
+            line-height: 1.05;
         }
+
+        .brand-sub {
+            font-family: 'Crimson Pro', serif;
+            color: var(--sepia);
+            font-size: 0.78rem;
+            margin-top: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 3.5px;
+            font-weight: 600;
+            position: relative;
+            padding: 0 2.4rem;
+        }
+
+        .brand-sub::before,
+        .brand-sub::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 1.6rem;
+            height: 1px;
+            background: rgba(139, 115, 85, 0.45);
+        }
+
+        .brand-sub::before { left: 0; }
+        .brand-sub::after { right: 0; }
 
         .tagline {
             font-family: 'Crimson Pro', serif;
@@ -867,7 +907,20 @@
 
         @media (max-width: 768px) {
             h1 {
+                font-size: 2.2rem;
+                letter-spacing: -1px;
+            }
+            .brand-emoji {
                 font-size: 2.4rem;
+            }
+            .brand-sub {
+                font-size: 0.7rem;
+                letter-spacing: 2.5px;
+                padding: 0 1.5rem;
+            }
+            .brand-sub::before,
+            .brand-sub::after {
+                width: 1rem;
             }
             .tagline {
                 font-size: 1.1rem;
@@ -1357,6 +1410,37 @@
             .modal-actions { flex-direction: column-reverse; }
             .modal-btn { width: 100%; }
         }
+
+        /* ========== Search ========== */
+        .search-row {
+            margin: 0 0 1.5rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 480px;
+            padding: 0.7rem 1rem 0.7rem 2.5rem;
+            border: 1px solid rgba(93, 78, 55, 0.22);
+            border-radius: 3px;
+            font-family: 'Spectral', serif;
+            font-size: 0.98rem;
+            background: var(--cream) url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b7355' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E") no-repeat 0.85rem center;
+            color: var(--ink);
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            background-color: white;
+        }
+
+        .search-input::placeholder {
+            color: rgba(93, 78, 55, 0.5);
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -1411,7 +1495,11 @@
 
     <div class="container">
         <header>
-            <h1>📚 Buy Me a Book</h1>
+            <div class="brand-mark">
+                <span class="brand-emoji" aria-hidden="true">📚</span>
+                <h1>Buy Me a Book</h1>
+                <div class="brand-sub">a community kindle library</div>
+            </div>
             <p class="tagline">Need a book you can't afford? Post a request. Want to brighten someone's day? Gift one.</p>
 
             <div class="hero-stats" aria-label="Community impact">
@@ -1477,6 +1565,10 @@
                 </div>
 
                 <div id="activityFeed" class="activity-feed" style="display:none"></div>
+
+                <div class="search-row">
+                    <input type="search" id="bookSearch" class="search-input" placeholder="Search by book title, author, or requester…" oninput="searchBooks(this.value)" autocomplete="off" aria-label="Search book requests">
+                </div>
 
                 <div style="text-align: center; margin: 2rem 0;">
                     <button class="btn btn-secondary" onclick="goToRequestTab()" style="font-size: 1.2rem; padding: 1.2rem 3rem;">
@@ -1826,6 +1918,7 @@
 
         let bookRequests = [];
         let currentFilter = 'all';
+        let bookSearchTerm = '';
 
         // Built-in samples — shown only if the live sheet can't be reached.
         const DEFAULT_BOOKS = [
@@ -2094,11 +2187,28 @@
             setText('heroRequests', stats.totalRequests);
         }
 
+        function bookMatchesSearch(book) {
+            if (!bookSearchTerm) return true;
+            const hay = (
+                (book.title || '') + ' ' +
+                (book.author || '') + ' ' +
+                (book.requester || '')
+            ).toLowerCase();
+            return hay.indexOf(bookSearchTerm) !== -1;
+        }
+
+        function searchBooks(term) {
+            bookSearchTerm = (term || '').toLowerCase().trim();
+            renderBookList();
+        }
+
         function renderBookList() {
             const bookList = document.getElementById('bookList');
             bookList.innerHTML = '';
-            
-            bookRequests.forEach(book => {
+
+            const visible = bookRequests.filter(bookMatchesSearch);
+
+            visible.forEach(book => {
                 const bookItem = document.createElement('div');
                 bookItem.className = book.fulfilled ? 'book-item fulfilled' : 'book-item';
                 bookItem.innerHTML = `
@@ -2116,16 +2226,20 @@
                             🔒 Recipient's email shown after clicking
                         </p>
                     ` : `
-                        <div style="text-align: center; padding: 1rem; color: var(--forest); background: rgba(46, 204, 113, 0.1); border-radius: 4px; margin-top: 1rem;">
-                            <strong>✨ This book has been gifted! Thank you, kind donor!</strong>
+                        <div style="text-align: center; padding: 1rem; color: var(--forest); background: rgba(46, 204, 113, 0.08); border-radius: 4px; margin-top: 1rem;">
+                            <strong>This book has been gifted — thank you, kind donor.</strong>
                         </div>
                     `}
                 `;
                 bookList.appendChild(bookItem);
             });
 
-            if (bookRequests.length === 0) {
-                bookList.innerHTML = '<p style="text-align: center; color: var(--sepia); padding: 2rem;">No book requests yet. Be the first to request a book!</p>';
+            if (!visible.length) {
+                if (bookSearchTerm) {
+                    bookList.innerHTML = '<p style="text-align: center; color: var(--sepia); padding: 2rem;">No requests match <strong>"' + escapeHtmlGlobal(bookSearchTerm) + '"</strong>. Try a different search.</p>';
+                } else {
+                    bookList.innerHTML = '<p style="text-align: center; color: var(--sepia); padding: 2rem;">No book requests yet. Be the first to request a book!</p>';
+                }
             }
         }
 
