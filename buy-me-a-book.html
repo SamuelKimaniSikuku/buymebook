@@ -1064,6 +1064,98 @@
             font-style: italic;
         }
 
+        /* ========== Resource cards (Read for Free tab) ========== */
+        .resource-section {
+            margin-top: 2.5rem;
+        }
+
+        .resource-section:first-of-type {
+            margin-top: 1rem;
+        }
+
+        .resource-section > h3 {
+            font-family: 'Libre Baskerville', serif;
+            color: var(--leather);
+            font-size: 1.3rem;
+            margin-bottom: 0.4rem;
+            border-left: 3px solid var(--gold);
+            padding-left: 0.85rem;
+        }
+
+        .resource-section > .resource-intro {
+            color: var(--sepia);
+            margin: 0 0 1.25rem 0;
+            line-height: 1.55;
+            font-family: 'Spectral', serif;
+            font-size: 0.96rem;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 0.9rem;
+        }
+
+        .resource-card {
+            display: block;
+            text-decoration: none;
+            background: var(--cream);
+            border: 1px solid rgba(93, 78, 55, 0.18);
+            border-radius: 4px;
+            padding: 1rem 1.1rem 0.9rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            color: inherit;
+        }
+
+        .resource-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 3px 12px rgba(44, 36, 22, 0.08);
+        }
+
+        .resource-card-title {
+            font-family: 'Crimson Pro', serif;
+            font-weight: 700;
+            font-size: 1.02rem;
+            color: var(--leather);
+            margin-bottom: 0.3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .resource-card-title::after {
+            content: '↗';
+            font-family: 'Libre Baskerville', serif;
+            color: var(--gold);
+            font-size: 0.95rem;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .resource-card:hover .resource-card-title::after {
+            transform: translate(2px, -2px);
+        }
+
+        .resource-card-desc {
+            font-family: 'Spectral', serif;
+            font-size: 0.88rem;
+            color: var(--sepia);
+            line-height: 1.5;
+            margin: 0 0 0.55rem 0;
+        }
+
+        .resource-card-meta {
+            font-family: 'Crimson Pro', serif;
+            font-size: 0.68rem;
+            color: var(--forest);
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            font-weight: 700;
+            margin: 0;
+        }
+
         /* Unified accent callout used by donor/confirm/impact/admin sections. */
         .callout {
             background: var(--parchment);
@@ -1541,6 +1633,7 @@
             <button class="tab-btn" onclick="switchTab('confirm', this)">Confirm Receipt</button>
             <button class="tab-btn" onclick="switchTab('request', this)">Request a Book</button>
             <button class="tab-btn" onclick="switchTab('recommend', this)">Recommendations</button>
+            <button class="tab-btn" onclick="switchTab('free', this)">Read for Free</button>
             <button class="tab-btn" onclick="switchTab('how', this)">How It Works</button>
         </div>
 
@@ -1751,6 +1844,138 @@
             </div>
         </div>
 
+        <!-- Read for Free Tab -->
+        <div id="free" class="tab-content">
+            <div class="card">
+                <h2>📖 Read for Free</h2>
+                <p style="margin-bottom: 1.75rem; color: var(--sepia); font-size: 1.05rem; line-height: 1.6;">
+                    Don't want to wait for a gift? Hundreds of thousands of books — classics, audiobooks, and bargain Kindle reads — are already free or near-free online. Here are the libraries we recommend most. Every link opens a new tab.
+                </p>
+
+                <section class="resource-section">
+                    <h3>Free ebook libraries</h3>
+                    <p class="resource-intro">Public-domain classics, open-access texts, and millions of titles to borrow. Most offer Kindle-compatible EPUB or MOBI downloads.</p>
+                    <div class="resource-grid">
+                        <a class="resource-card" href="https://www.gutenberg.org/" target="_blank" rel="noopener">
+                            <div class="resource-card-title">Project Gutenberg</div>
+                            <p class="resource-card-desc">70,000+ free public-domain books. Download as EPUB, Kindle MOBI, plain text, or HTML.</p>
+                            <p class="resource-card-meta">Free · Download</p>
+                        </a>
+                        <a class="resource-card" href="https://standardebooks.org/" target="_blank" rel="noopener">
+                            <div class="resource-card-title">Standard Ebooks</div>
+                            <p class="resource-card-desc">Beautifully typeset public-domain classics, hand-curated for quality. EPUB and Kindle formats.</p>
+                            <p class="resource-card-meta">Free · Download</p>
+                        </a>
+                        <a class="resource-card" href="https://openlibrary.org/" target="_blank" rel="noopener">
+                            <div class="resource-card-title">Open Library</div>
+                            <p class="resource-card-desc">Borrow over a million books for free with a quick signup — like a worldwide public library.</p>
+                            <p class="resource-card-meta">Free · Borrow</p>
+                        </a>
+                        <a class="resource-card" href="https://archive.org/details/texts" target="_blank" rel="noopener">
+                            <div class="resource-card-title">Internet Archive</div>
+                            <p class="resource-card-desc">Vast digital archive of free ebooks, magazines, and scanned print books across every subject.</p>
+                            <p class="resource-card-meta">Free · Download / Borrow</p>
+                        </a>
+                        <a class="resource-card" href="https://manybooks.net/" target="_blank" rel="noopener">
+                            <div class="resource-card-title">ManyBooks</div>
+                            <p class="resource-card-desc">50,000+ free ebooks across genres, packaged for every reader app and Kindle.</p>
+                            <p class="resource-card-meta">Free · Download</p>
+                        </a>
+                        <a class="resource-card" href="https://www.feedbooks.com/publicdomain" target="_blank" rel="noopener">
+                            <div class="resource-card-title">Feedbooks Public Domain</div>
+                            <p class="resource-card-desc">Cleanly presented public-domain titles, easy to skim by genre or popularity.</p>
+                            <p class="resource-card-meta">Free · Download</p>
+                        </a>
+                    </div>
+                </section>
+
+                <section class="resource-section">
+                    <h3>Free audiobooks</h3>
+                    <p class="resource-intro">Listen on a walk, a commute, or a quiet evening. These libraries are fully free; no subscription needed.</p>
+                    <div class="resource-grid">
+                        <a class="resource-card" href="https://librivox.org/" target="_blank" rel="noopener">
+                            <div class="resource-card-title">LibriVox</div>
+                            <p class="resource-card-desc">Volunteer-recorded public-domain audiobooks. Tens of thousands of titles in dozens of languages.</p>
+                            <p class="resource-card-meta">Free · Stream / Download</p>
+                        </a>
+                        <a class="resource-card" href="https://www.openculture.com/freeaudiobooks" target="_blank" rel="noopener">
+                            <div class="resource-card-title">Open Culture Audiobooks</div>
+                            <p class="resource-card-desc">A curated list of 1,000+ free audiobooks — fiction, philosophy, science, history.</p>
+                            <p class="resource-card-meta">Free · Stream</p>
+                        </a>
+                        <a class="resource-card" href="https://www.loyalbooks.com/" target="_blank" rel="noopener">
+                            <div class="resource-card-title">Loyal Books</div>
+                            <p class="resource-card-desc">Free audiobooks and ebooks across all genres, browsable by author or rating.</p>
+                            <p class="resource-card-meta">Free · Stream / Download</p>
+                        </a>
+                        <a class="resource-card" href="https://www.learnoutloud.com/" target="_blank" rel="noopener">
+                            <div class="resource-card-title">LearnOutLoud</div>
+                            <p class="resource-card-desc">Free audiobooks alongside lectures and educational audio across every subject.</p>
+                            <p class="resource-card-meta">Free · Stream</p>
+                        </a>
+                    </div>
+                </section>
+
+                <section class="resource-section">
+                    <h3>Books on YouTube</h3>
+                    <p class="resource-intro">A surprising amount of public-domain literature is read aloud on YouTube for free. Search the title plus the word <em>audiobook</em>, or browse a channel below.</p>
+                    <div class="resource-grid">
+                        <a class="resource-card" href="https://www.youtube.com/results?search_query=full+audiobook+free" target="_blank" rel="noopener">
+                            <div class="resource-card-title">Search YouTube</div>
+                            <p class="resource-card-desc">Type the book title plus <strong>"audiobook"</strong> — many full readings are uploaded for free.</p>
+                            <p class="resource-card-meta">Free · Stream</p>
+                        </a>
+                        <a class="resource-card" href="https://www.youtube.com/@GreatestAudioBooks" target="_blank" rel="noopener">
+                            <div class="resource-card-title">Greatest Audio Books</div>
+                            <p class="resource-card-desc">Channel with hundreds of full public-domain audiobook recordings of classic literature.</p>
+                            <p class="resource-card-meta">Free · Stream</p>
+                        </a>
+                        <a class="resource-card" href="https://www.youtube.com/@AudioBooksUnleashed" target="_blank" rel="noopener">
+                            <div class="resource-card-title">AudioBooks Unleashed</div>
+                            <p class="resource-card-desc">A large library of full-length audiobooks read aloud and posted free.</p>
+                            <p class="resource-card-meta">Free · Stream</p>
+                        </a>
+                        <a class="resource-card" href="https://www.youtube.com/results?search_query=book+summary" target="_blank" rel="noopener">
+                            <div class="resource-card-title">Book Summaries</div>
+                            <p class="resource-card-desc">Short YouTube summaries of popular non-fiction — a quick way to decide if a book is for you.</p>
+                            <p class="resource-card-meta">Free · Watch</p>
+                        </a>
+                    </div>
+                </section>
+
+                <section class="resource-section">
+                    <h3>Bargain Kindle on Amazon</h3>
+                    <p class="resource-intro">If the book you want isn't public-domain, Amazon's free and discounted Kindle stores are a great place to check. (Links open Amazon with our affiliate tag; a click here helps cover hosting at no cost to you.)</p>
+                    <div class="resource-grid">
+                        <a class="resource-card" href="https://www.amazon.com/gp/bestsellers/digital-text/154606011?tag=samuelkimanis-20" target="_blank" rel="noopener">
+                            <div class="resource-card-title">Top 100 Free Kindle Books</div>
+                            <p class="resource-card-desc">Amazon's daily-updated list of the most popular free Kindle books. Often genuinely good titles.</p>
+                            <p class="resource-card-meta">Free · Kindle</p>
+                        </a>
+                        <a class="resource-card" href="https://www.amazon.com/Kindle-Daily-Deals/b?node=2316163011&tag=samuelkimanis-20" target="_blank" rel="noopener">
+                            <div class="resource-card-title">Kindle Daily Deals</div>
+                            <p class="resource-card-desc">A fresh handful of Kindle books deeply discounted (often $1.99 or $2.99) every day.</p>
+                            <p class="resource-card-meta">From $0.99 · Kindle</p>
+                        </a>
+                        <a class="resource-card" href="https://www.amazon.com/Kindle-Monthly-Deals/b?node=2454205011&tag=samuelkimanis-20" target="_blank" rel="noopener">
+                            <div class="resource-card-title">Kindle Monthly Deals</div>
+                            <p class="resource-card-desc">A broader month-long sale across thousands of Kindle titles — often under $5.</p>
+                            <p class="resource-card-meta">From $0.99 · Kindle</p>
+                        </a>
+                        <a class="resource-card" href="https://www.amazon.com/kindle-unlimited/?tag=samuelkimanis-20" target="_blank" rel="noopener">
+                            <div class="resource-card-title">Kindle Unlimited (free trial)</div>
+                            <p class="resource-card-desc">Subscription that lets you borrow unlimited from a vast catalog. Free 30-day trial usually available.</p>
+                            <p class="resource-card-meta">Subscription · Free trial</p>
+                        </a>
+                    </div>
+                </section>
+
+                <p style="margin-top: 2.5rem; color: var(--sepia); font-size: 0.9rem; text-align: center; font-style: italic;">
+                    Know a great free or low-cost resource we should add? <a href="#" onclick="goToTab('request'); return false;" style="color: var(--leather); border-bottom: 1px solid var(--gold);">Tell us through the form</a>.
+                </p>
+            </div>
+        </div>
+
         <!-- How It Works Tab -->
         <div id="how" class="tab-content">
             <div class="card">
@@ -1882,6 +2107,7 @@
                         <li><a href="#" onclick="goToTab('browse'); return false;">Browse Requests</a></li>
                         <li><a href="#" onclick="goToTab('gifted'); return false;">Gifted Books</a></li>
                         <li><a href="#" onclick="goToTab('recommend'); return false;">Recommendations</a></li>
+                        <li><a href="#" onclick="goToTab('free'); return false;">Read for Free</a></li>
                         <li><a href="#" onclick="goToTab('how'); return false;">How It Works</a></li>
                     </ul>
                 </div>
