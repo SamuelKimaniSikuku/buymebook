@@ -2336,7 +2336,18 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabName).classList.add('active');
             button.classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Scroll the tab bar to the top of the viewport so the visitor
+            // sees the content they just clicked, not the hero above it.
+            // Tabs remain visible at the top; new content sits right below.
+            const tabs = document.querySelector('.tabs');
+            if (tabs) {
+                const top = tabs.getBoundingClientRect().top + window.scrollY - 12;
+                // Skip the scroll if the tab bar is already in view.
+                if (Math.abs(window.scrollY - top) > 4) {
+                    window.scrollTo({ top, behavior: 'smooth' });
+                }
+            }
         }
 
         // Generic helper: switch to any tab by its id, finding the matching button.
