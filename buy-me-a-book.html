@@ -1600,12 +1600,8 @@
                     <span class="hero-stat-label">books gifted</span>
                 </div>
                 <div class="hero-stat">
-                    <span class="hero-stat-num" id="heroValue">$0</span>
-                    <span class="hero-stat-label">shared with readers</span>
-                </div>
-                <div class="hero-stat">
-                    <span class="hero-stat-num" id="heroRequests">0</span>
-                    <span class="hero-stat-label">requests posted</span>
+                    <span class="hero-stat-num" id="heroAwaiting">0</span>
+                    <span class="hero-stat-label">awaiting a kind donor</span>
                 </div>
             </div>
 
@@ -2409,19 +2405,13 @@
         // Refresh the hero impact line from the live data.
         function updateHeroStats() {
             const stats = getStats();
-            const giftedValue = bookRequests
-                .filter(b => b.fulfilled)
-                .reduce((sum, b) => {
-                    const n = parseFloat(String(b.price || '').replace(/[^0-9.]/g, ''));
-                    return sum + (isNaN(n) ? 0 : n);
-                }, 0);
+            const awaiting = Math.max(0, stats.totalRequests - stats.totalFulfilled);
             const setText = (id, text) => {
                 const el = document.getElementById(id);
                 if (el) el.textContent = text;
             };
             setText('heroGifted', stats.totalFulfilled);
-            setText('heroValue', '$' + giftedValue.toFixed(2));
-            setText('heroRequests', stats.totalRequests);
+            setText('heroAwaiting', awaiting);
         }
 
         function bookMatchesSearch(book) {
