@@ -1064,6 +1064,154 @@
             font-style: italic;
         }
 
+        /* ========== About tab ========== */
+        .about-lead {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.18rem;
+            color: var(--leather);
+            line-height: 1.55;
+            font-weight: 500;
+            margin: 0.5rem 0 1.5rem;
+            border-left: 3px solid var(--gold);
+            padding-left: 1.1rem;
+        }
+
+        #about h3.about-h3 {
+            margin-top: 2.25rem;
+            margin-bottom: 0.7rem;
+            color: var(--leather);
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            border-left: 3px solid var(--gold);
+            padding-left: 0.8rem;
+        }
+
+        #about > .card > p {
+            line-height: 1.7;
+            margin-bottom: 1rem;
+            color: var(--ink);
+            font-size: 0.98rem;
+            font-family: 'Spectral', serif;
+        }
+
+        #about p a,
+        #about li a,
+        .values-list a {
+            color: var(--leather);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.7);
+            transition: border-color 0.2s ease;
+        }
+
+        #about p a:hover,
+        #about li a:hover,
+        .values-list a:hover {
+            border-color: var(--gold);
+        }
+
+        .values-strip {
+            background: var(--parchment);
+            border-left: 4px solid var(--gold);
+            border-radius: 4px;
+            padding: 1.4rem 1.6rem 1.1rem;
+            margin: 2rem 0;
+        }
+
+        .values-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .values-list li {
+            padding: 0.7rem 0;
+            border-bottom: 1px solid rgba(93, 78, 55, 0.15);
+        }
+
+        .values-list li:last-child {
+            border-bottom: none;
+        }
+
+        .values-list strong {
+            display: block;
+            color: var(--leather);
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.04rem;
+            margin-bottom: 0.2rem;
+            font-weight: 700;
+        }
+
+        .values-list span {
+            color: var(--sepia);
+            line-height: 1.55;
+            font-size: 0.94rem;
+            font-family: 'Spectral', serif;
+        }
+
+        .about-cta-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 0.9rem;
+            margin-top: 0.6rem;
+        }
+
+        .about-cta {
+            display: block;
+            background: var(--cream);
+            border: 1px solid rgba(93, 78, 55, 0.18);
+            border-radius: 4px;
+            padding: 1.1rem 1.2rem;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #about .about-cta {
+            border-bottom-color: rgba(93, 78, 55, 0.18);
+        }
+
+        .about-cta:hover {
+            border-color: var(--gold);
+            box-shadow: 0 3px 12px rgba(44, 36, 22, 0.08);
+        }
+
+        .about-cta-icon {
+            display: block;
+            font-size: 1.55rem;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .about-cta-title {
+            display: block;
+            font-family: 'Libre Baskerville', serif;
+            font-weight: 700;
+            color: var(--leather);
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .about-cta-sub {
+            display: block;
+            font-family: 'Spectral', serif;
+            color: var(--sepia);
+            font-size: 0.88rem;
+            line-height: 1.45;
+        }
+
+        .about-closing {
+            margin-top: 2.5rem !important;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(93, 78, 55, 0.18);
+            font-family: 'Crimson Pro', serif !important;
+            font-size: 1.08rem !important;
+            color: var(--sepia);
+            font-style: italic;
+            text-align: center;
+            line-height: 1.6 !important;
+        }
+
         /* ========== Resource cards (Read for Free tab) ========== */
         .resource-section {
             margin-top: 2.5rem;
@@ -1631,6 +1779,7 @@
             <button class="tab-btn" onclick="switchTab('recommend', this)">Recommendations</button>
             <button class="tab-btn" onclick="switchTab('free', this)">Read for Free</button>
             <button class="tab-btn" onclick="switchTab('how', this)">How It Works</button>
+            <button class="tab-btn" onclick="switchTab('about', this)">About</button>
         </div>
 
         <!-- Browse Requests Tab -->
@@ -2091,6 +2240,86 @@
             </div>
         </div>
 
+        <!-- About Tab -->
+        <div id="about" class="tab-content">
+            <div class="card">
+                <h2>About Buy Me a Book</h2>
+
+                <p class="about-lead">
+                    Books shouldn't be a luxury. Buy Me a Book is a small platform built on a simple belief — the price of a Kindle ebook is trivial for some and out of reach for others, and those two readers, often in the same community, can meet.
+                </p>
+
+                <h3 class="about-h3">Why this exists</h3>
+                <p>
+                    Every day, somewhere, a reader sees a book they want and quietly closes the tab because they can't afford it. Every day, somewhere else, a reader spares a few dollars on something they barely think about — a coffee, a snack, an app subscription. Buy Me a Book is the quiet bridge between them.
+                </p>
+                <p>
+                    There are no fees. No subscriptions. No payment information stored on this site. Just a Google Form, a curated request list, and Amazon's <em>Give as a Gift</em> flow doing what it does best — delivering a book to a reader in minutes.
+                </p>
+
+                <h3 class="about-h3">How it works, in brief</h3>
+                <p>
+                    A reader fills out a request form with the Kindle book they want and a short note about why. The owner reviews and approves the request, and it appears here for everyone to see. A donor picks a request, clicks through to Amazon, and gifts the book directly. The recipient gets an email with a redemption link, clicks it, and the book lands in their Kindle library.
+                </p>
+                <p>
+                    For the longer version, see <a href="#" onclick="goToTab('how');return false;">How It Works</a>.
+                </p>
+
+                <div class="values-strip">
+                    <h3 class="about-h3" style="margin-top: 0; border-left: none; padding-left: 0;">What we stand for</h3>
+                    <ul class="values-list">
+                        <li>
+                            <strong>Books are for everyone.</strong>
+                            <span>If you want to read something, you should be able to. Cost shouldn't decide.</span>
+                        </li>
+                        <li>
+                            <strong>Privacy first.</strong>
+                            <span>Only requests you've approved are public. Personal data stays private. Payment information is never stored on this site — all purchases happen directly on Amazon under your own account.</span>
+                        </li>
+                        <li>
+                            <strong>No middleman fees.</strong>
+                            <span>Donors pay Amazon. Recipients receive from Amazon. The platform is a curator, not a financial intermediary.</span>
+                        </li>
+                        <li>
+                            <strong>Open by default.</strong>
+                            <span>The code is on <a href="https://github.com/SamuelKimaniSikuku/buymebook" target="_blank" rel="noopener">GitHub</a>. Read it, learn from it, run your own version.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <h3 class="about-h3">The person behind this</h3>
+                <p>
+                    I'm <strong>Samuel Kimani Sikuku</strong> — a reader and builder. I made Buy Me a Book for the same reason I'd want to use it: because no one should be unable to read a book they want to read. The whole platform is intentionally lightweight — designed to run for years on free infrastructure with almost no maintenance, so the focus stays on the books, not the plumbing.
+                </p>
+                <p>
+                    If you'd like to reach me, build your own version, or just say hello — find me on <a href="https://github.com/SamuelKimaniSikuku" target="_blank" rel="noopener">GitHub</a>.
+                </p>
+
+                <h3 class="about-h3">Get involved</h3>
+                <div class="about-cta-row">
+                    <a href="#" onclick="goToTab('request');return false;" class="about-cta">
+                        <span class="about-cta-icon">📖</span>
+                        <span class="about-cta-title">Request a book</span>
+                        <span class="about-cta-sub">Need a book you can't afford? Post a request and a stranger might gift it.</span>
+                    </a>
+                    <a href="#" onclick="goToTab('browse');return false;" class="about-cta">
+                        <span class="about-cta-icon">🎁</span>
+                        <span class="about-cta-title">Gift a book</span>
+                        <span class="about-cta-sub">Send a Kindle book to a reader who'll genuinely value it.</span>
+                    </a>
+                    <a href="#" onclick="goToTab('free');return false;" class="about-cta">
+                        <span class="about-cta-icon">🔎</span>
+                        <span class="about-cta-title">Read for free</span>
+                        <span class="about-cta-sub">Free ebooks, audiobooks, and bargain Kindle reads.</span>
+                    </a>
+                </div>
+
+                <p class="about-closing">
+                    If you've gifted a book here — thank you. If you've received one — welcome. If you're just here curious — I hope you stay a while.
+                </p>
+            </div>
+        </div>
+
         <footer>
             <div class="footer-grid">
                 <div class="footer-col">
@@ -2105,6 +2334,7 @@
                         <li><a href="#" onclick="goToTab('recommend'); return false;">Recommendations</a></li>
                         <li><a href="#" onclick="goToTab('free'); return false;">Read for Free</a></li>
                         <li><a href="#" onclick="goToTab('how'); return false;">How It Works</a></li>
+                        <li><a href="#" onclick="goToTab('about'); return false;">About</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
