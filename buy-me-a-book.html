@@ -224,130 +224,13 @@
 
         .tagline {
             font-family: 'Crimson Pro', serif;
-            font-size: 1.35rem;
-            color: var(--leather);
-            font-weight: 600;
+            font-size: 1.3rem;
+            color: var(--sepia);
+            font-style: italic;
+            font-weight: 300;
             max-width: 720px;
             margin: 0.5rem auto 0;
-            line-height: 1.4;
-        }
-
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            align-items: stretch;
-            flex-wrap: wrap;
-            gap: 0;
-            margin: 2.25rem auto 1.75rem;
-            max-width: 720px;
-            border-top: 1px solid rgba(93, 78, 55, 0.18);
-            border-bottom: 1px solid rgba(93, 78, 55, 0.18);
-            padding: 1.1rem 0;
-        }
-
-        .hero-stat {
-            flex: 1;
-            min-width: 150px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 0.1rem 1.25rem;
-            border-right: 1px solid rgba(93, 78, 55, 0.18);
-            text-align: center;
-        }
-
-        .hero-stat:last-child {
-            border-right: none;
-        }
-
-        .hero-stat-num {
-            font-family: 'Libre Baskerville', serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--gold);
-            line-height: 1.1;
-            letter-spacing: -0.5px;
-        }
-
-        .hero-stat-label {
-            font-family: 'Crimson Pro', serif;
-            font-size: 0.78rem;
-            color: var(--sepia);
-            font-weight: 600;
-            margin-top: 0.45rem;
-            text-transform: uppercase;
-            letter-spacing: 1.4px;
-        }
-
-        .hero-ctas {
-            display: flex;
-            justify-content: center;
-            gap: 1.25rem;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-        }
-
-        .hero-cta {
-            font-family: 'Crimson Pro', serif;
-            border: none;
-            border-radius: 4px;
-            padding: 1rem 2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 14px var(--shadow);
-            line-height: 1.25;
-            min-width: 220px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.2rem;
-        }
-
-        .hero-cta-main {
-            font-size: 1.15rem;
-            font-weight: 700;
-        }
-
-        .hero-cta-sub {
-            font-size: 0.85rem;
-            font-weight: 400;
-            opacity: 0.9;
-            letter-spacing: 0.2px;
-        }
-
-        .hero-cta-primary {
-            background: var(--leather);
-            color: var(--cream);
-        }
-
-        .hero-cta-primary:hover {
-            background: var(--forest);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(44, 36, 22, 0.25);
-        }
-
-        .hero-cta-secondary {
-            background: var(--gold);
-            color: var(--ink);
-        }
-
-        .hero-cta-secondary:hover {
-            background: #c99c2e;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
-        }
-
-        .hero-microcopy {
-            font-family: 'Crimson Pro', serif;
-            color: var(--sepia);
-            font-size: 0.92rem;
-            margin-top: 0.75rem;
-        }
-
-        .hero-microcopy strong {
-            color: var(--leather);
-            font-weight: 600;
+            line-height: 1.45;
         }
 
         .activity-feed {
@@ -924,27 +807,6 @@
             }
             .tagline {
                 font-size: 1.1rem;
-            }
-            .hero-cta {
-                min-width: 0;
-                width: 100%;
-                max-width: 320px;
-            }
-            .hero-stats {
-                padding: 0.9rem 0;
-                margin: 1.75rem auto 1.5rem;
-            }
-            .hero-stat {
-                padding: 0.1rem 0.6rem;
-                min-width: 110px;
-            }
-            .hero-stat-num {
-                font-size: 1.55rem;
-            }
-            .hero-stat-label {
-                font-size: 0.7rem;
-                letter-spacing: 1.1px;
-                margin-top: 0.3rem;
             }
             .book-list {
                 grid-template-columns: 1fr;
@@ -1785,33 +1647,7 @@
                 <h1>Buy Me a Book</h1>
                 <div class="brand-sub">a community kindle library</div>
             </div>
-            <p class="tagline">Need a book you can't afford? Post a request. Want to brighten someone's day? Gift one.</p>
-
-            <div class="hero-stats" aria-label="Community impact">
-                <div class="hero-stat">
-                    <span class="hero-stat-num" id="heroGifted">0</span>
-                    <span class="hero-stat-label">books gifted</span>
-                </div>
-                <div class="hero-stat">
-                    <span class="hero-stat-num" id="heroAwaiting">0</span>
-                    <span class="hero-stat-label">awaiting a kind donor</span>
-                </div>
-            </div>
-
-            <div class="hero-ctas">
-                <button class="hero-cta hero-cta-primary" onclick="goToTab('request')">
-                    <span class="hero-cta-main">📖 I need a book</span>
-                    <span class="hero-cta-sub">Post a request in under 2 minutes</span>
-                </button>
-                <button class="hero-cta hero-cta-secondary" onclick="goToTab('browse')">
-                    <span class="hero-cta-main">🎁 I want to gift one</span>
-                    <span class="hero-cta-sub">Browse open requests</span>
-                </button>
-            </div>
-
-            <p class="hero-microcopy">
-                <strong>Free for everyone.</strong> Books delivered instantly to a Kindle library via Amazon. No payment information is ever stored on the platform.
-            </p>
+            <p class="tagline">Share the gift of reading, one page at a time</p>
         </header>
 
         <div class="tabs">
@@ -2549,7 +2385,6 @@
 
         function renderAll() {
             updateStats();
-            updateHeroStats();
             renderActivityFeed();
             renderBookList();
             renderDonateBookList();
@@ -2650,17 +2485,6 @@
                 '<ul class="activity-feed-list">' + items + '</ul>';
         }
 
-        // Refresh the hero impact line from the live data.
-        function updateHeroStats() {
-            const stats = getStats();
-            const awaiting = Math.max(0, stats.totalRequests - stats.totalFulfilled);
-            const setText = (id, text) => {
-                const el = document.getElementById(id);
-                if (el) el.textContent = text;
-            };
-            setText('heroGifted', stats.totalFulfilled);
-            setText('heroAwaiting', awaiting);
-        }
 
         function bookMatchesSearch(book) {
             if (!bookSearchTerm) return true;
