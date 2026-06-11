@@ -1212,6 +1212,51 @@
             line-height: 1.6 !important;
         }
 
+        #about p.about-belief {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.18rem;
+            font-weight: 700;
+            color: var(--leather);
+            line-height: 1.5;
+            margin: 0.75rem 0 1.5rem;
+            padding: 1rem 0 1rem 1.25rem;
+            border-left: 4px solid var(--gold);
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.08) 0%, transparent 100%);
+            border-radius: 0 3px 3px 0;
+        }
+
+        .do-list {
+            list-style: none;
+            padding: 0;
+            margin: 0.6rem 0 0;
+        }
+
+        .do-list li {
+            padding: 0.8rem 0 0.8rem 1.9rem;
+            border-bottom: 1px solid rgba(93, 78, 55, 0.15);
+            line-height: 1.6;
+            position: relative;
+            font-family: 'Spectral', serif;
+            font-size: 0.98rem;
+            color: var(--ink);
+        }
+
+        .do-list li:last-child {
+            border-bottom: none;
+        }
+
+        .do-list li::before {
+            content: '';
+            position: absolute;
+            left: 0.35rem;
+            top: 1.3rem;
+            width: 0.6rem;
+            height: 0.6rem;
+            background: var(--gold);
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+        }
+
         /* ========== Resource cards (Read for Free tab) ========== */
         .resource-section {
             margin-top: 2.5rem;
@@ -2245,57 +2290,31 @@
             <div class="card">
                 <h2>About Buy Me a Book</h2>
 
-                <p class="about-lead">
-                    Books should be a birthright. We all grow up measured against the same expectations — to learn, to think, to imagine ourselves into bigger lives — but the books that make any of that possible are quietly rationed by what we can afford. Buy Me a Book exists to soften that line.
+                <h3 class="about-h3">Why Buy Me a Book exists</h3>
+                <p>
+                    Growing up, we're all measured the same way — the same exams, the same standards, the same expectations. But the books that help us meet those standards? Those aren't available to everyone. Whether it's a science textbook, a maths guide, a history book, or a novel — some kids grow up surrounded by them, while others have never owned a single one. Same race, very different starting lines.
+                </p>
+                <p>
+                    That never sat right with us. So we built Buy Me a Book around one belief:
                 </p>
 
-                <h3 class="about-h3">Why this exists</h3>
-                <p>
-                    Ideas aren't optional. The thoughts inside a book are how we figure out who we are, what's possible, and where we want to go. They shape the questions we ask for the rest of our lives. And yet, for far too many readers, those ideas sit behind a price tag — close enough to see, just out of reach.
-                </p>
-                <p>
-                    This isn't really about generosity. It's about <strong>access</strong>. A reader and a book should be able to find each other — not eventually, not after enough saving, not only if the household or the neighborhood happened to be lucky. <em>Now.</em> While the curiosity is still there.
-                </p>
-                <p>
-                    Buy Me a Book is a small workaround. It can't fix why knowledge has a price tag in the first place. But it can make a few books flow more freely than they otherwise would — and that, it turns out, matters.
+                <p class="about-belief">
+                    Books shouldn't be something you buy for yourself — they should be something we give each other.
                 </p>
 
-                <h3 class="about-h3">How it works, in brief</h3>
                 <p>
-                    A reader names the Kindle book they want and writes a short note about why. The owner approves the request and it appears here. Anyone in the world who chooses to can click through to Amazon and route the book to that specific reader. They get a redemption link, and the book lands in their Kindle library a moment later.
-                </p>
-                <p>
-                    For the longer version, see <a href="#" onclick="goToTab('how');return false;">How It Works</a>.
+                    Buy Me a Book isn't a bookstore. It's a giving platform. Instead of selling books to the people who can already afford them, we make it effortless for anyone — a friend, a relative, a teacher, even a stranger — to put a book into the hands of someone who needs it.
                 </p>
 
-                <div class="values-strip">
-                    <h3 class="about-h3" style="margin-top: 0; border-left: none; padding-left: 0;">What we believe</h3>
-                    <ul class="values-list">
-                        <li>
-                            <strong>Access is the point.</strong>
-                            <span>Not kindness, not generosity — just making sure a reader and a book can find each other. The gap shouldn't have been there to begin with.</span>
-                        </li>
-                        <li>
-                            <strong>Everyone starts with the same hunger.</strong>
-                            <span>The capacity to learn is universal; the infrastructure to feed it isn't. Buy Me a Book is a small piece of that infrastructure.</span>
-                        </li>
-                        <li>
-                            <strong>The platform takes nothing.</strong>
-                            <span>Donors pay Amazon directly. Recipients receive from Amazon directly. We sit in between as a curator, not a financial intermediary.</span>
-                        </li>
-                        <li>
-                            <strong>Open by default.</strong>
-                            <span>The code is on <a href="https://github.com/SamuelKimaniSikuku/buymebook" target="_blank" rel="noopener">GitHub</a>. Read it, learn from it, run your own version. Knowledge wants to spread; let it.</span>
-                        </li>
-                    </ul>
-                </div>
+                <h3 class="about-h3">What we do</h3>
+                <ul class="do-list">
+                    <li>We make gifting a book as simple as buying one, so generosity has no friction.</li>
+                    <li>We connect people who lack access to books — across every subject, from textbooks to storybooks — with people willing to fund them.</li>
+                    <li>We work toward a world where knowledge is a foundation everyone stands on — not a luxury reserved for the few.</li>
+                </ul>
 
-                <h3 class="about-h3">The person behind this</h3>
-                <p>
-                    I'm <strong>Samuel Kimani Sikuku</strong> — a reader and a builder. Buy Me a Book started from a quiet conviction: that ideas should reach the people who are curious about them, not just the people who happen to afford them. The whole platform is intentionally lightweight — built to run for years on free infrastructure with almost no maintenance, so the focus stays on the books, not the plumbing.
-                </p>
-                <p>
-                    If you'd like to reach me, build your own version, or just say hello — find me on <a href="https://github.com/SamuelKimaniSikuku" target="_blank" rel="noopener">GitHub</a>.
+                <p class="about-closing">
+                    Because no one should be held to the same standard without being given the same shelf.
                 </p>
 
                 <h3 class="about-h3">Where to go from here</h3>
@@ -2303,23 +2322,19 @@
                     <a href="#" onclick="goToTab('request');return false;" class="about-cta">
                         <span class="about-cta-icon">📖</span>
                         <span class="about-cta-title">Ask for a book</span>
-                        <span class="about-cta-sub">Name a Kindle book you'd like to read. Someone, somewhere, might route it your way.</span>
+                        <span class="about-cta-sub">Name a Kindle book you'd like to read.</span>
                     </a>
                     <a href="#" onclick="goToTab('free');return false;" class="about-cta">
                         <span class="about-cta-icon">🔎</span>
                         <span class="about-cta-title">Read for free, now</span>
-                        <span class="about-cta-sub">Free libraries and audiobooks — no waiting, no asking.</span>
+                        <span class="about-cta-sub">Free libraries and audiobooks — no waiting.</span>
                     </a>
                     <a href="#" onclick="goToTab('browse');return false;" class="about-cta">
                         <span class="about-cta-icon">🎁</span>
                         <span class="about-cta-title">Send a book</span>
-                        <span class="about-cta-sub">Pick a request and route a Kindle book to a specific reader on the list.</span>
+                        <span class="about-cta-sub">Pick a request and route a book to a specific reader.</span>
                     </a>
                 </div>
-
-                <p class="about-closing">
-                    Reading shouldn't depend on a price tag. Until that changes, this is a small bridge across it.
-                </p>
             </div>
         </div>
 
