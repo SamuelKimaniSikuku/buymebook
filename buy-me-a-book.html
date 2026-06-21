@@ -526,6 +526,47 @@
             opacity: 0.45;
         }
 
+        .book-cover-wrap {
+            display: flex;
+            justify-content: center;
+            margin: -0.25rem 0 1.1rem;
+        }
+
+        .book-cover {
+            width: 100px;
+            height: 150px;
+            object-fit: contain;
+            border-radius: 3px;
+            box-shadow: 0 4px 14px rgba(44, 36, 22, 0.18);
+            background: var(--parchment);
+            display: block;
+        }
+
+        .modal-book-with-cover {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .modal-book-cover-wrap {
+            flex-shrink: 0;
+        }
+
+        .modal-book-cover {
+            width: 64px;
+            height: 96px;
+            object-fit: contain;
+            border-radius: 3px;
+            box-shadow: 0 3px 10px rgba(44, 36, 22, 0.18);
+            background: var(--cream);
+            display: block;
+        }
+
+        .modal-book-text {
+            flex: 1;
+            min-width: 0;
+        }
+
         .fulfilled-badge,
         .received-badge,
         .active-badge {
@@ -1602,10 +1643,16 @@
             <h3 id="giftModalTitle" class="modal-title">Gift a Kindle book</h3>
             <p class="modal-subtitle">A few quick steps on Amazon, and you're done.</p>
 
-            <div class="modal-book">
-                <div class="modal-book-title" id="giftModalBookTitle"></div>
-                <div class="modal-book-author" id="giftModalBookAuthor"></div>
-                <div style="font-family: 'Crimson Pro', serif; color: var(--forest); font-size: 0.88rem; margin-top: 0.4rem; font-weight: 600;">For <span id="giftModalRequester"></span></div>
+            <div class="modal-book modal-book-with-cover">
+                <div class="modal-book-cover-wrap" id="giftModalCoverWrap" hidden>
+                    <img id="giftModalCover" class="modal-book-cover" alt="" loading="lazy"
+                         onload="handleModalCoverImg(this)" onerror="hideModalCoverImg(this)">
+                </div>
+                <div class="modal-book-text">
+                    <div class="modal-book-title" id="giftModalBookTitle"></div>
+                    <div class="modal-book-author" id="giftModalBookAuthor"></div>
+                    <div style="font-family: 'Crimson Pro', serif; color: var(--forest); font-size: 0.88rem; margin-top: 0.4rem; font-weight: 600;">For <span id="giftModalRequester"></span></div>
+                </div>
             </div>
 
             <ol class="modal-steps">
@@ -2454,6 +2501,46 @@
         }
 
         // Small HTML-safe helper used by several renderers.
+        // Pull the ASIN out of an Amazon URL. Returns null if no ASIN can be found.
+        function getAsinFromAmazonUrl(url) {
+            if (!url) return null;
+            const m = String(url).match(/\/(?:dp|gp\/product)\/([A-Z0-9]{10})/i);
+            return m ? m[1].toUpperCase() : null;
+        }
+
+        // Build the Amazon-CDN cover URL for a book if its Amazon link includes an ASIN.
+        function getBookCoverUrl(book) {
+            const asin = getAsinFromAmazonUrl(book && book.amazonLink);
+            return asin ? 'https://images-na.ssl-images-amazon.com/images/P/' + asin + '.01._SCLZZZZZZZ_SX500_.jpg' : '';
+        }
+
+        // Build the cover HTML fragment used inside book cards. Empty string when
+        // no cover URL is available; falls back to a small placeholder otherwise.
+        function bookCoverHtml(book) {
+            const url = getBookCoverUrl(book);
+            if (!url) return '';
+            const title = (book && book.title) ? String(book.title).replace(/"/g, '&quot;') : 'Book cover';
+            return '<div class="book-cover-wrap">' +
+                '<img class="book-cover" src="' + url + '" alt="' + title + ' cover" loading="lazy" ' +
+                'onload="handleCoverImg(this)" onerror="hideCoverImg(this)">' +
+                '</div>';
+        }
+
+        // Hide tiny placeholder images Amazon returns when it has no cover for an ASIN
+        // (those come back as a ~1x1 spacer, ~43 bytes).
+        function handleCoverImg(img) {
+            if (img && (img.naturalWidth < 50 || img.naturalHeight < 50)) {
+                const wrap = img.parentNode;
+                if (wrap) wrap.style.display = 'none';
+            }
+        }
+
+        // Hide the cover wrapper if Amazon errored on the image entirely.
+        function hideCoverImg(img) {
+            const wrap = img && img.parentNode;
+            if (wrap) wrap.style.display = 'none';
+        }
+
         function escapeHtmlGlobal(s) {
             return String(s == null ? '' : s)
                 .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -2512,6 +2599,7 @@
                 bookItem.className = book.fulfilled ? 'book-item fulfilled' : 'book-item';
                 bookItem.innerHTML = `
                     ${book.fulfilled ? '<div class="fulfilled-badge">GIFTED</div>' : ''}
+                    ${bookCoverHtml(book)}
                     <div class="book-title">${book.title}</div>
                     <div class="book-author">by ${book.author}</div>
                     <div class="book-requester">Requested by ${book.requester}</div>
@@ -2551,6 +2639,7 @@
                 bookItem.className = book.fulfilled ? 'book-item fulfilled' : 'book-item';
                 bookItem.innerHTML = `
                     ${book.fulfilled ? '<div class="fulfilled-badge">GIFTED</div>' : ''}
+                    ${bookCoverHtml(book)}
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
                         <div style="flex: 1;">
                             <div class="book-title">${book.title}</div>
@@ -2626,6 +2715,7 @@
                 bookItem.className = 'book-item fulfilled';
                 bookItem.innerHTML = `
                     ${book.received ? '<div class="received-badge">RECEIVED</div>' : '<div class="fulfilled-badge">GIFTED</div>'}
+                    ${bookCoverHtml(book)}
                     <div class="book-title">${book.title}</div>
                     <div class="book-author">by ${book.author}</div>
                     <div class="book-requester">Gifted to ${book.requester}</div>
@@ -2667,6 +2757,7 @@
                 bookItem.className = book.fulfilled ? 'book-item fulfilled' : 'book-item';
                 bookItem.innerHTML = `
                     ${book.fulfilled ? '<div class="fulfilled-badge">GIFTED</div>' : '<div class="active-badge">ACTIVE</div>'}
+                    ${bookCoverHtml(book)}
                     <div class="book-title">${book.title}</div>
                     <div class="book-author">by ${book.author}</div>
                     <div class="book-requester">Requested by ${book.requester}</div>
@@ -2718,6 +2809,19 @@
             document.getElementById('giftModalRequester').textContent = book.requester || 'a reader';
             document.getElementById('giftModalEmail').textContent = recipientEmail;
 
+            // Load the cover; hide its wrapper until we know it actually rendered.
+            const coverWrap = document.getElementById('giftModalCoverWrap');
+            const coverImg = document.getElementById('giftModalCover');
+            const coverUrl = getBookCoverUrl(book);
+            if (coverUrl) {
+                coverImg.alt = (book.title || 'Book') + ' cover';
+                coverImg.src = coverUrl;
+                coverWrap.hidden = false;
+            } else {
+                coverImg.removeAttribute('src');
+                coverWrap.hidden = true;
+            }
+
             const copyBtn = document.getElementById('giftModalCopyBtn');
             copyBtn.textContent = 'Copy';
             copyBtn.classList.remove('copied');
@@ -2728,6 +2832,19 @@
             const modal = document.getElementById('giftModal');
             modal.hidden = false;
             document.body.style.overflow = 'hidden';
+        }
+
+        // Hide the modal cover if Amazon returned a placeholder (≈1×1) for this ASIN.
+        function handleModalCoverImg(img) {
+            if (img && (img.naturalWidth < 50 || img.naturalHeight < 50)) {
+                const wrap = document.getElementById('giftModalCoverWrap');
+                if (wrap) wrap.hidden = true;
+            }
+        }
+
+        function hideModalCoverImg() {
+            const wrap = document.getElementById('giftModalCoverWrap');
+            if (wrap) wrap.hidden = true;
         }
 
         function closeGiftModal() {
@@ -2839,6 +2956,7 @@
                 bookItem.className = 'book-item';
                 bookItem.innerHTML = `
                     <div class="fulfilled-badge">GIFTED</div>
+                    ${bookCoverHtml(book)}
                     <div class="book-title">${book.title}</div>
                     <div class="book-author">by ${book.author}</div>
                     <div class="book-requester">Requested by ${book.requester}</div>
