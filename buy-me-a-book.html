@@ -567,6 +567,106 @@
             min-width: 0;
         }
 
+        /* ========== Reading Lists ========== */
+        .reading-list-section {
+            margin-top: 2.5rem;
+        }
+
+        .reading-list-section:first-of-type {
+            margin-top: 0.5rem;
+        }
+
+        .reading-list-section > h3 {
+            font-family: 'Libre Baskerville', serif;
+            color: var(--leather);
+            font-size: 1.3rem;
+            margin-bottom: 0.45rem;
+            border-left: 3px solid var(--gold);
+            padding-left: 0.85rem;
+        }
+
+        .reading-list-intro {
+            color: var(--sepia);
+            margin: 0 0 1.25rem 0;
+            line-height: 1.6;
+            font-family: 'Spectral', serif;
+            font-size: 0.97rem;
+        }
+
+        .reading-list-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 0.85rem;
+        }
+
+        .reading-list-card {
+            display: flex;
+            gap: 0.95rem;
+            align-items: flex-start;
+            text-decoration: none;
+            color: inherit;
+            background: var(--cream);
+            border: 1px solid rgba(93, 78, 55, 0.18);
+            border-radius: 4px;
+            padding: 0.85rem 0.95rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .reading-list-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 3px 12px rgba(44, 36, 22, 0.08);
+        }
+
+        .reading-list-card-cover-wrap {
+            flex-shrink: 0;
+        }
+
+        .reading-list-card-cover {
+            width: 56px;
+            height: 84px;
+            object-fit: contain;
+            border-radius: 2px;
+            box-shadow: 0 2px 6px rgba(44, 36, 22, 0.18);
+            background: var(--parchment);
+            display: block;
+        }
+
+        .reading-list-card-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .reading-list-card-title {
+            font-family: 'Crimson Pro', serif;
+            font-weight: 700;
+            color: var(--leather);
+            font-size: 1rem;
+            line-height: 1.3;
+        }
+
+        .reading-list-card-title::after {
+            content: ' ↗';
+            color: var(--gold);
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.85rem;
+        }
+
+        .reading-list-card-author {
+            font-family: 'Crimson Pro', serif;
+            color: var(--sepia);
+            font-style: italic;
+            font-size: 0.88rem;
+            margin: 0.05rem 0 0.4rem 0;
+        }
+
+        .reading-list-card-note {
+            font-family: 'Spectral', serif;
+            color: var(--ink);
+            font-size: 0.88rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
         .fulfilled-badge,
         .received-badge,
         .active-badge {
@@ -1706,6 +1806,7 @@
             <button class="tab-btn" onclick="switchTab('confirm', this)">Confirm Receipt</button>
             <button class="tab-btn" onclick="switchTab('request', this)">Request a Book</button>
             <button class="tab-btn" onclick="switchTab('recommend', this)">Recommendations</button>
+            <button class="tab-btn" onclick="switchTab('lists', this)">Reading Lists</button>
             <button class="tab-btn" onclick="switchTab('free', this)">Read for Free</button>
             <button class="tab-btn" onclick="switchTab('how', this)">How It Works</button>
         </div>
@@ -1913,6 +2014,19 @@
 
                 <div id="recommendList">
                     <p style="text-align: center; color: var(--sepia); padding: 2rem;">Loading recommendations…</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reading Lists Tab -->
+        <div id="lists" class="tab-content">
+            <div class="card">
+                <h2>📚 Reading Lists</h2>
+                <p style="margin-bottom: 2rem; color: var(--sepia); font-size: 1.05rem; line-height: 1.6;">
+                    Themed shelves — a starting point for anyone wondering what to read next. Each list is hand-picked and short on purpose. Tap any book to open it on Amazon.
+                </p>
+                <div id="readingListsContainer">
+                    <p style="text-align: center; color: var(--sepia); padding: 2rem;">Loading reading lists…</p>
                 </div>
             </div>
         </div>
@@ -2233,6 +2347,7 @@
                         <li><a href="#" onclick="goToTab('browse'); return false;">Browse Requests</a></li>
                         <li><a href="#" onclick="goToTab('gifted'); return false;">Gifted Books</a></li>
                         <li><a href="#" onclick="goToTab('recommend'); return false;">Recommendations</a></li>
+                        <li><a href="#" onclick="goToTab('lists'); return false;">Reading Lists</a></li>
                         <li><a href="#" onclick="goToTab('free'); return false;">Read for Free</a></li>
                         <li><a href="#" onclick="goToTab('how'); return false;">How It Works</a></li>
                         <li><a href="#" onclick="goToTab('about'); return false;">About</a></li>
@@ -2295,6 +2410,61 @@
               reason: "I want to understand how the mind works and make better decisions in my life and career.",
               amazonLink: "https://www.amazon.com/dp/B00555X8OA", price: "$15.99",
               fulfilled: true, received: false, confirmCode: "BOOK4-THINKING" }
+        ];
+
+        /* ------------------------------------------------------------
+           Reading Lists — curated thematic shelves.
+           Edit this array to add or change lists. Each list has:
+             title — the shelf name
+             intro — a short editorial paragraph
+             books — array of { title, author, amazonLink, note }
+           Amazon links are auto-tagged with the platform's affiliate
+           code at render time; covers come from the same ASIN logic
+           as request cards.
+           ------------------------------------------------------------ */
+        const READING_LISTS = [
+            {
+                title: "Where to start: habits & self-direction",
+                intro: "Books for anyone trying to change a pattern — small ones, big ones, lifelong ones. Read in any order; revisit when you need them.",
+                books: [
+                    { title: "Atomic Habits", author: "James Clear", amazonLink: "https://www.amazon.com/dp/B07D23CFGR",
+                      note: "Small habits compound into outsized change. The most actionable book on the subject." },
+                    { title: "Mindset", author: "Carol S. Dweck", amazonLink: "https://www.amazon.com/dp/B000FCKPHG",
+                      note: "Why some people see ability as fixed and others as growable — and what that does to a life." },
+                    { title: "Deep Work", author: "Cal Newport", amazonLink: "https://www.amazon.com/dp/B00X47ZVXM",
+                      note: "Focus is a scarce resource. Here's how to defend and cultivate yours." },
+                    { title: "The 7 Habits of Highly Effective People", author: "Stephen R. Covey", amazonLink: "https://www.amazon.com/dp/B00GH7N7OY",
+                      note: "A classic for a reason — principles that translate across every decade of work and life." }
+                ]
+            },
+            {
+                title: "Memoirs that move you",
+                intro: "Lives lived out loud. These five made us see the world a little differently.",
+                books: [
+                    { title: "Educated", author: "Tara Westover", amazonLink: "https://www.amazon.com/dp/B072BLVM83",
+                      note: "From a survivalist Idaho childhood without schooling to a Cambridge PhD. Disquieting and hopeful." },
+                    { title: "When Breath Becomes Air", author: "Paul Kalanithi", amazonLink: "https://www.amazon.com/dp/B00XSSYR50",
+                      note: "A young neurosurgeon's reflections on meaning, mortality, and what makes a life worth living." },
+                    { title: "Born a Crime", author: "Trevor Noah", amazonLink: "https://www.amazon.com/dp/B01DHWACVY",
+                      note: "Growing up under apartheid as the son of a Black mother and white father — funny and unflinching at once." },
+                    { title: "The Glass Castle", author: "Jeannette Walls", amazonLink: "https://www.amazon.com/dp/B000OCXIWS",
+                      note: "A nomadic, often hungry childhood with brilliant, troubled parents — and what she made of it." }
+                ]
+            },
+            {
+                title: "Big ideas: thinking, history, & the long view",
+                intro: "Books that re-wire how you see the world. Read slowly — these reward a second pass.",
+                books: [
+                    { title: "Thinking, Fast and Slow", author: "Daniel Kahneman", amazonLink: "https://www.amazon.com/dp/B00555X8OA",
+                      note: "Two systems, one mind — a tour of how we actually think (and where we're predictably fooled)." },
+                    { title: "Sapiens", author: "Yuval Noah Harari", amazonLink: "https://www.amazon.com/dp/B00ICN066A",
+                      note: "70,000 years of human history in one accessible volume. Big claims, vivid storytelling." },
+                    { title: "The Greatest Minds and Ideas of All Time", author: "Will Durant", amazonLink: "https://www.amazon.com/dp/B0036QVP1I",
+                      note: "Durant on the philosophers, scientists, and writers who shaped how we think. A wise survey." },
+                    { title: "Why We Sleep", author: "Matthew Walker", amazonLink: "https://www.amazon.com/dp/B0752XRB5F",
+                      note: "Sleep is the third pillar of health — and most of us are starving it. The science behind why it matters." }
+                ]
+            }
         ];
 
         // Minimal CSV parser: handles quoted fields, embedded commas,
@@ -2439,6 +2609,7 @@
             renderAllRequestsList(currentFilter);
             renderConfirmBookList();
             renderRecommendList();
+            renderReadingLists();
             updateFilterCounts();
         }
 
@@ -2539,6 +2710,50 @@
         function hideCoverImg(img) {
             const wrap = img && img.parentNode;
             if (wrap) wrap.style.display = 'none';
+        }
+
+        // Build the reading-list-sized cover HTML (smaller variant). Empty
+        // string when no ASIN; auto-hides on placeholder/404 same as the
+        // request-card cover.
+        function listCoverHtml(book) {
+            const url = getBookCoverUrl(book);
+            if (!url) return '';
+            const titleSafe = escapeHtmlGlobal(book.title || 'Book');
+            return '<div class="reading-list-card-cover-wrap">' +
+                '<img class="reading-list-card-cover" src="' + url + '" alt="' + titleSafe + ' cover" loading="lazy" ' +
+                'onload="handleCoverImg(this)" onerror="hideCoverImg(this)">' +
+                '</div>';
+        }
+
+        // Render every curated reading list with its intro + book grid.
+        function renderReadingLists() {
+            const container = document.getElementById('readingListsContainer');
+            if (!container) return;
+            if (!Array.isArray(READING_LISTS) || !READING_LISTS.length) {
+                container.innerHTML = '<p style="text-align:center;color:var(--sepia);padding:2rem;">No reading lists yet.</p>';
+                return;
+            }
+            const sections = READING_LISTS.map(list => {
+                const books = (list.books || []).map(book => {
+                    const link = book.amazonLink ? (book.amazonLink + (book.amazonLink.indexOf('?') !== -1 ? '&' : '?') + 'tag=samuelkimanis-20') : '#';
+                    return '' +
+                        '<a class="reading-list-card" href="' + escapeHtmlGlobal(link) + '" target="_blank" rel="noopener">' +
+                            listCoverHtml(book) +
+                            '<div class="reading-list-card-text">' +
+                                '<div class="reading-list-card-title">' + escapeHtmlGlobal(book.title || '') + '</div>' +
+                                '<div class="reading-list-card-author">by ' + escapeHtmlGlobal(book.author || 'Unknown') + '</div>' +
+                                '<p class="reading-list-card-note">' + escapeHtmlGlobal(book.note || '') + '</p>' +
+                            '</div>' +
+                        '</a>';
+                }).join('');
+                return '' +
+                    '<section class="reading-list-section">' +
+                        '<h3>' + escapeHtmlGlobal(list.title || '') + '</h3>' +
+                        '<p class="reading-list-intro">' + escapeHtmlGlobal(list.intro || '') + '</p>' +
+                        '<div class="reading-list-grid">' + books + '</div>' +
+                    '</section>';
+            }).join('');
+            container.innerHTML = sections;
         }
 
         function escapeHtmlGlobal(s) {
