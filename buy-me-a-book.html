@@ -222,6 +222,42 @@
         .brand-sub::before { left: 0; }
         .brand-sub::after { right: 0; }
 
+        .hero-counter {
+            display: inline-block;
+            font-family: 'Crimson Pro', serif;
+            color: var(--sepia);
+            font-size: 0.78rem;
+            margin-top: 1.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2.6px;
+            font-weight: 600;
+            position: relative;
+            padding: 0 2.4rem;
+        }
+
+        .hero-counter::before,
+        .hero-counter::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 1.6rem;
+            height: 1px;
+            background: rgba(139, 115, 85, 0.45);
+        }
+
+        .hero-counter::before { left: 0; }
+        .hero-counter::after { right: 0; }
+
+        .hero-counter strong {
+            font-family: 'Libre Baskerville', serif;
+            color: var(--gold);
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-right: 0.35rem;
+            vertical-align: baseline;
+        }
+
         .tagline {
             font-family: 'Crimson Pro', serif;
             font-size: 1.3rem;
@@ -1795,6 +1831,9 @@
                 <div class="brand-sub">a community kindle library</div>
             </div>
             <p class="tagline">Share the gift of reading, one page at a time</p>
+            <div class="hero-counter" id="heroCounter" aria-live="polite">
+                <strong id="heroCounterNum">0</strong><span id="heroCounterLabel">books offered so far</span>
+            </div>
         </header>
 
         <div class="tabs">
@@ -2600,8 +2639,18 @@
             container.innerHTML = `<ul class="recommend-list">${items}</ul>`;
         }
 
+        function updateHeroCounter() {
+            const num = document.getElementById('heroCounterNum');
+            const label = document.getElementById('heroCounterLabel');
+            if (!num || !label) return;
+            const gifted = bookRequests.filter(b => b.fulfilled).length;
+            num.textContent = gifted;
+            label.textContent = (gifted === 1 ? ' book offered so far' : ' books offered so far');
+        }
+
         function renderAll() {
             updateStats();
+            updateHeroCounter();
             renderActivityFeed();
             renderBookList();
             renderDonateBookList();
