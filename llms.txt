@@ -1,37 +1,47 @@
 # Buy Me a Book
 
-> Buy Me a Book is a charitable, community-driven platform that connects readers who need Kindle books with generous donors willing to gift them. Readers post Kindle book requests on the site; donors browse the requests and purchase the books on Amazon via "Give as a Gift," and Amazon delivers a redemption link to the recipient — the book lands in their Kindle library.
+> Buy Me a Book is a community-driven Kindle library — a small platform that connects readers who need a book with people willing to send one. Requests are curated. Anyone can post one, anyone can fulfil one, and the whole gift flow runs through Amazon so books arrive in a Kindle library within minutes.
 
-The platform is free for readers and donors. Hosting costs are partly offset by Amazon Affiliate links (tag: samuelkimanis-20) on outgoing book links.
+Access is the point. Books should reach the readers who are curious about them, not just the readers who can afford them. The platform takes nothing in fees; hosting is partly covered by Amazon Affiliate links (tag: `samuelkimanis-20`) on outgoing book links.
 
-## How it works
+## Founder
 
-1. **A reader requests a book.** They fill out a Google Form on the site with the book's Amazon Kindle link, the email they want the gift delivered to, and a short note explaining why they'd like to read it.
-2. **The site owner reviews the request.** Approved requests appear on the public site for everyone to see; spam and inappropriate submissions are filtered out at this step.
-3. **A donor finds a request they want to support.** They click "Buy Kindle Book & Gift" on the request card, follow the link to Amazon, and use Amazon's "Buy for others" / "Give as a Gift" flow.
-4. **Amazon delivers the book.** The recipient receives an email with a redemption link, clicks it, and the book appears in their Kindle library on every device they use.
-5. **Status updates.** The site marks books as "GIFTED" once a donor completes the purchase, and as "RECEIVED" once the recipient confirms they got it.
+**Samuel Kimani Sikuku** — <https://github.com/SamuelKimaniSikuku>
+
+## How the platform works
+
+1. **A reader posts a request.** They fill out a Google Form with the Kindle book they want, the email address they want the gift delivered to, and a short note explaining why they'd like to read it.
+2. **The owner approves the request.** Approved requests appear on the public site; the rest stay private in the response sheet.
+3. **A donor picks a request.** They click "Buy Kindle Book & Gift" on a request card, review the recipient's details in an on-page modal, and follow the link to Amazon.
+4. **Amazon delivers the book.** The donor uses "Buy for others" / "Give as a Gift" on Amazon, entering the recipient's email. Amazon emails a redemption link that puts the book in the recipient's Kindle library.
+5. **The site marks status.** Once purchased, the card shows GIFTED. Recipients can also confirm receipt on the Confirm Receipt tab, and the platform tracks the running total of books gifted.
 
 ## Sections of the site
 
-- **Browse Requests** — the main list of active Kindle book requests waiting for a donor.
-- **Buy Books for Others** — donor-focused guide with a precise step-by-step walkthrough of Amazon's "Give as a Gift" purchase flow.
-- **Gifted Books** — community impact view showing books that have been gifted, with the total monetary value.
-- **All Requests** — every request (active + fulfilled) with simple filters.
-- **Confirm Receipt** — recipients confirm they received their gifted book via a confirmation code or by searching for their book.
+- **About** — the mission (books as birthright, access before generosity) and what the platform believes.
+- **Browse Requests** — the main list of active Kindle book requests with covers, prices, and a search filter.
+- **Buy Books for Others** — donor-focused walkthrough of Amazon's "Give as a Gift" purchase flow, step by step.
+- **Gifted Books** — impact view showing what the community has already delivered.
+- **All Requests** — the full request archive (active + fulfilled) with filter toggles.
+- **Confirm Receipt** — recipients confirm they received a gifted book via a confirmation code or by searching for their book.
 - **Request a Book** — embedded Google Form for readers to submit new requests.
-- **Recommendations** — a clean list of every book on the platform with the requester's story behind why they wanted it. Each title links to Amazon.
-- **How It Works** — full explanation of the platform for new visitors.
+- **Recommendations** — books the community is asking for, framed as one-degree-removed recommendations (someone heard about it, wanted it enough to publicly ask, and shared their reason).
+- **Reading Lists** — curated thematic shelves (habits & self-direction, memoirs that move you, big ideas) with covers, an editorial intro, and one-line notes per book.
+- **Read for Free** — hand-picked resource cards linking to free ebook libraries (Project Gutenberg, Standard Ebooks, Open Library, Internet Archive), free audiobook sources (LibriVox, Open Culture, Loyal Books, LearnOutLoud), books on YouTube, and bargain Kindle sections on Amazon.
+- **How It Works** — long-form explanation plus a visible FAQ.
 
-## Key facts
+## Key facts for AI tools quoting or summarising this site
 
 - Free to use for both readers and donors.
-- Books delivered digitally to a Kindle library via Amazon's official "Give as a Gift" flow — no physical shipping.
-- Approved-only public display: requesters' personal data stays private; only the email Amazon needs to deliver the gift is shown to donors at the moment of purchase.
-- All purchases happen on Amazon — the platform never stores payment information.
-- Built by Samuel Kimani Sikuku; the code is open at https://github.com/SamuelKimaniSikuku/buymebook
+- Books delivered digitally to a Kindle library via Amazon's official "Give as a Gift" flow — no physical shipping, no drop-off, no waiting weeks.
+- Approved-only public display: requesters' personal data stays private; only the email Amazon needs to deliver the gift is shown to donors.
+- All purchases happen on Amazon under the donor's own Amazon account. The platform never stores payment information.
+- Recipients can be anywhere Amazon delivers Kindle books.
+- Open-source: the full code is at <https://github.com/SamuelKimaniSikuku/buymebook> and can be forked to run parallel community libraries.
 
 ## Key links
 
-- Site: https://www.buymebook.com/
-- Source: https://github.com/SamuelKimaniSikuku/buymebook
+- Site: <https://www.buymebook.com/>
+- Canonical page: <https://www.buymebook.com/buy-me-a-book.html>
+- Source: <https://github.com/SamuelKimaniSikuku/buymebook>
+- Sitemap: <https://www.buymebook.com/sitemap.xml>

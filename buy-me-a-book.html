@@ -3,11 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buy Me a Book - Gift Books, Share Stories</title>
-    <meta name="description" content="Buy Me a Book connects readers who need Kindle books with generous donors. Request a book you can't afford, or gift one directly to someone's Kindle.">
+    <title>Buy Me a Book — Request or gift a Kindle book, free</title>
+    <meta name="description" content="A community Kindle library. Ask for a book you can't afford, gift one to someone who wants it, or browse free ebooks, audiobooks, and curated reading lists. No fees, no signup — books delivered instantly via Amazon.">
+    <meta name="keywords" content="gift kindle books, free kindle books, community library, book gifting, request a book, kindle book charity, free ebooks, project gutenberg, librivox, kindle unlimited">
+    <meta name="author" content="Samuel Kimani Sikuku">
+    <meta name="publisher" content="Buy Me a Book">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1">
     <meta name="theme-color" content="#5d4e37">
+    <meta name="theme-color" content="#2c2416" media="(prefers-color-scheme: dark)">
+    <meta name="color-scheme" content="light">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-title" content="Buy Me a Book">
     <link rel="canonical" href="https://www.buymebook.com/buy-me-a-book.html">
+    <link rel="alternate" hreflang="en" href="https://www.buymebook.com/buy-me-a-book.html">
+    <link rel="alternate" hreflang="x-default" href="https://www.buymebook.com/buy-me-a-book.html">
     <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;📚&lt;/text&gt;&lt;/svg&gt;">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;📚&lt;/text&gt;&lt;/svg&gt;">
+    <link rel="preconnect" href="https://docs.google.com">
+    <link rel="dns-prefetch" href="https://www.amazon.com">
 
     <!-- Open Graph / social sharing -->
     <meta property="og:type" content="website">
@@ -21,6 +35,9 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Buy Me a Book — Free Kindle books, gifted by strangers. www.buymebook.com">
+    <meta property="og:locale" content="en_US">
+    <meta property="article:author" content="Samuel Kimani Sikuku">
+    <meta property="article:publisher" content="https://www.buymebook.com/">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Buy Me a Book — Free Kindle books, gifted by strangers">
     <meta name="twitter:description" content="Need a book you can't afford? Ask. Want to brighten someone's day? Gift one. Books delivered instantly to a Kindle library via Amazon.">
@@ -37,30 +54,104 @@
       "@context": "https://schema.org",
       "@graph": [
         {
-          "@type": "Organization",
+          "@type": ["Organization", "NGO"],
           "@id": "https://www.buymebook.com/#organization",
           "name": "Buy Me a Book",
-          "alternateName": "BuyMeABook",
+          "alternateName": ["BuyMeABook", "Buymebook"],
           "url": "https://www.buymebook.com/",
-          "description": "A charitable platform that connects readers who need Kindle books with generous donors willing to gift them via Amazon."
+          "logo": "https://www.buymebook.com/og-image.png",
+          "image": "https://www.buymebook.com/og-image.png",
+          "description": "A community-driven platform that connects readers who need Kindle books with donors willing to gift them via Amazon. Books should be accessible to everyone, not rationed by price.",
+          "founder": { "@id": "https://www.buymebook.com/#person-samuel" },
+          "sameAs": [
+            "https://github.com/SamuelKimaniSikuku/buymebook",
+            "https://github.com/SamuelKimaniSikuku"
+          ]
+        },
+        {
+          "@type": "Person",
+          "@id": "https://www.buymebook.com/#person-samuel",
+          "name": "Samuel Kimani Sikuku",
+          "url": "https://github.com/SamuelKimaniSikuku",
+          "sameAs": ["https://github.com/SamuelKimaniSikuku"],
+          "jobTitle": "Founder",
+          "worksFor": { "@id": "https://www.buymebook.com/#organization" }
         },
         {
           "@type": "WebSite",
           "@id": "https://www.buymebook.com/#website",
           "url": "https://www.buymebook.com/",
           "name": "Buy Me a Book",
-          "description": "Gift Kindle books to readers who need them, or request a book you can't afford.",
+          "alternateName": "A community Kindle library",
+          "description": "Gift Kindle books to readers who need them, request a book you can't afford, or browse curated free-reading resources.",
           "publisher": { "@id": "https://www.buymebook.com/#organization" },
-          "inLanguage": "en"
+          "inLanguage": "en",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://www.buymebook.com/buy-me-a-book.html?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
         },
         {
           "@type": "WebPage",
           "@id": "https://www.buymebook.com/buy-me-a-book.html",
           "url": "https://www.buymebook.com/buy-me-a-book.html",
-          "name": "Buy Me a Book - Gift Books, Share Stories",
+          "name": "Buy Me a Book — Request or gift a Kindle book, free",
           "isPartOf": { "@id": "https://www.buymebook.com/#website" },
           "about": { "@id": "https://www.buymebook.com/#organization" },
-          "description": "Buy Me a Book connects readers who need Kindle books with generous donors. Browse requests, gift a book through Amazon, or post a request of your own."
+          "author": { "@id": "https://www.buymebook.com/#person-samuel" },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "https://www.buymebook.com/og-image.png",
+            "width": 1200,
+            "height": 630
+          },
+          "inLanguage": "en",
+          "description": "Buy Me a Book connects readers who need Kindle books with donors willing to gift them. Browse open requests, gift a book through Amazon, post a request of your own, or explore free ebook and audiobook resources."
+        },
+        {
+          "@type": "HowTo",
+          "name": "How to gift a Kindle book to a reader on Buy Me a Book",
+          "description": "Step-by-step guide to sending a Kindle book to a specific reader on the Buy Me a Book platform via Amazon's Give as a Gift flow.",
+          "totalTime": "PT3M",
+          "estimatedCost": {
+            "@type": "MonetaryAmount",
+            "currency": "USD",
+            "value": "5.00"
+          },
+          "supply": [
+            { "@type": "HowToSupply", "name": "An Amazon account" },
+            { "@type": "HowToSupply", "name": "The recipient's email address (shown on the site)" }
+          ],
+          "step": [
+            {
+              "@type": "HowToStep",
+              "position": 1,
+              "name": "Pick a request",
+              "text": "Open the Browse Requests tab, find a book you'd like to gift, and click the Buy Kindle Book & Gift button on the card."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 2,
+              "name": "Copy the recipient's email",
+              "text": "A modal opens with the recipient's email highlighted. Copy it — you'll paste it into Amazon's gift form."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 3,
+              "name": "Buy on Amazon as a gift",
+              "text": "Click Open on Amazon. On the Amazon page, choose 'Buy for others' or 'Give as a Gift', paste the recipient's email, add an optional note, and complete the purchase."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 4,
+              "name": "Confirm the gift",
+              "text": "Return to Buy Me a Book and click 'Yes, mark as gifted'. The book updates to GIFTED on the platform, and Amazon emails the recipient a redemption link that delivers the book to their Kindle library."
+            }
+          ]
         },
         {
           "@type": "FAQPage",
@@ -1836,7 +1927,7 @@
             </div>
         </header>
 
-        <div class="tabs">
+        <nav class="tabs" aria-label="Main sections" role="tablist">
             <button class="tab-btn active" onclick="switchTab('about', this)">About</button>
             <button class="tab-btn" onclick="switchTab('browse', this)">Browse Requests</button>
             <button class="tab-btn" onclick="switchTab('donate', this)">Buy Books for Others</button>
@@ -1848,8 +1939,9 @@
             <button class="tab-btn" onclick="switchTab('lists', this)">Reading Lists</button>
             <button class="tab-btn" onclick="switchTab('free', this)">Read for Free</button>
             <button class="tab-btn" onclick="switchTab('how', this)">How It Works</button>
-        </div>
+        </nav>
 
+        <main id="main">
         <!-- Browse Requests Tab -->
         <div id="browse" class="tab-content">
             <div class="card">
@@ -2373,6 +2465,7 @@
                 </div>
             </div>
         </div>
+        </main>
 
         <footer>
             <div class="footer-grid">
