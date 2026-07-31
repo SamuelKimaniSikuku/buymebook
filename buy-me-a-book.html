@@ -1557,6 +1557,216 @@
 
         .impact-cell { text-align: center; }
 
+        /* ============================================================
+           KINDLE-STYLE READER MODE
+           Theme (paper / sepia / dark), font scale, and brightness
+           toggled via a floating Aa button. Preferences persist in
+           localStorage.
+           ============================================================ */
+
+        /* Font scaling — applied to <html> so rem-based sizes scale together. */
+        html { font-size: calc(16px * var(--reader-scale, 1)); }
+
+        /* Brightness — a fixed dimmer overlay (screen darkens without
+           destroying image contrast the way filter:brightness does). */
+        .reader-dim {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 900;
+            transition: opacity 0.3s ease;
+        }
+
+        /* ---- Sepia theme ---- */
+        body.reader-sepia {
+            --parchment: #efe4c8;
+            --cream: #f7ecd0;
+            --ink: #3e2f1e;
+            --sepia: #6e5836;
+            --leather: #4a3a24;
+            --gold: #b58b2a;
+            --forest: #4a5a3a;
+            --shadow: rgba(62, 47, 30, 0.12);
+        }
+
+        /* ---- Dark theme (e-ink dark) ---- */
+        body.reader-dark {
+            --parchment: #1a1712;
+            --cream: #23201a;
+            --ink: #e9dfc8;
+            --sepia: #b8a988;
+            --leather: #d5c7a4;
+            --gold: #f0c657;
+            --forest: #a8bd9c;
+            --shadow: rgba(0, 0, 0, 0.45);
+        }
+        body.reader-dark::before { opacity: 0.35; }
+        body.reader-dark .card,
+        body.reader-dark .book-item,
+        body.reader-dark .resource-card,
+        body.reader-dark .reading-list-card,
+        body.reader-dark .faq-item,
+        body.reader-dark .modal-card,
+        body.reader-dark .trust-pill {
+            background: #23201a;
+            border-color: rgba(213, 199, 164, 0.18);
+        }
+        body.reader-dark .modal-backdrop { background: rgba(0, 0, 0, 0.75); }
+        body.reader-dark .search-input { background: #2d281f; color: var(--ink); }
+        body.reader-dark input,
+        body.reader-dark textarea { background: #2d281f; color: var(--ink); }
+        body.reader-dark .tab-btn { background: transparent; color: var(--leather); }
+        body.reader-dark .tab-btn.active { background: var(--leather); color: var(--parchment); }
+        body.reader-dark .amazon-btn { color: #23201a; }
+        body.reader-dark .book-price,
+        body.reader-dark .hero-counter strong,
+        body.reader-dark .hero-stat-num { color: var(--gold); }
+
+        /* ---- Floating "Aa" reader-settings button ---- */
+        .reader-fab {
+            position: fixed;
+            right: 1.2rem;
+            bottom: 1.2rem;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 1px solid rgba(93, 78, 55, 0.35);
+            background: var(--cream);
+            color: var(--leather);
+            font-family: 'Libre Baskerville', serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(44, 36, 22, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 950;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .reader-fab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(44, 36, 22, 0.28);
+            background: white;
+        }
+
+        .reader-fab .reader-fab-a-lg { font-size: 1.5rem; margin-right: 0.05em; }
+        .reader-fab .reader-fab-a-sm { font-size: 0.95rem; opacity: 0.75; vertical-align: baseline; }
+
+        /* ---- Reader settings panel ---- */
+        .reader-panel {
+            position: fixed;
+            right: 1.2rem;
+            bottom: 5.5rem;
+            width: 300px;
+            max-width: calc(100vw - 2.4rem);
+            background: var(--cream);
+            border: 1px solid rgba(93, 78, 55, 0.22);
+            border-radius: 6px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+            padding: 1.1rem 1.15rem;
+            z-index: 960;
+            animation: readerPanelIn 0.18s ease-out;
+        }
+
+        .reader-panel[hidden] { display: none; }
+
+        @keyframes readerPanelIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reader-panel-header {
+            font-family: 'Crimson Pro', serif;
+            font-size: 0.75rem;
+            color: var(--sepia);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 0.9rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid rgba(93, 78, 55, 0.15);
+        }
+
+        .reader-panel-row {
+            margin-bottom: 1rem;
+        }
+
+        .reader-panel-row:last-child { margin-bottom: 0; }
+
+        .reader-panel-label {
+            display: block;
+            font-family: 'Crimson Pro', serif;
+            color: var(--leather);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.45rem;
+        }
+
+        .reader-btn-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.35rem;
+        }
+
+        .reader-btn-row.four-col { grid-template-columns: repeat(4, 1fr); }
+
+        .reader-panel button.reader-opt {
+            font-family: 'Libre Baskerville', serif;
+            padding: 0.5rem 0.4rem;
+            border: 1px solid rgba(93, 78, 55, 0.25);
+            border-radius: 3px;
+            background: transparent;
+            color: var(--leather);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.15s ease;
+        }
+
+        .reader-panel button.reader-opt:hover {
+            border-color: var(--gold);
+        }
+
+        .reader-panel button.reader-opt.active {
+            background: var(--leather);
+            color: var(--cream);
+            border-color: var(--leather);
+        }
+
+        .reader-panel input[type="range"] {
+            width: 100%;
+            accent-color: var(--gold);
+        }
+
+        .reader-panel-close {
+            position: absolute;
+            top: 0.4rem;
+            right: 0.55rem;
+            width: 26px;
+            height: 26px;
+            border: none;
+            background: transparent;
+            color: var(--sepia);
+            font-size: 1.3rem;
+            line-height: 1;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .reader-panel-close:hover {
+            background: rgba(93, 78, 55, 0.1);
+            color: var(--leather);
+        }
+
+        @media (max-width: 500px) {
+            .reader-fab { right: 0.85rem; bottom: 0.85rem; width: 46px; height: 46px; font-size: 1.15rem; }
+            .reader-panel { right: 0.85rem; bottom: 4rem; }
+        }
+
         /* ========== Trust badge strip (donor reassurance) ========== */
         .trust-strip {
             display: grid;
@@ -1936,6 +2146,38 @@
 </head>
 <body>
     <div class="notification" id="notification"></div>
+
+    <!-- Kindle-style reader controls -->
+    <div class="reader-dim" id="readerDim" aria-hidden="true"></div>
+    <button class="reader-fab" id="readerFab" onclick="toggleReaderPanel()" aria-label="Open reading settings" aria-expanded="false" title="Reading settings"><span class="reader-fab-a-lg">A</span><span class="reader-fab-a-sm">a</span></button>
+    <div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+        <button class="reader-panel-close" onclick="toggleReaderPanel(false)" aria-label="Close reading settings" type="button">×</button>
+        <div class="reader-panel-header">Reading settings</div>
+
+        <div class="reader-panel-row">
+            <label class="reader-panel-label">Theme</label>
+            <div class="reader-btn-row">
+                <button type="button" class="reader-opt" data-theme="paper" onclick="setReaderTheme('paper')">Paper</button>
+                <button type="button" class="reader-opt" data-theme="sepia" onclick="setReaderTheme('sepia')">Sepia</button>
+                <button type="button" class="reader-opt" data-theme="dark" onclick="setReaderTheme('dark')">Dark</button>
+            </div>
+        </div>
+
+        <div class="reader-panel-row">
+            <label class="reader-panel-label">Text size</label>
+            <div class="reader-btn-row four-col">
+                <button type="button" class="reader-opt" data-size="0" onclick="setReaderSize(0)" style="font-size:0.75rem" title="Small">Aa</button>
+                <button type="button" class="reader-opt" data-size="1" onclick="setReaderSize(1)" style="font-size:0.9rem" title="Medium">Aa</button>
+                <button type="button" class="reader-opt" data-size="2" onclick="setReaderSize(2)" style="font-size:1.05rem" title="Large">Aa</button>
+                <button type="button" class="reader-opt" data-size="3" onclick="setReaderSize(3)" style="font-size:1.2rem" title="Extra large">Aa</button>
+            </div>
+        </div>
+
+        <div class="reader-panel-row">
+            <label class="reader-panel-label" for="readerBrightness">Brightness</label>
+            <input type="range" id="readerBrightness" min="30" max="100" step="5" value="100" oninput="setReaderBrightness(this.value)" aria-label="Screen brightness">
+        </div>
+    </div>
 
     <!-- Gift flow modal -->
     <div id="giftModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="giftModalTitle" hidden>
@@ -2841,8 +3083,84 @@
         async function init() {
             const yearEl = document.getElementById('footerYear');
             if (yearEl) yearEl.textContent = new Date().getFullYear();
+            initReaderSettings();
             await loadData();
             renderAll();
+        }
+
+        /* ================= Kindle-style reader controls ================= */
+        const READER_THEMES = ['paper', 'sepia', 'dark'];
+        const READER_SIZES  = [1, 1.1, 1.22, 1.38]; // scale multipliers for html font-size
+
+        function readerPrefs() {
+            try {
+                return JSON.parse(localStorage.getItem('readerPrefs') || '{}') || {};
+            } catch (e) { return {}; }
+        }
+        function saveReaderPrefs(p) {
+            try { localStorage.setItem('readerPrefs', JSON.stringify(p)); } catch (e) {}
+        }
+
+        function setReaderTheme(theme) {
+            if (READER_THEMES.indexOf(theme) === -1) theme = 'paper';
+            const body = document.body;
+            READER_THEMES.forEach(t => body.classList.remove('reader-' + t));
+            if (theme !== 'paper') body.classList.add('reader-' + theme);
+            // update active state on buttons
+            document.querySelectorAll('.reader-panel [data-theme]').forEach(b => {
+                b.classList.toggle('active', b.getAttribute('data-theme') === theme);
+            });
+            const p = readerPrefs(); p.theme = theme; saveReaderPrefs(p);
+        }
+
+        function setReaderSize(idx) {
+            idx = Math.max(0, Math.min(READER_SIZES.length - 1, parseInt(idx, 10) || 0));
+            document.documentElement.style.setProperty('--reader-scale', READER_SIZES[idx]);
+            document.querySelectorAll('.reader-panel [data-size]').forEach(b => {
+                b.classList.toggle('active', parseInt(b.getAttribute('data-size'), 10) === idx);
+            });
+            const p = readerPrefs(); p.size = idx; saveReaderPrefs(p);
+        }
+
+        function setReaderBrightness(val) {
+            const v = Math.max(30, Math.min(100, parseInt(val, 10) || 100));
+            // 100 -> 0 opacity, 30 -> 0.5 opacity (mild dim, keeps readability)
+            const dim = (100 - v) / 140;
+            const dimmer = document.getElementById('readerDim');
+            if (dimmer) dimmer.style.opacity = dim.toFixed(3);
+            const input = document.getElementById('readerBrightness');
+            if (input && parseInt(input.value, 10) !== v) input.value = v;
+            const p = readerPrefs(); p.brightness = v; saveReaderPrefs(p);
+        }
+
+        function toggleReaderPanel(force) {
+            const panel = document.getElementById('readerPanel');
+            const fab   = document.getElementById('readerFab');
+            if (!panel) return;
+            const show = typeof force === 'boolean' ? force : panel.hidden;
+            panel.hidden = !show;
+            if (fab) fab.setAttribute('aria-expanded', show ? 'true' : 'false');
+        }
+
+        function initReaderSettings() {
+            const p = readerPrefs();
+            setReaderTheme(p.theme || 'paper');
+            setReaderSize(typeof p.size === 'number' ? p.size : 0);
+            setReaderBrightness(typeof p.brightness === 'number' ? p.brightness : 100);
+            // Click-outside + Esc to close the panel.
+            document.addEventListener('click', function (e) {
+                const panel = document.getElementById('readerPanel');
+                const fab = document.getElementById('readerFab');
+                if (!panel || panel.hidden) return;
+                if (panel.contains(e.target) || (fab && fab.contains(e.target))) return;
+                toggleReaderPanel(false);
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    const panel = document.getElementById('readerPanel');
+                    if (panel && !panel.hidden) toggleReaderPanel(false);
+                }
+            });
         }
 
         // Re-pull the latest approved requests from the live sheet.
