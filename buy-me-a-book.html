@@ -1557,6 +1557,82 @@
 
         .impact-cell { text-align: center; }
 
+        /* ========== Trust badge strip (donor reassurance) ========== */
+        .trust-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 0.6rem;
+            margin: 0 0 1.75rem;
+        }
+
+        .trust-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.7rem 0.9rem;
+            background: var(--cream);
+            border: 1px solid rgba(93, 78, 55, 0.16);
+            border-radius: 4px;
+            font-family: 'Crimson Pro', serif;
+            font-size: 0.92rem;
+            color: var(--leather);
+            font-weight: 600;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .trust-pill:hover {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.04);
+        }
+
+        .trust-emoji {
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+
+        /* ========== Requester avatar chip ========== */
+        .requester-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            margin: 0.5rem 0 0.85rem;
+            font-family: 'Crimson Pro', serif;
+            color: var(--forest);
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+
+        .requester-avatar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            color: var(--cream);
+            font-family: 'Libre Baskerville', serif;
+            font-weight: 700;
+            font-size: 0.78rem;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+            box-shadow: 0 1px 3px rgba(44, 36, 22, 0.15);
+        }
+
+        .requester-chip-name { color: var(--leather); }
+
+        /* ========== Requester reason as pull-quote ========== */
+        .reason-quote {
+            position: relative;
+            padding: 0.35rem 0 0.35rem 0.9rem;
+            border-left: 3px solid rgba(212, 175, 55, 0.55);
+            font-family: 'Spectral', serif;
+            font-size: 0.95rem;
+            font-style: italic;
+            color: var(--leather);
+            line-height: 1.55;
+            margin: 0 0 1rem 0;
+        }
+
         /* ========== Gift modal ========== */
         .modal {
             position: fixed;
@@ -1946,7 +2022,14 @@
         <div id="browse" class="tab-content">
             <div class="card">
                 <h2>Book Requests Awaiting Your Kindness</h2>
-                
+
+                <div class="trust-strip" aria-label="Why you can gift safely">
+                    <div class="trust-pill"><span class="trust-emoji" aria-hidden="true">🆓</span><span>Free for everyone</span></div>
+                    <div class="trust-pill"><span class="trust-emoji" aria-hidden="true">⚡</span><span>Delivered instantly</span></div>
+                    <div class="trust-pill"><span class="trust-emoji" aria-hidden="true">🔒</span><span>No payment stored</span></div>
+                    <div class="trust-pill"><span class="trust-emoji" aria-hidden="true">💛</span><span>Powered by community</span></div>
+                </div>
+
                 <div class="stats">
                     <div class="stat-card">
                         <span class="stat-number" id="totalRequests">0</span>
@@ -2904,6 +2987,34 @@
                 .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
 
+        // Two-letter initials for a name (falls back to first char + '?').
+        function nameInitials(name) {
+            const parts = String(name || 'A').trim().split(/\s+/);
+            const first = (parts[0] || 'A').charAt(0);
+            const last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : '';
+            return (first + last).toUpperCase();
+        }
+
+        // Deterministic avatar color from the brand palette based on the name.
+        function nameToColor(name) {
+            const palette = ['#5d4e37', '#3a5a40', '#8b7355', '#c99c2e', '#a67c52'];
+            let h = 0;
+            const s = String(name || 'A');
+            for (let i = 0; i < s.length; i++) h = ((h * 31) + s.charCodeAt(i)) >>> 0;
+            return palette[h % palette.length];
+        }
+
+        // Small chip with an initial-avatar and the requester's name.
+        function requesterChipHtml(name) {
+            const safe = escapeHtmlGlobal(name || 'A reader');
+            const color = nameToColor(name);
+            const initials = escapeHtmlGlobal(nameInitials(name));
+            return '<div class="requester-chip">' +
+                     '<span class="requester-avatar" style="background:' + color + '" aria-hidden="true">' + initials + '</span>' +
+                     '<span>Requested by <span class="requester-chip-name">' + safe + '</span></span>' +
+                   '</div>';
+        }
+
         // Render the "Recently gifted" feed at the top of Browse Requests.
         // Newest gifts first (sheet rows are append-only, so we reverse).
         function renderActivityFeed() {
@@ -2954,24 +3065,25 @@
             visible.forEach(book => {
                 const bookItem = document.createElement('div');
                 bookItem.className = book.fulfilled ? 'book-item fulfilled' : 'book-item';
+                const firstName = String(book.requester || 'a reader').split(/\s+/)[0];
                 bookItem.innerHTML = `
                     ${book.fulfilled ? '<div class="fulfilled-badge">GIFTED</div>' : ''}
                     ${bookCoverHtml(book)}
-                    <div class="book-title">${book.title}</div>
-                    <div class="book-author">by ${book.author}</div>
-                    <div class="book-requester">Requested by ${book.requester}</div>
-                    <p style="color: var(--sepia); font-size: 0.95rem; margin-bottom: 1rem; font-style: italic;">"${book.reason}"</p>
+                    <div class="book-title">${escapeHtmlGlobal(book.title)}</div>
+                    <div class="book-author">by ${escapeHtmlGlobal(book.author)}</div>
+                    ${requesterChipHtml(book.requester)}
+                    <p class="reason-quote">${escapeHtmlGlobal(book.reason)}</p>
                     ${!book.fulfilled ? `
-                        <div class="book-price">${book.price}</div>
+                        <div class="book-price">${escapeHtmlGlobal(book.price)}</div>
                         <button class="amazon-btn" onclick="giftBook(${book.id})">
-                            🎁 Buy Kindle Book & Gift to ${book.requester.split(' ')[0]}
+                            🎁 Send this to ${escapeHtmlGlobal(firstName)}
                         </button>
                         <p style="font-size: 0.85rem; color: var(--sepia); margin-top: 0.5rem; text-align: center;">
-                            🔒 Recipient's email shown after clicking
+                            🔒 Recipient's email shown on next step
                         </p>
                     ` : `
                         <div style="text-align: center; padding: 1rem; color: var(--forest); background: rgba(46, 204, 113, 0.08); border-radius: 4px; margin-top: 1rem;">
-                            <strong>This book has been gifted — thank you, kind donor.</strong>
+                            <strong>This book has found a home — thank you, kind donor.</strong>
                         </div>
                     `}
                 `;
