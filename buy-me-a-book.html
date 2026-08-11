@@ -46,7 +46,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=Libre+Baskerville:wght@400;700&family=Spectral:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
 
     <!-- Structured data for search engines and AI tools -->
     <script type="application/ld+json">
@@ -210,15 +210,24 @@
     }
     </script>
     <style>
+        /* ================= Modern minimal design tokens =================
+           Kept the old variable names (parchment, cream, leather, gold…)
+           so every existing rule still resolves — just given them new
+           values that read cool + minimal. The Kindle reader Sepia
+           theme keeps the former warm-parchment identity as an option.
+           =============================================================== */
         :root {
-            --parchment: #f4f1e8;
-            --ink: #2c2416;
-            --sepia: #8b7355;
-            --leather: #5d4e37;
-            --gold: #d4af37;
-            --forest: #3a5a40;
-            --cream: #fffef7;
-            --shadow: rgba(44, 36, 22, 0.1);
+            --parchment: #fafaf7;             /* app background — warm-neutral off-white */
+            --cream: #ffffff;                 /* card background — pure white */
+            --ink: #171717;                   /* body text — near-black, slightly warm */
+            --sepia: #6b7280;                 /* muted body — cool gray */
+            --leather: #262626;               /* headings + strong text */
+            --gold: #d97757;                  /* accent — muted terracotta */
+            --forest: #16a34a;                /* success (gifted badges etc.) */
+            --border: #e7e5e0;                /* hairline dividers */
+            --shadow: 0 1px 2px rgba(20, 20, 20, 0.04);
+            --shadow-lg: 0 1px 2px rgba(20, 20, 20, 0.04), 0 8px 24px rgba(20, 20, 20, 0.06);
+            --shadow-hover: 0 1px 2px rgba(20, 20, 20, 0.04), 0 12px 32px rgba(20, 20, 20, 0.09);
         }
 
         * {
@@ -228,12 +237,15 @@
         }
 
         body {
-            font-family: 'Spectral', serif;
-            background: linear-gradient(135deg, var(--parchment) 0%, var(--cream) 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--parchment);
             color: var(--ink);
-            line-height: 1.6;
+            line-height: 1.65;
             min-height: 100vh;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-feature-settings: "ss01", "cv11";
         }
 
         body::before {
@@ -243,17 +255,17 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(58, 90, 64, 0.05) 0%, transparent 50%);
+            background-image:
+                radial-gradient(circle at 15% 15%, rgba(217, 119, 87, 0.04) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(22, 163, 74, 0.03) 0%, transparent 45%);
             pointer-events: none;
             z-index: 0;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1040px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 2rem 1.5rem 3rem;
             position: relative;
             z-index: 1;
         }
@@ -279,13 +291,14 @@
         }
 
         h1 {
-            font-family: 'Libre Baskerville', serif;
-            font-size: 2.85rem;
+            font-family: 'Fraunces', 'Libre Baskerville', serif;
+            font-size: 3rem;
             color: var(--leather);
             margin: 0;
-            font-weight: 700;
-            letter-spacing: -1.5px;
+            font-weight: 500;
+            letter-spacing: -0.035em;
             line-height: 1.05;
+            font-variation-settings: "opsz" 96;
         }
 
         .brand-sub {
@@ -477,39 +490,39 @@
         .tabs {
             display: flex;
             justify-content: center;
-            gap: 0.5rem;
-            margin: 2.25rem 0 3rem;
+            gap: 0.35rem;
+            margin: 2.5rem 0 3rem;
             flex-wrap: wrap;
         }
 
         .tab-btn {
-            font-family: 'Crimson Pro', serif;
-            padding: 0.65rem 1.5rem;
+            font-family: 'Inter', sans-serif;
+            padding: 0.55rem 1.1rem;
             background: transparent;
-            border: 1px solid rgba(93, 78, 55, 0.22);
-            color: var(--leather);
-            font-size: 1rem;
+            border: none;
+            color: var(--sepia);
+            font-size: 0.94rem;
             cursor: pointer;
-            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-            border-radius: 3px;
-            font-weight: 600;
-            letter-spacing: 0.1px;
+            transition: background 0.15s ease, color 0.15s ease;
+            border-radius: 8px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
         }
 
         .tab-btn:hover {
-            background: rgba(93, 78, 55, 0.07);
-            border-color: var(--leather);
+            background: rgba(23, 23, 23, 0.05);
+            color: var(--leather);
         }
 
         .tab-btn.active {
             background: var(--leather);
-            color: var(--cream);
-            border-color: var(--leather);
+            color: white;
+            font-weight: 600;
         }
 
         .tab-content {
             display: none;
-            animation: fadeIn 0.5s ease-out;
+            animation: fadeIn 0.4s ease-out;
         }
 
         .tab-content.active {
@@ -518,34 +531,38 @@
 
         .card {
             background: var(--cream);
-            border: 1px solid rgba(93, 78, 55, 0.2);
-            border-radius: 4px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 20px var(--shadow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: box-shadow 0.2s ease;
         }
 
         .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(44, 36, 22, 0.15);
+            box-shadow: var(--shadow-lg);
         }
 
         h2 {
-            font-family: 'Libre Baskerville', serif;
+            font-family: 'Fraunces', 'Libre Baskerville', serif;
             color: var(--leather);
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
-            border-left: 4px solid var(--gold);
-            padding-left: 1rem;
+            margin-bottom: 1.75rem;
+            font-size: 2.1rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            border-left: none;
+            padding-left: 0;
         }
 
         h3 {
-            font-family: 'Crimson Pro', serif;
-            color: var(--forest);
+            font-family: 'Fraunces', 'Libre Baskerville', serif;
+            color: var(--leather);
             margin-bottom: 1rem;
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: 1.35rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: 1.25;
         }
 
         .form-group {
@@ -556,24 +573,28 @@
             display: block;
             margin-bottom: 0.5rem;
             color: var(--leather);
-            font-weight: 600;
-            font-family: 'Crimson Pro', serif;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+            letter-spacing: -0.005em;
         }
 
         input, textarea, select {
             width: 100%;
-            padding: 0.8rem;
-            border: 2px solid rgba(93, 78, 55, 0.3);
+            padding: 0.7rem 0.85rem;
+            border: 1px solid var(--border);
             background: white;
-            font-family: 'Spectral', serif;
-            font-size: 1rem;
-            border-radius: 2px;
-            transition: border-color 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.98rem;
+            border-radius: 8px;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+            color: var(--ink);
         }
 
         input:focus, textarea:focus, select:focus {
             outline: none;
-            border-color: var(--gold);
+            border-color: var(--leather);
+            box-shadow: 0 0 0 3px rgba(23, 23, 23, 0.05);
         }
 
         textarea {
@@ -582,48 +603,51 @@
         }
 
         .btn {
-            font-family: 'Crimson Pro', serif;
-            padding: 1rem 2.5rem;
+            font-family: 'Inter', sans-serif;
+            padding: 0.75rem 1.5rem;
             background: var(--leather);
-            color: var(--cream);
+            color: white;
             border: none;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 2px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px var(--shadow);
+            transition: background 0.15s ease, transform 0.1s ease;
+            border-radius: 8px;
+            font-weight: 500;
+            letter-spacing: -0.005em;
+            box-shadow: var(--shadow);
         }
 
         .btn:hover {
-            background: var(--forest);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(44, 36, 22, 0.2);
+            background: #000;
+        }
+
+        .btn:active {
+            transform: translateY(1px);
         }
 
         .btn-secondary {
             background: var(--gold);
-            color: var(--ink);
+            color: white;
         }
 
         .btn-secondary:hover {
-            background: #c99c2e;
+            background: #c65f3f;
         }
 
         .book-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
+            gap: 1.25rem;
             margin-top: 2rem;
         }
 
         .book-item {
-            background: white;
-            border: 1px solid rgba(93, 78, 55, 0.16);
-            border-radius: 4px;
+            background: var(--cream);
+            border: 1px solid var(--border);
+            border-radius: 12px;
             padding: 1.6rem 1.5rem 1.4rem;
-            box-shadow: 0 1px 3px rgba(44, 36, 22, 0.04);
-            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+            box-shadow: var(--shadow);
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
             position: relative;
             overflow: hidden;
         }
@@ -640,12 +664,13 @@
         }
 
         .book-item:hover {
-            border-color: rgba(93, 78, 55, 0.32);
-            box-shadow: 0 4px 14px rgba(44, 36, 22, 0.08);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+            border-color: transparent;
         }
 
         .book-item.fulfilled {
-            background: #fafaf6;
+            background: #f7f7f5;
         }
 
         .book-item.fulfilled::before {
@@ -1086,21 +1111,25 @@
 
         .amazon-btn {
             background: var(--leather);
-            color: var(--cream);
-            padding: 0.75rem 1.5rem;
+            color: white;
+            padding: 0.75rem 1.25rem;
             border: none;
-            border-radius: 3px;
-            font-weight: 600;
+            border-radius: 8px;
+            font-weight: 500;
             cursor: pointer;
-            transition: background 0.2s ease;
+            transition: background 0.15s ease, transform 0.1s ease;
             width: 100%;
             font-size: 0.95rem;
-            font-family: 'Crimson Pro', serif;
-            letter-spacing: 0.2px;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.005em;
         }
 
         .amazon-btn:hover {
-            background: var(--forest);
+            background: #000;
+        }
+
+        .amazon-btn:active {
+            transform: translateY(1px);
         }
 
         .notification {
@@ -1580,15 +1609,20 @@
         }
 
         /* ---- Sepia theme ---- */
+        /* Sepia: the former warm parchment identity, kept as a
+           one-tap alternate for readers who prefer it. */
         body.reader-sepia {
-            --parchment: #efe4c8;
-            --cream: #f7ecd0;
-            --ink: #3e2f1e;
-            --sepia: #6e5836;
-            --leather: #4a3a24;
-            --gold: #b58b2a;
-            --forest: #4a5a3a;
-            --shadow: rgba(62, 47, 30, 0.12);
+            --parchment: #f4f1e8;
+            --cream: #fffef7;
+            --ink: #2c2416;
+            --sepia: #8b7355;
+            --leather: #5d4e37;
+            --gold: #d4af37;
+            --forest: #3a5a40;
+            --border: rgba(93, 78, 55, 0.2);
+            --shadow: 0 1px 3px rgba(44, 36, 22, 0.06);
+            --shadow-lg: 0 4px 20px rgba(44, 36, 22, 0.1);
+            --shadow-hover: 0 8px 30px rgba(44, 36, 22, 0.15);
         }
 
         /* ---- Dark theme (e-ink dark) ---- */
