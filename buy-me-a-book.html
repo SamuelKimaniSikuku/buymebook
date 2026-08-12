@@ -2478,19 +2478,41 @@
                     </ul>
                 </div>
 
-                <div class="form-embed">
-                    <iframe
-                        src="https://docs.google.com/forms/d/e/1FAIpQLScCLqN96YN2-al_gvsg25Bw9E38Pe46oNEVx6TiJ-zj5oUptw/viewform?embedded=true"
-                        title="Buy Me a Book — Kindle book request form"
-                        loading="lazy">
-                        Loading the request form…
-                    </iframe>
-                </div>
-
-                <p style="text-align: center; margin-top: 1rem; color: var(--sepia); font-size: 0.95rem;">
-                    Form not loading?
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScCLqN96YN2-al_gvsg25Bw9E38Pe46oNEVx6TiJ-zj5oUptw/viewform" target="_blank" rel="noopener" style="color: var(--leather); font-weight: 600;">Open the request form in a new tab</a>.
-                </p>
+                <form id="requestForm" onsubmit="submitRequest(event)" style="max-width: 640px;">
+                    <div class="form-group">
+                        <label for="reqName">Your name</label>
+                        <input type="text" id="reqName" required maxlength="80" placeholder="Jane Doe" autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="reqEmail">Your email <span style="color: var(--sepia); font-weight: 400;">(where Amazon sends the gift link)</span></label>
+                        <input type="email" id="reqEmail" required maxlength="120" placeholder="jane@example.com" autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="reqTitle">Book title</label>
+                        <input type="text" id="reqTitle" required maxlength="200" placeholder="To Kill a Mockingbird">
+                    </div>
+                    <div class="form-group">
+                        <label for="reqAuthor">Author</label>
+                        <input type="text" id="reqAuthor" required maxlength="120" placeholder="Harper Lee">
+                    </div>
+                    <div class="form-group">
+                        <label for="reqLink">Amazon Kindle link</label>
+                        <input type="url" id="reqLink" required maxlength="800" placeholder="https://www.amazon.com/dp/…">
+                    </div>
+                    <div class="form-group">
+                        <label for="reqReason">Why do you want this book?</label>
+                        <textarea id="reqReason" required maxlength="600" placeholder="Share your story — this is what donors read when deciding."></textarea>
+                    </div>
+                    <!-- Honeypot: invisible to humans, tempting to bots. -->
+                    <div style="position: absolute; left: -9999px;" aria-hidden="true">
+                        <label for="reqWebsite">Website</label>
+                        <input type="text" id="reqWebsite" tabindex="-1" autocomplete="off">
+                    </div>
+                    <button type="submit" class="btn" id="requestSubmitBtn">Submit request</button>
+                    <p style="margin-top: 0.9rem; color: var(--sepia); font-size: 0.88rem;">
+                        Requests are reviewed before appearing publicly — usually within a day or two. Your email is only shown to a donor at the moment they gift your book.
+                    </p>
+                </form>
             </div>
         </div>
 
@@ -2755,17 +2777,17 @@
 
                 <div class="callout" style="margin-top: 2.5rem;">
                     <h3>Tools</h3>
-                    <p class="callout-note" style="margin-top: 0;">Book requests load automatically from a curated Google Sheet each time the page opens.</p>
+                    <p class="callout-note" style="margin-top: 0;">Approved book requests load automatically from the platform database each time the page opens.</p>
                     <div style="margin: 1rem 0 0.5rem;">
                         <button class="btn" onclick="refreshFromSheet()" style="background: var(--leather); margin-right: 0.75rem;">
-                            Refresh from Sheet
+                            Refresh requests
                         </button>
                         <button class="btn" onclick="exportData()" style="background: var(--forest);">
                             Export Data
                         </button>
                     </div>
                     <p class="callout-note" style="font-size: 0.88rem;">
-                        <strong>Refresh:</strong> Reloads the latest approved requests from the Google Sheet.<br>
+                        <strong>Refresh:</strong> Reloads the latest approved requests.<br>
                         <strong>Export:</strong> Downloads the current list as a JSON file for backup.
                     </p>
                 </div>
@@ -2872,8 +2894,19 @@
              title | author | requester | reason | amazonLink |
              price | email | confirmCode | gifted | received
            ============================================================ */
-        const SHEET_ID = '164jj5UcaF5oUc2t__JsHa00elmflHJlLmqA95bk3Y_I';
-        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:csv&gid=0';
+        /* ------------------------------------------------------------
+           Data source: Supabase (Postgres + Row Level Security).
+           The anon key is public by design — RLS ensures it can only
+           read approved/gifted/received requests and insert pending
+           ones. Approvals happen in the Supabase dashboard.
+           ------------------------------------------------------------ */
+        const SUPA_URL = 'https://kejhukkyuksdgbvdmkmf.supabase.co';
+        const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtlamh1a2t5dWtzZGdidmRta21mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MjIzODYsImV4cCI6MjEwMjA5ODM4Nn0.-HrRbarzUv5fZgi1QXTsbJJkQIv4aP85tR-wgL0JRbM';
+        const supaHeaders = {
+            'apikey': SUPA_ANON,
+            'Authorization': 'Bearer ' + SUPA_ANON,
+            'Content-Type': 'application/json'
+        };
 
         let bookRequests = [];
         let currentFilter = 'all';
@@ -2983,63 +3016,47 @@
             return /^(yes|true|y|1|x|done|✓)$/i.test(String(v == null ? '' : v).trim());
         }
 
-        // Map parsed CSV rows -> book request objects.
-        function rowsToBooks(rows) {
-            if (!rows.length) return [];
-            const headers = rows[0].map(h => h.trim().toLowerCase().replace(/\s+/g, ''));
-            const at = name => headers.indexOf(name);
-            const col = {
-                title: at('title'), author: at('author'), requester: at('requester'),
-                reason: at('reason'), amazonLink: at('amazonlink'), price: at('price'),
-                email: at('email'), confirmCode: at('confirmcode'),
-                gifted: at('gifted'), received: at('received')
-            };
-            // Backward-compatibility: accept the old "kindleemail" header name.
-            if (col.email === -1) col.email = at('kindleemail');
-            const books = [];
-            for (let r = 1; r < rows.length; r++) {
-                const cells = rows[r];
-                const get = i => (i >= 0 && cells[i] != null ? String(cells[i]).trim() : '');
-                const title = get(col.title);
-                if (!title) continue; // skip blank rows
-                const n = books.length + 1;
-                const rawPrice = get(col.price);
+        // Map Supabase rows -> book request objects. Keeps a numeric id for
+        // the existing onclick wiring; the uuid rides along for API calls.
+        function supaRowsToBooks(rows) {
+            return (rows || []).map((r, i) => {
+                const rawPrice = String(r.price || '').trim();
                 const price = rawPrice
                     ? (/^[0-9]+(\.[0-9]+)?$/.test(rawPrice) ? '$' + rawPrice : rawPrice)
                     : 'Check Amazon';
-                books.push({
-                    id: n,
-                    title: title,
-                    author: get(col.author) || 'Unknown',
-                    requester: get(col.requester) || 'A reader',
-                    reason: get(col.reason),
-                    amazonLink: get(col.amazonLink),
+                return {
+                    id: i + 1,
+                    uuid: r.id,
+                    title: String(r.title || '').trim(),
+                    author: String(r.author || '').trim() || 'Unknown',
+                    requester: String(r.requester || '').trim() || 'A reader',
+                    reason: String(r.reason || '').trim(),
+                    amazonLink: String(r.amazon_link || '').trim(),
                     price: price,
-                    email: get(col.email),
-                    confirmCode: (get(col.confirmCode) || ('BOOK' + n + '-' + title.toUpperCase().replace(/[^A-Z]/g, '').substring(0, 8))).toUpperCase(),
-                    fulfilled: isYes(get(col.gifted)),
-                    received: isYes(get(col.received))
-                });
-            }
-            return books;
+                    email: String(r.email || '').trim(),
+                    confirmCode: String(r.confirm_code || '').trim().toUpperCase(),
+                    fulfilled: r.status === 'gifted' || r.status === 'received',
+                    received: r.status === 'received'
+                };
+            });
         }
 
-        // Load requests: try the live Google Sheet, then cache, then samples.
+        // Load requests from Supabase, then cache, then built-in samples.
         async function loadData() {
-            if (SHEET_ID && SHEET_ID.indexOf('PASTE_') === -1) {
-                try {
-                    const res = await fetch(SHEET_CSV_URL, { cache: 'no-store' });
-                    if (res.ok) {
-                        const books = rowsToBooks(parseCSV(await res.text()));
-                        if (books.length) {
-                            bookRequests = books;
-                            saveData(); // cache for offline fallback
-                            return;
-                        }
+            try {
+                const res = await fetch(SUPA_URL + '/rest/v1/book_requests' +
+                    '?select=id,title,author,requester,email,reason,amazon_link,price,status,confirm_code' +
+                    '&order=created_at.asc', { headers: supaHeaders, cache: 'no-store' });
+                if (res.ok) {
+                    const books = supaRowsToBooks(await res.json());
+                    if (books.length) {
+                        bookRequests = books;
+                        saveData(); // cache for offline fallback
+                        return;
                     }
-                } catch (e) {
-                    console.warn('Live request sheet unavailable — using cached/sample data.', e);
                 }
+            } catch (e) {
+                console.warn('Supabase unavailable — using cached/sample data.', e);
             }
             const cached = localStorage.getItem('bookCache');
             if (cached) {
@@ -3054,6 +3071,49 @@
         // Cache the current list so the site still works offline.
         function saveData() {
             try { localStorage.setItem('bookCache', JSON.stringify(bookRequests)); } catch (e) {}
+        }
+
+        // Submit a new request straight into Supabase (status=pending;
+        // it stays invisible until the owner approves it).
+        async function submitRequest(event) {
+            event.preventDefault();
+            // Honeypot tripped -> silently pretend success.
+            if (document.getElementById('reqWebsite').value) {
+                showNotification('Thank you! Your request has been submitted for review.');
+                document.getElementById('requestForm').reset();
+                return;
+            }
+            const btn = document.getElementById('requestSubmitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Submitting…';
+            const title = document.getElementById('reqTitle').value.trim();
+            const code = 'BOOK-' + Math.random().toString(36).slice(2, 6).toUpperCase() + '-' +
+                         title.toUpperCase().replace(/[^A-Z]/g, '').substring(0, 8);
+            try {
+                const res = await fetch(SUPA_URL + '/rest/v1/book_requests', {
+                    method: 'POST',
+                    headers: Object.assign({ 'Prefer': 'return=minimal' }, supaHeaders),
+                    body: JSON.stringify({
+                        title: title,
+                        author: document.getElementById('reqAuthor').value.trim(),
+                        requester: document.getElementById('reqName').value.trim(),
+                        email: document.getElementById('reqEmail').value.trim(),
+                        reason: document.getElementById('reqReason').value.trim(),
+                        amazon_link: document.getElementById('reqLink').value.trim(),
+                        status: 'pending',
+                        confirm_code: code
+                    })
+                });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                document.getElementById('requestForm').reset();
+                showNotification('📖 Request submitted! It will appear once reviewed — usually within a day or two.');
+            } catch (e) {
+                console.warn('Request submission failed', e);
+                showNotification('Something went wrong submitting your request. Please try again in a moment.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Submit request';
+            }
         }
 
         // Render the Recommendations tab as a clean bullet list of titles + authors.
@@ -3197,12 +3257,12 @@
             });
         }
 
-        // Re-pull the latest approved requests from the live sheet.
+        // Re-pull the latest approved requests from the database.
         async function refreshFromSheet() {
-            showNotification('🔄 Refreshing requests from the live sheet…');
+            showNotification('🔄 Refreshing requests…');
             await loadData();
             renderAll();
-            showNotification('✅ Requests updated from the sheet.');
+            showNotification('✅ Requests updated.');
         }
 
         function switchTab(tabName, button) {
@@ -3718,15 +3778,27 @@
             if (after) after();
         }
 
-        function confirmGifted() {
+        async function confirmGifted() {
             const book = bookRequests.find(b => b.id === giftingBookId);
             if (!book) { closeGiftModal(); return; }
+            const title = book.title;
+            // Optimistic local update; the RPC persists it for everyone.
             book.fulfilled = true;
             saveData();
             renderAll();
-            const title = book.title;
             closeGiftModal();
             showNotification('"' + title + '" marked as gifted — thank you for your generosity.');
+            if (book.uuid) {
+                try {
+                    await fetch(SUPA_URL + '/rest/v1/rpc/mark_gifted', {
+                        method: 'POST',
+                        headers: supaHeaders,
+                        body: JSON.stringify({ req_id: book.uuid })
+                    });
+                } catch (e) {
+                    console.warn('Could not persist gifted status; will retry on next visit.', e);
+                }
+            }
         }
 
         // Close the modal with the Escape key.
@@ -3826,31 +3898,38 @@
             confirmReceipt(book.id);
         }
 
-        function confirmReceipt(bookId) {
+        async function confirmReceipt(bookId) {
             const book = bookRequests.find(b => b.id === bookId);
             if (!book) return;
-            
+
             const confirmed = confirm(
                 `Confirm that you received:\n\n` +
                 `"${book.title}" by ${book.author}\n\n` +
-                `This will notify the donor and update our records.\n` +
+                `This will update our records.\n` +
                 `Click OK to confirm receipt.`
             );
-            
-            if (confirmed) {
-                book.received = true;
-                saveData(); // Save to localStorage
-                updateStats();
-                renderBookList();
-                renderDonateBookList();
-                renderGiftedBookList();
-                renderAllRequestsList(currentFilter);
-                renderConfirmBookList();
-                updateFilterCounts();
-                document.getElementById('confirmCodeInput').value = '';
-                document.getElementById('searchBookInput').value = '';
-                showNotification(`✅ Thank you for confirming receipt of "${book.title}"! Your donor has been notified.`);
+            if (!confirmed) return;
+
+            // Persist via the code-guarded RPC when we have a uuid; the
+            // function only flips gifted -> received with a matching code.
+            if (book.uuid && book.confirmCode) {
+                try {
+                    await fetch(SUPA_URL + '/rest/v1/rpc/confirm_received', {
+                        method: 'POST',
+                        headers: supaHeaders,
+                        body: JSON.stringify({ req_id: book.uuid, code: book.confirmCode })
+                    });
+                } catch (e) {
+                    console.warn('Could not persist receipt; will retry on next visit.', e);
+                }
             }
+
+            book.received = true;
+            saveData();
+            renderAll();
+            document.getElementById('confirmCodeInput').value = '';
+            document.getElementById('searchBookInput').value = '';
+            showNotification(`✅ Thank you for confirming receipt of "${book.title}"!`);
         }
 
         function exportData() {
