@@ -2185,6 +2185,367 @@
             color: rgba(93, 78, 55, 0.5);
             font-style: italic;
         }
+        /* ================================================================
+           REDESIGN V2 — slick structural layer
+           Sticky glass topbar, display hero with floating covers, aurora
+           background, dark footer, component depth. Appended last so it
+           overrides the base layer; reader-theme rules (higher
+           specificity) still win where they should.
+           ================================================================ */
+
+        body::before {
+            background-image:
+                radial-gradient(ellipse 60% 40% at 50% -5%, rgba(217, 119, 87, 0.10) 0%, transparent 60%),
+                radial-gradient(circle at 12% 25%, rgba(217, 119, 87, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 88% 70%, rgba(22, 163, 74, 0.04) 0%, transparent 40%);
+        }
+
+        /* ---- Sticky glass topbar ---- */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 800;
+            background: var(--parchment);
+            background: color-mix(in srgb, var(--parchment) 78%, transparent);
+            -webkit-backdrop-filter: saturate(1.6) blur(14px);
+            backdrop-filter: saturate(1.6) blur(14px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .topbar-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            min-height: 56px;
+        }
+
+        .topbar-brand {
+            font-family: 'Fraunces', 'Libre Baskerville', serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--leather);
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* Tab strip: one scrollable underline row */
+        .tabs {
+            display: flex;
+            justify-content: flex-start;
+            gap: 0.1rem;
+            margin: 0;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            align-self: stretch;
+            align-items: stretch;
+            mask-image: linear-gradient(90deg, #000 92%, transparent);
+            -webkit-mask-image: linear-gradient(90deg, #000 92%, transparent);
+        }
+
+        .tabs::-webkit-scrollbar { display: none; }
+
+        .tab-btn {
+            padding: 0 0.85rem;
+            border-radius: 0;
+            background: transparent;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--sepia);
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            display: flex;
+            align-items: center;
+        }
+
+        .tab-btn:hover {
+            background: transparent;
+            color: var(--leather);
+        }
+
+        .tab-btn.active {
+            background: transparent;
+            color: var(--leather);
+            font-weight: 600;
+            border-bottom-color: var(--gold);
+        }
+
+        /* ---- Hero ---- */
+        header.hero {
+            position: relative;
+            text-align: center;
+            padding: 4.5rem 0 4rem;
+            animation: fadeInDown 0.7s ease-out;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--leather);
+            background: var(--cream);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 0.4rem 0.95rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.6rem;
+        }
+
+        .hero-badge strong {
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .hero-badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 0 3px rgba(217, 119, 87, 0.18);
+        }
+
+        .hero-title {
+            font-family: 'Fraunces', 'Libre Baskerville', serif;
+            font-size: clamp(2.9rem, 7vw, 4.6rem);
+            font-weight: 500;
+            letter-spacing: -0.04em;
+            line-height: 1.02;
+            color: var(--leather);
+            margin: 0 0 1.4rem;
+            font-variation-settings: "opsz" 144;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .hero-sub {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.05rem;
+            color: var(--sepia);
+            max-width: 540px;
+            margin: 0 auto 2.1rem;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.98rem;
+            font-weight: 500;
+            padding: 0.8rem 1.6rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+            letter-spacing: -0.005em;
+        }
+
+        .hero-btn-primary {
+            background: linear-gradient(180deg, #333 0%, var(--leather) 100%);
+            color: #fff;
+            border: none;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.15), 0 6px 18px rgba(20,20,20,0.14);
+        }
+
+        .hero-btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15), 0 10px 26px rgba(20,20,20,0.2);
+        }
+
+        .hero-btn-ghost {
+            background: var(--cream);
+            color: var(--leather);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .hero-btn-ghost:hover {
+            border-color: var(--leather);
+            transform: translateY(-1px);
+        }
+
+        /* Floating covers */
+        .hero-covers { position: absolute; inset: 0; pointer-events: none; }
+
+        .hc {
+            position: absolute;
+            width: 118px;
+            border-radius: 7px;
+            box-shadow: 0 18px 40px rgba(20, 20, 20, 0.22), 0 4px 10px rgba(20, 20, 20, 0.12);
+            opacity: 0;
+            animation: hcIn 0.9s ease-out 0.3s forwards, hcFloat 7s ease-in-out 1.2s infinite alternate;
+        }
+
+        .hc-1 { left: 1%; top: 14%; transform: rotate(-9deg); }
+        .hc-2 { left: 7%; bottom: 4%; transform: rotate(5deg); width: 96px; animation-delay: 0.45s, 1.6s; }
+        .hc-3 { right: 1%; top: 12%; transform: rotate(8deg); }
+        .hc-4 { right: 7.5%; bottom: 3%; transform: rotate(-6deg); width: 96px; animation-delay: 0.6s, 2s; }
+
+        @keyframes hcIn {
+            from { opacity: 0; translate: 0 14px; }
+            to { opacity: 1; translate: 0 0; }
+        }
+
+        @keyframes hcFloat {
+            from { translate: 0 0; }
+            to { translate: 0 -10px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hc { animation: none; opacity: 1; }
+        }
+
+        @media (max-width: 1150px) {
+            .hero-covers { display: none; }
+        }
+
+        /* ---- Cards + sections ---- */
+        .card {
+            border-radius: 16px;
+            padding: 2.75rem;
+        }
+
+        h2 {
+            font-size: 2.3rem;
+            letter-spacing: -0.03em;
+        }
+
+        .book-item {
+            border-radius: 14px;
+        }
+
+        .book-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .book-cover {
+            border-radius: 6px;
+            box-shadow: 0 10px 26px rgba(20, 20, 20, 0.18);
+        }
+
+        .trust-pill,
+        .resource-card,
+        .reading-list-card,
+        .faq-item {
+            border-radius: 12px;
+        }
+
+        .btn,
+        .amazon-btn {
+            background: linear-gradient(180deg, #333 0%, var(--leather) 100%);
+        }
+
+        .btn:hover,
+        .amazon-btn:hover {
+            background: linear-gradient(180deg, #222 0%, #000 100%);
+        }
+
+        /* ---- Dark footer ---- */
+        footer {
+            background: #191817;
+            border-top: none;
+            border-radius: 20px;
+            padding: 3rem 2.75rem 2rem;
+            margin-top: 4rem;
+            color: #a8a29a;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .footer-col h4 {
+            color: #78716a;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 1.8px;
+            font-size: 0.72rem;
+        }
+
+        .footer-col p,
+        .footer-col li {
+            color: #a8a29a;
+            font-size: 0.92rem;
+        }
+
+        .footer-col .footer-brand {
+            color: #f5f2ec;
+            font-family: 'Fraunces', 'Libre Baskerville', serif;
+        }
+
+        footer a {
+            color: #d6d1c8 !important;
+            transition: color 0.15s ease;
+        }
+
+        footer a:hover {
+            color: var(--gold) !important;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            color: #78716a;
+        }
+
+        /* ---- Reader theme adjustments for new chrome ---- */
+        body.reader-dark .topbar {
+            background: rgba(26, 23, 18, 0.8);
+            border-bottom-color: rgba(213, 199, 164, 0.14);
+        }
+
+        body.reader-dark .hero-badge,
+        body.reader-dark .hero-btn-ghost {
+            background: #23201a;
+            border-color: rgba(213, 199, 164, 0.18);
+        }
+
+        body.reader-sepia .topbar {
+            background: color-mix(in srgb, #f4f1e8 82%, transparent);
+        }
+
+        /* ---- Mobile topbar ---- */
+        @media (max-width: 760px) {
+            .topbar-inner {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                padding: 0.6rem 1rem 0;
+            }
+            .topbar-brand {
+                text-align: center;
+                padding-bottom: 0.45rem;
+            }
+            .tabs {
+                min-height: 42px;
+            }
+            .tab-btn {
+                padding: 0 0.7rem;
+                font-size: 0.85rem;
+            }
+            header.hero {
+                padding: 3rem 0 2.75rem;
+            }
+            .hero-sub {
+                font-size: 0.98rem;
+            }
+            .card {
+                padding: 1.75rem 1.4rem;
+            }
+            footer {
+                padding: 2.25rem 1.4rem 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2275,33 +2636,44 @@
         </div>
     </div>
 
+    <div class="topbar">
+        <div class="topbar-inner">
+            <div class="topbar-brand"><span aria-hidden="true">📚</span> Buy&nbsp;Me&nbsp;a&nbsp;Book</div>
+            <nav class="tabs" aria-label="Main sections" role="tablist">
+                <button class="tab-btn active" onclick="switchTab('about', this)">About</button>
+                <button class="tab-btn" onclick="switchTab('browse', this)">Browse Requests</button>
+                <button class="tab-btn" onclick="switchTab('donate', this)">Give a Book</button>
+                <button class="tab-btn" onclick="switchTab('gifted', this)">Gifted</button>
+                <button class="tab-btn" onclick="switchTab('all-requests', this)">All Requests</button>
+                <button class="tab-btn" onclick="switchTab('confirm', this)">Confirm Receipt</button>
+                <button class="tab-btn" onclick="switchTab('request', this)">Request a Book</button>
+                <button class="tab-btn" onclick="switchTab('recommend', this)">Recommendations</button>
+                <button class="tab-btn" onclick="switchTab('lists', this)">Reading Lists</button>
+                <button class="tab-btn" onclick="switchTab('free', this)">Read for Free</button>
+                <button class="tab-btn" onclick="switchTab('how', this)">How It Works</button>
+            </nav>
+        </div>
+    </div>
+
     <div class="container">
-        <header>
-            <div class="brand-mark">
-                <span class="brand-emoji" aria-hidden="true">📚</span>
-                <h1>Buy Me a Book</h1>
-                <div class="brand-sub">books, gifted by strangers</div>
+        <header class="hero">
+            <div class="hero-covers" aria-hidden="true">
+                <img class="hc hc-1" src="https://images-na.ssl-images-amazon.com/images/P/B07D23CFGR.01._SCLZZZZZZZ_SX500_.jpg" alt="" loading="lazy" onload="if(this.naturalWidth<50)this.style.display='none'" onerror="this.style.display='none'">
+                <img class="hc hc-2" src="https://images-na.ssl-images-amazon.com/images/P/B072BLVM83.01._SCLZZZZZZZ_SX500_.jpg" alt="" loading="lazy" onload="if(this.naturalWidth<50)this.style.display='none'" onerror="this.style.display='none'">
+                <img class="hc hc-3" src="https://images-na.ssl-images-amazon.com/images/P/B0752XRB5F.01._SCLZZZZZZZ_SX500_.jpg" alt="" loading="lazy" onload="if(this.naturalWidth<50)this.style.display='none'" onerror="this.style.display='none'">
+                <img class="hc hc-4" src="https://images-na.ssl-images-amazon.com/images/P/B00555X8OA.01._SCLZZZZZZZ_SX500_.jpg" alt="" loading="lazy" onload="if(this.naturalWidth<50)this.style.display='none'" onerror="this.style.display='none'">
             </div>
-            <p class="tagline">For every reader who can't afford a book — and every stranger willing to send one.</p>
-            <p class="hero-how">Post a request. Someone donates it. Amazon delivers it to your Kindle in minutes.</p>
-            <div class="hero-counter" id="heroCounter" aria-live="polite">
-                <strong id="heroCounterNum">0</strong><span id="heroCounterLabel">books offered so far</span>
+            <div class="hero-badge" id="heroCounter" aria-live="polite">
+                <span class="hero-badge-dot" aria-hidden="true"></span>
+                <strong id="heroCounterNum">0</strong><span id="heroCounterLabel"> books offered so far</span>
+            </div>
+            <h1 class="hero-title">Books, gifted<br>by <em>strangers</em>.</h1>
+            <p class="hero-sub">For every reader who can't afford a book — and every stranger willing to send one. Post a request, someone donates it, and Amazon delivers it to your Kindle in minutes.</p>
+            <div class="hero-actions">
+                <button class="hero-btn hero-btn-primary" onclick="goToTab('browse')">Browse requests →</button>
+                <button class="hero-btn hero-btn-ghost" onclick="goToTab('request')">Ask for a book</button>
             </div>
         </header>
-
-        <nav class="tabs" aria-label="Main sections" role="tablist">
-            <button class="tab-btn active" onclick="switchTab('about', this)">About</button>
-            <button class="tab-btn" onclick="switchTab('browse', this)">Browse Requests</button>
-            <button class="tab-btn" onclick="switchTab('donate', this)">Buy Books for Others</button>
-            <button class="tab-btn" onclick="switchTab('gifted', this)">Gifted Books</button>
-            <button class="tab-btn" onclick="switchTab('all-requests', this)">All Requests</button>
-            <button class="tab-btn" onclick="switchTab('confirm', this)">Confirm Receipt</button>
-            <button class="tab-btn" onclick="switchTab('request', this)">Request a Book</button>
-            <button class="tab-btn" onclick="switchTab('recommend', this)">Recommendations</button>
-            <button class="tab-btn" onclick="switchTab('lists', this)">Reading Lists</button>
-            <button class="tab-btn" onclick="switchTab('free', this)">Read for Free</button>
-            <button class="tab-btn" onclick="switchTab('how', this)">How It Works</button>
-        </nav>
 
         <main id="main">
         <!-- Browse Requests Tab -->
