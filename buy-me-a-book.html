@@ -3297,16 +3297,6 @@
     </div>
 
     <script>
-        /* ============================================================
-           Live data source
-           ------------------------------------------------------------
-           Approved book requests are curated by the site owner in a
-           Google Sheet (the owner copies vetted Google Form submissions
-           into it). Only rows in that sheet appear on the site.
-           Expected columns (header row, any order):
-             title | author | requester | reason | amazonLink |
-             price | email | confirmCode | gifted | received
-           ============================================================ */
         /* ------------------------------------------------------------
            Data source: Supabase (Postgres + Row Level Security).
            The anon key is public by design — RLS ensures it can only
