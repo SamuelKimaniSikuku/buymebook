@@ -2514,6 +2514,36 @@
             background: color-mix(in srgb, #f4f1e8 82%, transparent);
         }
 
+        /* ---- Demo / sample request marking ---- */
+        .demo-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--parchment);
+            color: var(--sepia);
+            border: 1px dashed var(--sepia);
+            padding: 0.3rem 0.75rem;
+            border-radius: 999px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.68rem;
+            letter-spacing: 1.2px;
+            z-index: 10;
+        }
+
+        .demo-notice {
+            text-align: center;
+            padding: 0.9rem 1rem;
+            color: var(--sepia);
+            background: rgba(107, 114, 128, 0.07);
+            border: 1px dashed rgba(107, 114, 128, 0.35);
+            border-radius: 10px;
+            margin-top: 1rem;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            font-family: 'Inter', sans-serif;
+        }
+
         /* ---- Mobile topbar ---- */
         @media (max-width: 760px) {
             .topbar-inner {
@@ -3418,7 +3448,8 @@
                     email: String(r.email || '').trim(),
                     confirmCode: String(r.confirm_code || '').trim().toUpperCase(),
                     fulfilled: r.status === 'gifted' || r.status === 'received',
-                    received: r.status === 'received'
+                    received: r.status === 'received',
+                    isDemo: r.is_demo === true
                 };
             });
         }
@@ -3427,7 +3458,7 @@
         async function loadData() {
             try {
                 const res = await fetch(SUPA_URL + '/rest/v1/book_requests' +
-                    '?select=id,title,author,requester,email,reason,amazon_link,price,status,confirm_code' +
+                    '?select=id,title,author,requester,email,reason,amazon_link,price,status,confirm_code,is_demo' +
                     '&order=created_at.asc', { headers: supaHeaders, cache: 'no-store' });
                 if (res.ok) {
                     const books = supaRowsToBooks(await res.json());
@@ -3861,13 +3892,13 @@
                 bookItem.className = book.fulfilled ? 'book-item fulfilled' : 'book-item';
                 const firstName = String(book.requester || 'a reader').split(/\s+/)[0];
                 bookItem.innerHTML = `
-                    ${book.fulfilled ? '<div class="fulfilled-badge">GIFTED</div>' : ''}
+                    ${book.isDemo ? '<div class="demo-badge">SAMPLE</div>' : book.fulfilled ? '<div class="fulfilled-badge">GIFTED</div>' : ''}
                     ${bookCoverHtml(book)}
                     <div class="book-title">${escapeHtmlGlobal(book.title)}</div>
                     <div class="book-author">by ${escapeHtmlGlobal(book.author)}</div>
                     ${requesterChipHtml(book.requester)}
                     <p class="reason-quote">${escapeHtmlGlobal(book.reason)}</p>
-                    ${!book.fulfilled ? `
+                    ${book.isDemo ? demoNoticeHtml() : !book.fulfilled ? `
                         <div class="book-price">${escapeHtmlGlobal(book.price)}</div>
                         <button class="amazon-btn" onclick="giftBook(${book.id})">
                             🎁 Send this to ${escapeHtmlGlobal(firstName)}
@@ -3920,11 +3951,11 @@
                         </div>
                     </div>
                     
-                    ${!book.fulfilled ? `
-                        <button class="amazon-btn" onclick="giftBook(${book.id})" style="background: #ff9900; font-size: 1.05rem; padding: 1rem;">
-                            🛒 Buy Kindle Edition & Gift to ${book.requester.split(' ')[0]}
+                    ${book.isDemo ? demoNoticeHtml() : !book.fulfilled ? `
+                        <button class="amazon-btn" onclick="giftBook(${book.id})" style="font-size: 1.05rem; padding: 1rem;">
+                            🎁 Send this to ${book.requester.split(' ')[0]}
                         </button>
-                        
+
                         <p style="font-size: 0.8rem; color: var(--sepia); margin-top: 0.8rem; text-align: center; line-height: 1.4;">
                             💝 Digital book delivered instantly to ${book.requester.split(' ')[0]}'s Kindle<br>
                             🔒 Recipient's email shown after clicking<br>
@@ -4019,16 +4050,16 @@
                 const bookItem = document.createElement('div');
                 bookItem.className = book.fulfilled ? 'book-item fulfilled' : 'book-item';
                 bookItem.innerHTML = `
-                    ${book.fulfilled ? '<div class="fulfilled-badge">GIFTED</div>' : '<div class="active-badge">ACTIVE</div>'}
+                    ${book.isDemo ? '<div class="demo-badge">SAMPLE</div>' : book.fulfilled ? '<div class="fulfilled-badge">GIFTED</div>' : '<div class="active-badge">ACTIVE</div>'}
                     ${bookCoverHtml(book)}
                     <div class="book-title">${book.title}</div>
                     <div class="book-author">by ${book.author}</div>
                     <div class="book-requester">Requested by ${book.requester}</div>
                     <p style="color: var(--sepia); font-size: 0.95rem; margin-bottom: 1rem; font-style: italic;">"${book.reason}"</p>
                     <div class="book-price">${book.price}</div>
-                    ${!book.fulfilled ? `
+                    ${book.isDemo ? demoNoticeHtml() : !book.fulfilled ? `
                         <button class="amazon-btn" onclick="giftBook(${book.id})">
-                            🎁 Buy Kindle Book & Gift to ${book.requester.split(' ')[0]}
+                            🎁 Send this to ${book.requester.split(' ')[0]}
                         </button>
                         <p style="font-size: 0.85rem; color: var(--sepia); margin-top: 0.5rem; text-align: center;">
                             🔒 Recipient's email shown after clicking
@@ -4057,12 +4088,21 @@
             document.getElementById('filter' + filter.charAt(0).toUpperCase() + filter.slice(1)).classList.add('active');
         }
 
+        // Shared notice rendered in place of the gift button on sample rows.
+        function demoNoticeHtml() {
+            return '<div class="demo-notice">This is a sample request that shows how the platform works — it can\'t be gifted. Real requests appear with a working gift button.</div>';
+        }
+
         // The book currently being gifted via the modal.
         let giftingBookId = null;
 
         function giftBook(bookId) {
             const book = bookRequests.find(b => b.id === bookId);
             if (!book || !book.amazonLink) return;
+            if (book.isDemo) {
+                showNotification('This is a sample request — it can\'t be gifted. Browse the real ones!');
+                return;
+            }
 
             giftingBookId = bookId;
             const recipientEmail = book.email || 'No email on file — contact the platform';
