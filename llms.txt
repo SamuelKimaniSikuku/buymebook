@@ -10,9 +10,9 @@ Access is the point. Books should reach the readers who are curious about them, 
 
 ## How the platform works
 
-1. **A reader posts a request.** They fill out a Google Form with the Kindle book they want, the email address they want the gift delivered to, and a short note explaining why they'd like to read it.
-2. **The owner approves the request.** Approved requests appear on the public site; the rest stay private in the response sheet.
-3. **A donor picks a request.** They click "Buy Kindle Book & Gift" on a request card, review the recipient's details in an on-page modal, and follow the link to Amazon.
+1. **A reader posts a request.** They fill out a short on-site form with the Kindle book they want, the email address they want the gift delivered to, and a short note explaining why they'd like to read it.
+2. **The owner approves the request.** Submissions are held privately (invisible to the public) until approved; approved requests appear on the site. Sample/demo requests are labeled "SAMPLE" and cannot be gifted.
+3. **A donor picks a request.** They click "Send this to…" on a request card, review the recipient's details in an on-page modal, and follow the link to Amazon.
 4. **Amazon delivers the book.** The donor uses "Buy for others" / "Give as a Gift" on Amazon, entering the recipient's email. Amazon emails a redemption link that puts the book in the recipient's Kindle library.
 5. **The site marks status.** Once purchased, the card shows GIFTED. Recipients can also confirm receipt on the Confirm Receipt tab, and the platform tracks the running total of books gifted.
 
@@ -24,7 +24,7 @@ Access is the point. Books should reach the readers who are curious about them, 
 - **Gifted Books** — impact view showing what the community has already delivered.
 - **All Requests** — the full request archive (active + fulfilled) with filter toggles.
 - **Confirm Receipt** — recipients confirm they received a gifted book via a confirmation code or by searching for their book.
-- **Request a Book** — embedded Google Form for readers to submit new requests.
+- **Request a Book** — a short on-site form for readers to submit new requests (reviewed before publishing).
 - **Recommendations** — books the community is asking for, framed as one-degree-removed recommendations (someone heard about it, wanted it enough to publicly ask, and shared their reason).
 - **Reading Lists** — curated thematic shelves (habits & self-direction, memoirs that move you, big ideas) with covers, an editorial intro, and one-line notes per book.
 - **Read for Free** — hand-picked resource cards linking to free ebook libraries (Project Gutenberg, Standard Ebooks, Open Library, Internet Archive), free audiobook sources (LibriVox, Open Culture, Loyal Books, LearnOutLoud), books on YouTube, and bargain Kindle sections on Amazon.
