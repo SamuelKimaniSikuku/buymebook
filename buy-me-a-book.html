@@ -2524,6 +2524,91 @@
             background: color-mix(in srgb, #f4f1e8 82%, transparent);
         }
 
+        /* ---- Reviews ---- */
+        .review-card {
+            display: flex;
+            gap: 1.15rem;
+            align-items: flex-start;
+            background: var(--cream);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.4rem 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .review-cover {
+            width: 72px;
+            border-radius: 5px;
+            box-shadow: 0 8px 20px rgba(20, 20, 20, 0.16);
+            flex-shrink: 0;
+        }
+
+        .review-body { flex: 1; min-width: 0; }
+
+        .review-title {
+            font-family: 'Fraunces', 'Libre Baskerville', serif;
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: var(--leather);
+            letter-spacing: -0.01em;
+            line-height: 1.3;
+        }
+
+        .review-author {
+            font-family: 'Inter', sans-serif;
+            color: var(--sepia);
+            font-size: 0.88rem;
+            margin: 0.1rem 0 0.4rem;
+        }
+
+        .review-stars {
+            color: var(--gold);
+            font-size: 0.95rem;
+            letter-spacing: 2px;
+            margin-bottom: 0.55rem;
+        }
+
+        .review-stars .star-empty { color: var(--border); }
+
+        .review-text {
+            font-family: 'Inter', sans-serif;
+            color: var(--ink);
+            font-size: 0.95rem;
+            line-height: 1.65;
+            white-space: pre-wrap;
+            margin-bottom: 0.6rem;
+        }
+
+        .review-meta {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            color: var(--sepia);
+        }
+
+        .review-meta strong { color: var(--leather); font-weight: 600; }
+
+        .star-input { display: flex; gap: 0.25rem; }
+
+        .star-btn {
+            font-size: 1.7rem;
+            line-height: 1;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--border);
+            transition: color 0.12s ease, transform 0.12s ease;
+            padding: 0.15rem;
+        }
+
+        .star-btn:hover { transform: scale(1.15); }
+        .star-btn.lit { color: var(--gold); }
+
+        @media (max-width: 560px) {
+            .review-card { flex-direction: column; }
+            .review-cover { width: 64px; }
+        }
+
         /* ---- Demo / sample request marking ---- */
         .demo-badge {
             position: absolute;
@@ -2689,6 +2774,7 @@
                 <button class="tab-btn" onclick="switchTab('request', this)">Request a Book</button>
                 <button class="tab-btn" onclick="switchTab('recommend', this)">Recommendations</button>
                 <button class="tab-btn" onclick="switchTab('lists', this)">Reading Lists</button>
+                <button class="tab-btn" onclick="switchTab('reviews', this)">Reviews</button>
                 <button class="tab-btn" onclick="switchTab('free', this)">Read for Free</button>
                 <button class="tab-btn" onclick="switchTab('how', this)">How It Works</button>
             </nav>
@@ -2962,6 +3048,64 @@
                 </p>
                 <div id="readingListsContainer">
                     <p style="text-align: center; color: var(--sepia); padding: 2rem;">Loading reading lists…</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviews Tab -->
+        <div id="reviews" class="tab-content">
+            <div class="card">
+                <h2>⭐ Book Reviews</h2>
+                <p style="margin-bottom: 2rem; color: var(--sepia); font-size: 1.05rem; line-height: 1.6;">
+                    Honest reviews from our community — what a book actually gave the person who read it. Read before you request; write one after you finish.
+                </p>
+
+                <div id="reviewsList">
+                    <p style="text-align: center; color: var(--sepia); padding: 2rem;">Loading reviews…</p>
+                </div>
+
+                <div style="border-top: 1px solid var(--border); margin: 3rem 0 0; padding-top: 2.25rem;">
+                    <h3>✍️ Write a review</h3>
+                    <p style="color: var(--sepia); margin-bottom: 1.5rem; font-size: 0.96rem;">
+                        Finished a book that moved you — gifted through the platform or not? Share what it gave you. Reviews are checked before appearing, usually within a day or two.
+                    </p>
+                    <form id="reviewForm" onsubmit="submitReview(event)" style="max-width: 640px;">
+                        <div class="form-group">
+                            <label for="revName">Your name</label>
+                            <input type="text" id="revName" required maxlength="80" placeholder="Jane Doe" autocomplete="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="revTitle">Book title</label>
+                            <input type="text" id="revTitle" required maxlength="200" placeholder="Educated">
+                        </div>
+                        <div class="form-group">
+                            <label for="revAuthor">Author</label>
+                            <input type="text" id="revAuthor" required maxlength="120" placeholder="Tara Westover">
+                        </div>
+                        <div class="form-group">
+                            <label>Your rating</label>
+                            <div class="star-input" id="starInput" role="radiogroup" aria-label="Rating out of 5">
+                                <button type="button" class="star-btn" data-star="1" onclick="setReviewRating(1)" aria-label="1 star">★</button>
+                                <button type="button" class="star-btn" data-star="2" onclick="setReviewRating(2)" aria-label="2 stars">★</button>
+                                <button type="button" class="star-btn" data-star="3" onclick="setReviewRating(3)" aria-label="3 stars">★</button>
+                                <button type="button" class="star-btn" data-star="4" onclick="setReviewRating(4)" aria-label="4 stars">★</button>
+                                <button type="button" class="star-btn" data-star="5" onclick="setReviewRating(5)" aria-label="5 stars">★</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="revLink">Amazon link <span style="color: var(--sepia); font-weight: 400;">(optional — shows the cover)</span></label>
+                            <input type="url" id="revLink" maxlength="800" placeholder="https://www.amazon.com/dp/…">
+                        </div>
+                        <div class="form-group">
+                            <label for="revText">Your review</label>
+                            <textarea id="revText" required maxlength="2500" style="min-height: 140px;" placeholder="What did this book give you? What kind of reader would you hand it to?"></textarea>
+                        </div>
+                        <div style="position: absolute; left: -9999px;" aria-hidden="true">
+                            <label for="revWebsite">Website</label>
+                            <input type="text" id="revWebsite" tabindex="-1" autocomplete="off">
+                        </div>
+                        <button type="submit" class="btn" id="reviewSubmitBtn">Submit review</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -3291,6 +3435,7 @@
                         <li><a href="#" onclick="goToTab('gifted'); return false;">Gifted Books</a></li>
                         <li><a href="#" onclick="goToTab('recommend'); return false;">Recommendations</a></li>
                         <li><a href="#" onclick="goToTab('lists'); return false;">Reading Lists</a></li>
+                        <li><a href="#" onclick="goToTab('reviews'); return false;">Reviews</a></li>
                         <li><a href="#" onclick="goToTab('free'); return false;">Read for Free</a></li>
                         <li><a href="#" onclick="goToTab('how'); return false;">How It Works</a></li>
                         <li><a href="#" onclick="goToTab('about'); return false;">About</a></li>
@@ -3495,6 +3640,103 @@
             try { localStorage.setItem('bookCache', JSON.stringify(bookRequests)); } catch (e) {}
         }
 
+        /* ================= Book reviews ================= */
+        let bookReviews = [];
+        let reviewRating = 0;
+
+        async function loadReviews() {
+            try {
+                const res = await fetch(SUPA_URL + '/rest/v1/book_reviews' +
+                    '?select=id,created_at,title,author,reviewer,rating,review,amazon_link' +
+                    '&order=created_at.desc', { headers: supaHeaders, cache: 'no-store' });
+                if (res.ok) { bookReviews = await res.json(); return; }
+            } catch (e) {
+                console.warn('Reviews unavailable.', e);
+            }
+            bookReviews = [];
+        }
+
+        function starsHtml(rating) {
+            const r = Math.max(0, Math.min(5, parseInt(rating, 10) || 0));
+            if (!r) return '';
+            return '<div class="review-stars">' + '★'.repeat(r) +
+                   '<span class="star-empty">' + '★'.repeat(5 - r) + '</span></div>';
+        }
+
+        function renderReviews() {
+            const list = document.getElementById('reviewsList');
+            if (!list) return;
+            if (!bookReviews.length) {
+                list.innerHTML = '<div style="text-align:center;padding:2.5rem;color:var(--sepia);">' +
+                    '<h3 style="color:var(--gold);margin-bottom:0.75rem;">No reviews yet</h3>' +
+                    '<p>Be the first — the form below takes two minutes.</p></div>';
+                return;
+            }
+            list.innerHTML = bookReviews.map(r => {
+                const coverUrl = getBookCoverUrl({ amazonLink: r.amazon_link });
+                const cover = coverUrl
+                    ? '<img class="review-cover" src="' + coverUrl + '" alt="" loading="lazy" onload="if(this.naturalWidth<50)this.style.display=\'none\'" onerror="this.style.display=\'none\'">'
+                    : '';
+                const when = new Date(r.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                return '<article class="review-card">' + cover +
+                    '<div class="review-body">' +
+                        '<div class="review-title">' + escapeHtmlGlobal(r.title) + '</div>' +
+                        '<div class="review-author">by ' + escapeHtmlGlobal(r.author || 'Unknown') + '</div>' +
+                        starsHtml(r.rating) +
+                        '<p class="review-text">' + escapeHtmlGlobal(r.review) + '</p>' +
+                        '<p class="review-meta">Reviewed by <strong>' + escapeHtmlGlobal(r.reviewer) + '</strong> · ' + when + '</p>' +
+                    '</div></article>';
+            }).join('');
+        }
+
+        function setReviewRating(n) {
+            reviewRating = n;
+            document.querySelectorAll('#starInput .star-btn').forEach(b => {
+                b.classList.toggle('lit', parseInt(b.getAttribute('data-star'), 10) <= n);
+            });
+        }
+
+        async function submitReview(event) {
+            event.preventDefault();
+            if (document.getElementById('revWebsite').value) {
+                showNotification('Thank you! Your review has been submitted for checking.');
+                document.getElementById('reviewForm').reset();
+                return;
+            }
+            if (!reviewRating) {
+                showNotification('Please tap a star rating before submitting.');
+                return;
+            }
+            const btn = document.getElementById('reviewSubmitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Submitting…';
+            try {
+                const res = await fetch(SUPA_URL + '/rest/v1/book_reviews', {
+                    method: 'POST',
+                    headers: Object.assign({ 'Prefer': 'return=minimal' }, supaHeaders),
+                    body: JSON.stringify({
+                        title: document.getElementById('revTitle').value.trim(),
+                        author: document.getElementById('revAuthor').value.trim(),
+                        reviewer: document.getElementById('revName').value.trim(),
+                        rating: reviewRating,
+                        review: document.getElementById('revText').value.trim(),
+                        amazon_link: document.getElementById('revLink').value.trim() || null,
+                        status: 'pending'
+                    })
+                });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                document.getElementById('reviewForm').reset();
+                setReviewRating(0);
+                showNotification('⭐ Review submitted! It will appear once checked — usually within a day or two.');
+            } catch (e) {
+                console.warn('Review submission failed', e);
+                showNotification('Something went wrong submitting your review. Please try again in a moment.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Submit review';
+            }
+        }
+
         // Submit a new request straight into Supabase (status=pending;
         // it stays invisible until the owner approves it).
         async function submitRequest(event) {
@@ -3593,6 +3835,7 @@
             renderConfirmBookList();
             renderRecommendList();
             renderReadingLists();
+            renderReviews();
             updateFilterCounts();
         }
 
@@ -3600,7 +3843,7 @@
             const yearEl = document.getElementById('footerYear');
             if (yearEl) yearEl.textContent = new Date().getFullYear();
             initReaderSettings();
-            await loadData();
+            await Promise.all([loadData(), loadReviews()]);
             renderAll();
         }
 

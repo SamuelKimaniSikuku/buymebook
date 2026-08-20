@@ -27,6 +27,7 @@ Access is the point. Books should reach the readers who are curious about them, 
 - **Request a Book** — a short on-site form for readers to submit new requests (reviewed before publishing).
 - **Recommendations** — books the community is asking for, framed as one-degree-removed recommendations (someone heard about it, wanted it enough to publicly ask, and shared their reason).
 - **Reading Lists** — curated thematic shelves (habits & self-direction, memoirs that move you, big ideas) with covers, an editorial intro, and one-line notes per book.
+- **Reviews** — community book reviews with star ratings; anyone can submit one via the on-site form (reviewed before publishing).
 - **Read for Free** — hand-picked resource cards linking to free ebook libraries (Project Gutenberg, Standard Ebooks, Open Library, Internet Archive), free audiobook sources (LibriVox, Open Culture, Loyal Books, LearnOutLoud), books on YouTube, and bargain Kindle sections on Amazon.
 - **How It Works** — long-form explanation plus a visible FAQ.
 
