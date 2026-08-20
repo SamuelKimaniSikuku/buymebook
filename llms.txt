@@ -42,6 +42,7 @@ Access is the point. Books should reach the readers who are curious about them, 
 ## Key links
 
 - Site: <https://www.buymebook.com/>
+- LinkedIn: <https://www.linkedin.com/company/136074509/>
 - Canonical page: <https://www.buymebook.com/buy-me-a-book.html>
 - Source: <https://github.com/SamuelKimaniSikuku/buymebook>
 - Sitemap: <https://www.buymebook.com/sitemap.xml>
