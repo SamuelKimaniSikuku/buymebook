@@ -1,157 +1,52 @@
-# 📚 Buy Me a Book
+# Buy Me a Book
 
-A beautiful, literary-themed platform connecting book lovers who need books with generous donors who can gift them. Like "Buy Me a Coffee" but for books!
+A lightweight community site for readers who cannot afford the books they need, built with African readers in mind.
 
-![Buy Me a Book](https://img.shields.io/badge/status-active-success.svg)
-![Platform](https://img.shields.io/badge/platform-web-blue.svg)
+**Live:** https://www.buymebook.com/buy-me-a-book.html
 
-## 🌟 Live Demo
+## Main journeys
 
-Visit the live site: [Your GitHub Pages URL will go here]
+- **Request a book:** a short moderated request form, with a persistent confirmation code after submission.
+- **Give a book:** search open requests and follow the existing Amazon Kindle gift flow.
+- **Read for free:** textbooks, classics, children’s stories, and audiobooks available without waiting for a donor.
 
-## ✨ Features
+The More menu retains receipt confirmation, gifted books, the request archive, recommendations, reading lists, reviews, and the project’s story. Navigation supports direct hash links and browser history.
 
-- **Request Books**: People in need can post book requests with Amazon links and shipping addresses
-- **Browse Requests**: Donors can see all active book requests with requester stories
-- **One-Click Gifting**: Purchase books directly through Amazon and ship to recipients
-- **Beautiful Design**: Warm, literary aesthetic with serif fonts and cozy bookstore vibes
-- **Amazon Integration**: Secure purchasing through Amazon with affiliate support
-- **Responsive**: Works perfectly on desktop, tablet, and mobile
+## Files and hosting
 
-## 🚀 How It Works
+- `buy-me-a-book.html` — accessible page structure and content.
+- `site.css` — responsive layouts, system fonts, and reading themes.
+- `site.js` — navigation, rendering, Supabase requests, and reader preferences.
+- `index.html` — redirects the root URL to the main page.
+- `CNAME` — the existing custom domain for GitHub Pages.
 
-### For Book Requesters
-1. Find your desired book on Amazon and copy the link
-2. Fill out the request form with book details and shipping address
-3. Share why the book is important to you
-4. Wait for a generous donor to gift it to you!
+No build step or frontend framework is required. GitHub Pages serves the files from the existing repository configuration. To view locally, serve this directory with any static HTTP server (for example, `python3 -m http.server 8000`).
 
-### For Donors
-1. Browse book requests and read the stories
-2. Click to purchase on Amazon (with affiliate link)
-3. Use the provided shipping address to send directly to the recipient
-4. Change someone's life through the power of reading!
+## Data and moderation
 
-## 🛠️ Tech Stack
+The frontend uses the existing Supabase REST API with its public anon key. Row Level Security and existing database policies remain the authority for access. New requests and reviews are submitted as `pending`; approve them in the Supabase dashboard.
 
-- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
-- **Fonts**: Google Fonts (Libre Baskerville, Crimson Pro, Spectral)
-- **Integration**: Amazon Affiliate Program
-- **Hosting**: GitHub Pages (recommended)
+Existing endpoints:
 
-## 📦 Installation
+- `book_requests`: requests and their status.
+- `book_reviews`: approved reviews and pending submissions.
+- `rpc/mark_gifted`: records a donor’s gift confirmation.
+- `rpc/confirm_received`: records receipt using the request ID and code.
 
-### Quick Start
+Sample requests (`is_demo`) are excluded from public lists and totals. Successful empty responses stay empty. If loading fails, saved real requests can be shown with a clear stale-data notice; otherwise the interface offers retry. Request and gift success states appear only after a successful server response.
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/buy-me-a-book.git
-   cd buy-me-a-book
-   ```
+Do not put service-role keys in the frontend. Recipient email addresses are available to donors through the current public data model; this UI is not an access-control layer. Database privacy changes require separate backend work.
 
-2. **Open the file**
-   Simply open `buy-me-a-book.html` in your browser - no build process needed!
+## Kindle country restrictions
 
-### Deploy to GitHub Pages
+Amazon requires a Kindle gift recipient to be in the same country as the giver. The site explains this before purchase but does not verify country eligibility. Confirm eligibility with the recipient before buying; do not promise worldwide Kindle gifting or automatic gift-card conversion.
 
-1. Go to your repository on GitHub
-2. Click **Settings** → **Pages**
-3. Under "Source", select **main** branch
-4. Click **Save**
-5. Your site will be live at `https://YOUR_USERNAME.github.io/buy-me-a-book/`
+[Amazon’s gifting rules](https://www.amazon.com/gp/help/customer/display.html?nodeId=GVWGP284MQ6ZRM59)
 
-## 🔧 Configuration
+Free-reading resources provide another route to books without a donor or Kindle gift. Amazon affiliate links retain the tag `samuelkimanis-20`.
 
-### Amazon Affiliate ID
+## Validation of the simplified interface
 
-The affiliate ID is already set to `samuelkimanis-20`. To change it:
+The redesign was checked with mocked DOM scenarios for navigation, search, sample filtering, moderation payloads, request success/failure, safe Amazon links, gift and receipt persistence, focus return, empty data, blocked storage, and offline cache. No real requests, gifts, or payments were created during these checks.
 
-1. Open `buy-me-a-book.html`
-2. Search for `tag=samuelkimanis-20`
-3. Replace with your Amazon Affiliate tag
-4. Save and commit
-
-### Adding a Backend (Optional)
-
-Currently, this is a frontend-only demo with sample data. To make it production-ready:
-
-**Recommended Backends:**
-- **Firebase**: Free tier, real-time database
-- **Supabase**: Open-source Firebase alternative
-- **MongoDB Atlas**: Free tier available
-- **Netlify + Fauna**: Serverless option
-
-**What You'll Need:**
-- Database to store book requests
-- User authentication
-- Email notifications
-- Request moderation/approval system
-
-## 📁 Project Structure
-
-```
-buy-me-a-book/
-├── buy-me-a-book.html    # Main application file
-├── README.md             # This file
-├── LICENSE              # MIT License
-└── .gitignore           # Git ignore rules
-```
-
-## 🎨 Customization
-
-### Colors
-The color scheme uses CSS variables in `:root`:
-- `--parchment`: Background color
-- `--ink`: Text color
-- `--leather`: Primary accent
-- `--gold`: Secondary accent
-
-Change these in the `<style>` section to customize the theme.
-
-### Fonts
-Using Google Fonts:
-- **Libre Baskerville**: Headers
-- **Crimson Pro**: Subheaders and buttons
-- **Spectral**: Body text
-
-## 🤝 Contributing
-
-Contributions are welcome! Here's how:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 Future Enhancements
-
-- [ ] Backend database integration
-- [ ] User authentication and profiles
-- [ ] Email notifications when books are gifted
-- [ ] Request moderation system
-- [ ] Book categories and filtering
-- [ ] Search functionality
-- [ ] Social sharing features
-- [ ] Analytics dashboard
-- [ ] Mobile app version
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 💖 Acknowledgments
-
-- Inspired by the "Buy Me a Coffee" platform
-- Built with love for book lovers everywhere
-- Amazon Affiliate Program for enabling book gifting
-
-## 📧 Contact
-
-Samuel Kimanis - [Your Email]
-
-Project Link: [https://github.com/YOUR_USERNAME/buy-me-a-book](https://github.com/YOUR_USERNAME/buy-me-a-book)
-
----
-
-**Built with ❤️ for readers everywhere** | Connect readers • Share stories • Change lives
+The older `GITHUB_SETUP_GUIDE.md` describes an earlier version; use the current files and Supabase setup above for this implementation.
