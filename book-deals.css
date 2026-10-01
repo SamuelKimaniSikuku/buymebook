@@ -1,0 +1,55 @@
+/* Use the site's reader-theme tokens so this shelf follows Paper/Sepia/Dark. */
+#deals { scroll-margin-top: 6.5rem; }
+#deals .deals-eyebrow {
+    color: var(--sepia);
+    font-size: .72rem;
+    font-weight: 650;
+    letter-spacing: .13em;
+    margin-bottom: .7rem;
+}
+#deals h2 { margin-bottom: .7rem; }
+.deals-intro { color: var(--sepia); max-width: 42rem; }
+.deals-disclosure { font-size: .78rem; color: var(--sepia); margin-top: .7rem; }
+.deals-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .7rem 1.5rem;
+    padding: 1.1rem 0;
+    margin: 1.3rem 0;
+    border-block: 1px solid var(--border);
+    font-size: .8rem;
+    color: var(--sepia);
+}
+.deals-all-link { color: var(--leather); font-weight: 600; text-underline-offset: 4px; }
+.deals-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.deal-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 1.4rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--cream);
+}
+.deal-category { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--sepia); margin-bottom: .55rem; }
+#deals .deal-title { font-family: 'Fraunces', 'Libre Baskerville', serif; font-size: 1.25rem; line-height: 1.3; margin: 0; color: var(--leather); }
+.deal-author { color: var(--sepia); font-size: .86rem; margin: .35rem 0 .75rem; }
+.deal-note { font-size: .9rem; margin-bottom: 1.1rem; }
+.deal-link {
+    color: var(--leather);
+    font-size: .82rem;
+    font-weight: 650;
+    text-decoration: none;
+    border-top: 1px solid var(--border);
+    padding-top: .9rem;
+    margin-top: auto;
+}
+.deal-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+.deal-link:focus-visible, .deals-all-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
+.deals-note { font-size: .78rem; color: var(--sepia); line-height: 1.6; margin-top: 1.4rem; }
+@media (max-width: 600px) {
+    .deals-grid { grid-template-columns: 1fr; }
+    .deal-card { padding: 1.15rem; }
+}

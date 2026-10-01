@@ -1,0 +1,51 @@
+{
+  "marketplace": "Amazon.com (US)",
+  "checkedAt": "2026-10-01T07:39:00Z",
+  "expiresAt": "2026-10-02T07:39:00Z",
+  "source": "https://www.amazon.com/amz-books/book-deals?filters=v1%3AFORMAT%5Bkindle_edition%5D",
+  "collection": "Kindle Monthly Deals",
+  "books": [
+    {
+      "asin": "B000FC1LOC",
+      "title": "My Sister’s Keeper",
+      "author": "Jodi Picoult",
+      "category": "Literary fiction",
+      "note": "A family story about sisterhood, medical choices and the right to decide your own future."
+    },
+    {
+      "asin": "B0BTZ9RH26",
+      "title": "Think Faster, Talk Smarter",
+      "author": "Matt Abrahams",
+      "category": "Communication",
+      "note": "Practical ways to find your words when a conversation puts you on the spot."
+    },
+    {
+      "asin": "B0CV1QC4QW",
+      "title": "Now or Never",
+      "author": "Janet Evanovich",
+      "category": "Mystery · Stephanie Plum, book 31",
+      "note": "Bounty hunter Stephanie Plum juggles dangerous fugitives and two very complicated engagements."
+    },
+    {
+      "asin": "B0C7DZV68Q",
+      "title": "The Girls We Sent Away",
+      "author": "Meagan Church",
+      "category": "Historical fiction",
+      "note": "A young woman sent to a maternity home in the 1960s fights to choose her own path."
+    },
+    {
+      "asin": "B0D54DB3T9",
+      "title": "The House of My Mother",
+      "author": "Shari Franke",
+      "category": "Memoir",
+      "note": "A daughter’s account of life behind a famous family vlog and her search for freedom."
+    },
+    {
+      "asin": "B0GP36DJYJ",
+      "title": "No One to Miss Me",
+      "author": "Cathy Glass",
+      "category": "Fostering memoir",
+      "note": "A former foster child returns to Cathy’s doorstep carrying a troubling secret."
+    }
+  ]
+}

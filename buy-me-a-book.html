@@ -219,6 +219,8 @@
       ]
     }
     </script>
+    <link rel="stylesheet" href="book-deals.css">
+    <script src="book-deals.js" defer></script>
     <style>
         /* ================= Modern minimal design tokens =================
            Kept the old variable names (parchment, cream, leather, gold…)
@@ -2767,6 +2769,7 @@
             <nav class="tabs" aria-label="Main sections" role="tablist">
                 <button class="tab-btn active" onclick="switchTab('about', this)">About</button>
                 <button class="tab-btn" onclick="switchTab('browse', this)">Browse Requests</button>
+                <button class="tab-btn" onclick="switchTab('deals', this)">Book Deals</button>
                 <button class="tab-btn" onclick="switchTab('donate', this)">Give a Book</button>
                 <button class="tab-btn" onclick="switchTab('gifted', this)">Gifted</button>
                 <button class="tab-btn" onclick="switchTab('all-requests', this)">All Requests</button>
@@ -3022,6 +3025,23 @@
                         Requests are reviewed before appearing publicly — usually within a day or two. Your email is only shown to a donor at the moment they gift your book.
                     </p>
                 </form>
+            </div>
+        </div>
+
+        <!-- Curated Amazon Kindle deals; independent of community data loading. -->
+        <div id="deals" class="tab-content">
+            <div class="card">
+                <p class="deals-eyebrow">THE DEALS SHELF · AMAZON US</p>
+                <h2>Good books. A little less.</h2>
+                <p class="deals-intro">A small selection from Amazon’s Kindle book deals. Find your next read, then check the current price on Amazon.</p>
+                <p class="deals-disclosure">As an Amazon Associate I earn from qualifying purchases.</p>
+                <div class="deals-toolbar">
+                    <p id="dealsStatus" role="status">Explore the latest Kindle offers on Amazon.</p>
+                    <a class="deals-all-link" href="https://www.amazon.com/amz-books/book-deals?filters=v1%3AFORMAT%5Bkindle_edition%5D&amp;tag=samuelkimanis-20" target="_blank" rel="sponsored noopener">Browse all Kindle deals ↗</a>
+                </div>
+                <div id="dealsGrid" class="deals-grid"></div>
+                <noscript><p>To see our selected books, enable JavaScript. You can also browse all Kindle deals using the link above.</p></noscript>
+                <p class="deals-note">Offers can change or end at any time. Prices, eligibility and Kindle gifting options depend on your country and Amazon account. Check the Kindle edition and final price before buying.</p>
             </div>
         </div>
 
@@ -3434,6 +3454,7 @@
                         <li><a href="#" onclick="goToTab('browse'); return false;">Browse Requests</a></li>
                         <li><a href="#" onclick="goToTab('gifted'); return false;">Gifted Books</a></li>
                         <li><a href="#" onclick="goToTab('recommend'); return false;">Recommendations</a></li>
+                        <li><a href="#deals" onclick="goToTab('deals'); return false;">Book Deals</a></li>
                         <li><a href="#" onclick="goToTab('lists'); return false;">Reading Lists</a></li>
                         <li><a href="#" onclick="goToTab('reviews'); return false;">Reviews</a></li>
                         <li><a href="#" onclick="goToTab('free'); return false;">Read for Free</a></li>
