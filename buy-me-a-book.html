@@ -219,8 +219,8 @@
       ]
     }
     </script>
-    <link rel="stylesheet" href="book-deals.css">
-    <script src="book-deals.js" defer></script>
+    <link rel="stylesheet" href="book-deals.css?v=2">
+    <script src="book-deals.js?v=2" defer></script>
     <style>
         /* ================= Modern minimal design tokens =================
            Kept the old variable names (parchment, cream, leather, gold…)
@@ -3039,7 +3039,36 @@
                     <p id="dealsStatus" role="status">Explore the latest Kindle offers on Amazon.</p>
                     <a class="deals-all-link" href="https://www.amazon.com/amz-books/book-deals?filters=v1%3AFORMAT%5Bkindle_edition%5D&amp;tag=samuelkimanis-20" target="_blank" rel="sponsored noopener">Browse all Kindle deals ↗</a>
                 </div>
+                <div id="dealsControls" class="deals-controls" hidden>
+                    <div class="deals-control">
+                        <label for="dealsGenre">Genre</label>
+                        <select id="dealsGenre"><option value="all">All genres</option></select>
+                    </div>
+                    <div class="deals-control">
+                        <label for="dealsRating">Community rating</label>
+                        <select id="dealsRating" aria-describedby="dealsReviewNote">
+                            <option value="all">All ratings</option>
+                            <option value="4.5">4.5 stars &amp; up</option>
+                            <option value="4">4 stars &amp; up</option>
+                            <option value="3">3 stars &amp; up</option>
+                            <option value="unreviewed">Not yet reviewed</option>
+                        </select>
+                    </div>
+                    <div class="deals-control">
+                        <label for="dealsSort">Sort by</label>
+                        <select id="dealsSort">
+                            <option value="featured">Our selection</option>
+                            <option value="rating">Highest rated</option>
+                            <option value="reviews">Most reviewed</option>
+                            <option value="title">Title A–Z</option>
+                        </select>
+                    </div>
+                    <button id="dealsReset" class="deals-reset" type="button">Reset filters</button>
+                </div>
+                <p id="dealsReviewNote" class="deals-review-note"></p>
+                <p id="dealsResults" class="deals-results" role="status" aria-live="polite"></p>
                 <div id="dealsGrid" class="deals-grid"></div>
+                <p id="dealsEmpty" class="deals-empty" hidden>No books match these filters. Try another genre or reset the filters.</p>
                 <noscript><p>To see our selected books, enable JavaScript. You can also browse all Kindle deals using the link above.</p></noscript>
                 <p class="deals-note">Offers can change or end at any time. Prices, eligibility and Kindle gifting options depend on your country and Amazon account. Check the Kindle edition and final price before buying.</p>
             </div>
@@ -3663,18 +3692,34 @@
 
         /* ================= Book reviews ================= */
         let bookReviews = [];
+        let bookReviewsStatus = 'loading';
         let reviewRating = 0;
+
+        // Share only the book identifiers and ratings already approved for public display.
+        function getBookDealReviews() {
+            return {
+                status: bookReviewsStatus,
+                reviews: bookReviews.map(r => ({ id: r.id, title: r.title, author: r.author, rating: r.rating, amazon_link: r.amazon_link }))
+            };
+        }
 
         async function loadReviews() {
             try {
                 const res = await fetch(SUPA_URL + '/rest/v1/book_reviews' +
                     '?select=id,created_at,title,author,reviewer,rating,review,amazon_link' +
-                    '&order=created_at.desc', { headers: supaHeaders, cache: 'no-store' });
-                if (res.ok) { bookReviews = await res.json(); return; }
+                    '&status=eq.approved&order=created_at.desc', { headers: supaHeaders, cache: 'no-store' });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const reviews = await res.json();
+                if (!Array.isArray(reviews)) throw new Error('Invalid reviews response');
+                bookReviews = reviews;
+                bookReviewsStatus = 'ready';
             } catch (e) {
                 console.warn('Reviews unavailable.', e);
+                bookReviews = [];
+                bookReviewsStatus = 'unavailable';
+            } finally {
+                window.dispatchEvent(new Event('bookreviewschange'));
             }
-            bookReviews = [];
         }
 
         function starsHtml(rating) {

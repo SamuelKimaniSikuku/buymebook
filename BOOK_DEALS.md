@@ -11,7 +11,7 @@ The browser account used for checking was outside the US, so the product pages s
 ## Update the selection
 
 1. Check the live Amazon US Kindle deals collection and the individual Kindle editions.
-2. Edit `book-deals.json`: use the Kindle ASIN, title, author, a short category, and an original note. Avoid selecting ordinary recommendations, print editions, membership trials, or coming-soon offers as current Kindle deals.
+2. Edit `book-deals.json`: use the Kindle ASIN, title, author, a short category, a `genres` array, and an original note. Use consistent genre names, such as `Fiction`, `Nonfiction`, `Historical fiction`, or `Biography & memoir`; a book can appear under several genres. Avoid selecting ordinary recommendations, print editions, membership trials, or coming-soon offers as current Kindle deals.
 3. Set `checkedAt` to the actual UTC verification time and `expiresAt` to no later than 24 hours afterwards (or an earlier known offer end).
 4. Preview using `python3 -m http.server 8765 --bind 127.0.0.1` and open `http://127.0.0.1:8765/buy-me-a-book.html#deals`.
 5. Publish through the repository's existing GitHub Pages process.
@@ -23,3 +23,13 @@ The browser hides the curated cards when the check is more than 24 hours old, wh
 The curated version intentionally shows no numeric prices or discount percentages. [Amazon's Associates policies](https://affiliate-program.amazon.com/help/operating/policies) limit price and availability displays to Amazon-served content or data obtained through its approved APIs. For refreshed prices and savings, use [Amazon Creators API](https://affiliate-program.amazon.com/creatorsapi/docs/) with the site's approved Associates account. Keep credentials in a server-side secret store, never in this public repository or browser code. API access has separate eligibility requirements; having an affiliate tag alone does not establish API access.
 
 Future integration must validate the Kindle edition, currency, reference-price basis, access restrictions and offer expiry, and follow Amazon's refresh, attribution and timestamp requirements. Do not populate prices from search snippets or compare Kindle prices against paperback list prices.
+
+## Genre and review filters
+
+Visitors can combine genre and minimum community rating, choose unreviewed books, and sort by the curated order, highest rating, most community reviews, or title. The rating is the arithmetic mean of the site's approved reader ratings, with the review count displayed alongside it. It is explicitly labelled as a **Buy Me a Book community** rating, not an Amazon rating.
+
+The existing review read now explicitly requests `status=approved`. The page shares only book identity, rating and review ID with the deals renderer. Matching uses the Amazon US ASIN first; when no ASIN can be extracted it requires both the normalized title and author. Known different ASINs are kept separate. Invalid ratings and duplicate review IDs are excluded. Unrated books sort after rated books and are not treated as zero-star books. A review outage is labelled unavailable, rather than being mistaken for no reviews.
+
+At launch there are no approved community reviews. Rating thresholds and review-based sorts become available when matching approved reviews exist. Genre and alphabetical sorting work immediately. Reviews can arrive after the deal cards without resetting the visitor's genre selection. [Amazon's policy, participation requirement 6(t)](https://affiliate-program.amazon.com/help/operating/policies) also restricts reuse of its customer reviews and star ratings to API-authorized content; do not manually copy Amazon ratings into this feed.
+
+Run `node --test tests/book-deals.test.cjs` to check expiry, safe links, matching, genre/rating combinations, sorting, missing ratings and late-loading review data.

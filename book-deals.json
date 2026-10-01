@@ -10,6 +10,7 @@
       "title": "My Sister’s Keeper",
       "author": "Jodi Picoult",
       "category": "Literary fiction",
+      "genres": ["Fiction", "Literary fiction"],
       "note": "A family story about sisterhood, medical choices and the right to decide your own future."
     },
     {
@@ -17,6 +18,7 @@
       "title": "Think Faster, Talk Smarter",
       "author": "Matt Abrahams",
       "category": "Communication",
+      "genres": ["Nonfiction", "Self-development", "Communication"],
       "note": "Practical ways to find your words when a conversation puts you on the spot."
     },
     {
@@ -24,6 +26,7 @@
       "title": "Now or Never",
       "author": "Janet Evanovich",
       "category": "Mystery · Stephanie Plum, book 31",
+      "genres": ["Fiction", "Mystery & thriller"],
       "note": "Bounty hunter Stephanie Plum juggles dangerous fugitives and two very complicated engagements."
     },
     {
@@ -31,6 +34,7 @@
       "title": "The Girls We Sent Away",
       "author": "Meagan Church",
       "category": "Historical fiction",
+      "genres": ["Fiction", "Historical fiction"],
       "note": "A young woman sent to a maternity home in the 1960s fights to choose her own path."
     },
     {
@@ -38,6 +42,7 @@
       "title": "The House of My Mother",
       "author": "Shari Franke",
       "category": "Memoir",
+      "genres": ["Nonfiction", "Biography & memoir"],
       "note": "A daughter’s account of life behind a famous family vlog and her search for freedom."
     },
     {
@@ -45,6 +50,7 @@
       "title": "No One to Miss Me",
       "author": "Cathy Glass",
       "category": "Fostering memoir",
+      "genres": ["Nonfiction", "Biography & memoir"],
       "note": "A former foster child returns to Cathy’s doorstep carrying a troubling secret."
     }
   ]
